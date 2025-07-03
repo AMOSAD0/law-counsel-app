@@ -1,0 +1,86 @@
+# Dart/Pub related
+.dart_tool/
+.packages
+.pub/
+build/
+.flutter-plugins
+.flutter-plugins-dependencies
+.melos_tool/
+.pub-cache/
+*.lock
+
+# Flutter specific
+.flutter-*
+**/ios/Flutter/.last_build_id
+generated_plugin_registrant.dart
+
+# Firebase related
+firebase.json
+firebase-debug.log
+.firebase/
+*.firebase/
+
+# Crashlytics & Performance
+android/app/src/main/assets/:
+  - flutter_build_config.json
+*.symbols
+*.map.json
+
+# IDEs and editors
+.idea/
+*.iml
+*.ipr
+*.iws
+.vscode/
+*.swp
+*.swo
+
+# macOS system files
+.DS_Store
+
+# Linux system files
+*~
+
+# Windows system files
+Thumbs.db
+
+# Android specific
+/android/.gradle/
+/android/app/build/
+/android/build/
+/android/local.properties
+**/*.keystore
+**/*.jks
+
+# iOS specific
+ios/Flutter/App.framework
+ios/Flutter/Flutter.framework
+ios/Flutter/Flutter.podspec
+ios/Flutter/Generated.xcconfig
+ios/.symlinks/
+/ios/Pods/
+/ios/Runner.xcworkspace/
+/ios/DerivedData/
+/ios/.flutter-plugins
+ios/Flutter/ephemeral/
+
+# Web specific
+web/.dart_tool/
+web/build/
+
+# Symbolication and Obfuscation
+app.*.symbols
+app.*.map.json
+
+# Logs
+*.log
+
+# Miscellaneous
+*.class
+*.pyc
+*.swp
+.history
+.atom/
+.svn/
+.swiftpm/
+migrate_working_dir/
