@@ -14,11 +14,6 @@ build/
 **/ios/Flutter/.last_build_id
 generated_plugin_registrant.dart
 
-# Firebase related
-firebase.json
-firebase-debug.log
-.firebase/
-*.firebase/
 
 # Crashlytics & Performance
 android/app/src/main/assets/:

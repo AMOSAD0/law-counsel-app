@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "883846931977",
+    "project_id": "law-counsel",
+    "storage_bucket": "law-counsel.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:883846931977:android:0691a37a9f8c1fb4427ad8",
+        "android_client_info": {
+          "package_name": "com.example.law_counsel_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCVAV1CcJEcEfbCiF4zsgAQb5zg0xGOwhc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
