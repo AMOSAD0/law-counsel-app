@@ -1,8 +1,17 @@
 import 'package:flutter/material.dart';
+
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:law_counsel_app/core/theming/color_manger.dart';
 
-class TextStyleManger {
-  static const TextStyle heading = TextStyle(
+class AppTextStyles {
+
+// static TextStyle font60WhiteExtiraBold = TextStyle(
+//     fontSize: 40.sp,
+//     color: AppColors.whiteColor,
+//     fontWeight: FontWeight.w900,
+//   );
+  
+    static const TextStyle heading = TextStyle(
     fontSize: 28,
     fontFamily: 'Cairo',
     fontWeight: FontWeight.bold,
@@ -20,4 +29,7 @@ class TextStyleManger {
     fontWeight: FontWeight.bold,
     color: ColorsManager.primaryColor,
   );
+
+ 
 }
+

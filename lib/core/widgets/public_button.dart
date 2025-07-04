@@ -1,8 +1,45 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:law_counsel_app/core/theming/color_manger.dart';
 
-class PublicButton {
+class PublicButton extends StatelessWidget {
+  final String text;
+  final VoidCallback onPressed;
+  final Color backgroundColor;
+  final Color textColor;
+
+  const PublicButton({
+    Key? key,
+    required this.text,
+    required this.onPressed,
+    this.backgroundColor = AppColors.primaryColor, 
+    this.textColor = AppColors.whiteColor,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: double.infinity, 
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: backgroundColor,
+          foregroundColor: textColor,
+          padding: const EdgeInsets.symmetric(vertical: 16),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+        ),
+        onPressed: onPressed,
+        child: Text(
+          text,
+          style: const TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+
+
+
+class OnboradingButton {
   final String text;
   final VoidCallback onPressed;
   final Color? color;
@@ -10,7 +47,7 @@ class PublicButton {
   final double? width;
   final double? height;
 
-  PublicButton({
+  OnboradingButton({
     required this.text,
     required this.onPressed,
     this.color,
@@ -29,6 +66,7 @@ class PublicButton {
       child: Text(
         text,
         style: TextStyle(color: textColor ?? Colors.white, fontSize: 25),
+
       ),
     );
   }
