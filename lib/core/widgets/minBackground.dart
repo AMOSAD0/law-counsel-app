@@ -10,7 +10,7 @@ Widget minBackground() {
       fit: StackFit.expand,
       children: [
         Image.asset(AppAssets.background, fit: BoxFit.cover),
-        Container(color: ColorsManager.primaryColor.withOpacity(0.6)),
+        Container(color: AppColors.primaryColor.withOpacity(0.6)),
         Center(child: Image.asset(AppAssets.logo2, width: 300)),
       ],
     ),

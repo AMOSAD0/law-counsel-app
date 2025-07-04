@@ -11,14 +11,14 @@ class PublicButton extends StatelessWidget {
     Key? key,
     required this.text,
     required this.onPressed,
-    this.backgroundColor = AppColors.primaryColor, 
+    this.backgroundColor = AppColors.primaryColor,
     this.textColor = AppColors.whiteColor,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: double.infinity, 
+      width: double.infinity,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
           backgroundColor: backgroundColor,
@@ -31,13 +31,12 @@ class PublicButton extends StatelessWidget {
         onPressed: onPressed,
         child: Text(
           text,
-          style: const TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w600,
-          ),
+          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
         ),
-
-
+      ),
+    );
+  }
+}
 
 class OnboradingButton {
   final String text;
@@ -60,13 +59,12 @@ class OnboradingButton {
     return ElevatedButton(
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
-        backgroundColor: color ?? ColorsManager.primaryColor,
+        backgroundColor: color ?? AppColors.primaryColor,
         minimumSize: Size(width ?? double.infinity, height ?? 56.0),
       ),
       child: Text(
         text,
         style: TextStyle(color: textColor ?? Colors.white, fontSize: 25),
-
       ),
     );
   }

@@ -15,19 +15,19 @@ class AppTextStyles {
     fontSize: 28,
     fontFamily: 'Cairo',
     fontWeight: FontWeight.bold,
-    color: ColorsManager.primaryColor,
+    color: AppColors.primaryColor,
   );
 
   static const TextStyle subHeading = TextStyle(
     fontSize: 20,
     fontFamily: 'Cairo',
     fontWeight: FontWeight.w600,
-    color: ColorsManager.textColorParagraph,
+    color: AppColors.greyColor,
   );
   static const TextStyle selectText = TextStyle(
     fontSize: 30,
     fontWeight: FontWeight.bold,
-    color: ColorsManager.primaryColor,
+    color: AppColors.primaryColor,
   );
 
  

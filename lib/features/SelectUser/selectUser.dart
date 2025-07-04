@@ -13,7 +13,7 @@ class SelectUser extends StatelessWidget {
         children: [
           Column(children: [minBackground()]),
           const SizedBox(height: 60),
-          const Text("برجاء الإختيـــار", style: TextStyleManger.selectText),
+          const Text("برجاء الإختيـــار", style:AppTextStyles.selectText),
           const SizedBox(height: 40),
           SelectableUser(),
         ],
