@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:law_counsel_app/core/routing/app_router.dart';
+import 'package:law_counsel_app/core/routing/routes.dart';
 import 'package:law_counsel_app/features/splash/ui/splaah_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
@@ -15,7 +17,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Law Counsel App',
+      debugShowCheckedModeBanner: false,
+      initialRoute: Routes.splash,
+      onGenerateRoute: (settings) => AppRouter.generateRoute(settings),
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
