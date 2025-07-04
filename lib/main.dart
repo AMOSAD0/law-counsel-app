@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:law_counsel_app/features/splash/ui/splaah_screen.dart';
 void main() {
   runApp(MyApp());
 }
@@ -10,14 +11,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text('Law Counsel Home'),
-        ),
-        body: Center(
-          child: Text('Welcome to Law Counsel App!'),
-        ),
-      ),
+      home: SplaahScreen(),
     );
   }
 }
