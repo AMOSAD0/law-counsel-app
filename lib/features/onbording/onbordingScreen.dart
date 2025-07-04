@@ -4,6 +4,7 @@ import 'package:law_counsel_app/core/routing/routes.dart';
 import 'package:law_counsel_app/core/theming/color_manger.dart';
 import 'package:law_counsel_app/core/widgets/bordingWidget.dart';
 import 'package:law_counsel_app/core/widgets/public_button.dart';
+import 'package:law_counsel_app/features/SelectUser/selectUser.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class Onbordingscreen1 extends StatefulWidget {
@@ -69,18 +70,23 @@ class _Onbordingscreen1State extends State<Onbordingscreen1> {
                   effect: WormEffect(
                     dotHeight: 10,
                     dotWidth: 10,
-                    activeDotColor: ColorsManager.primaryColor,
+                    activeDotColor: AppColors.primaryColor,
                   ),
                 ),
                 const SizedBox(height: 20),
                 isLastPage
-                    ? PublicButton(
+                    ? OnboradingButton(
                         text: "ابدأ الآن",
                         onPressed: () {
-                          Navigator.pushReplacementNamed(context, Routes.selectUserType);
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const SelectUser(),
+                            ),
+                          );
                         },
                       ).buildButtonBoarding()
-                    : PublicButton(
+                    : OnboradingButton(
                         text: "التالي",
                         onPressed: () {
                           _controller.nextPage(

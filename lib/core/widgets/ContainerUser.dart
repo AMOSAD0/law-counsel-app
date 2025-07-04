@@ -39,7 +39,7 @@ class _SelectableUserState extends State<SelectableUser> {
 
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 24.0),
-          child: PublicButton(
+          child: OnboradingButton(
             text: "التالي",
             onPressed: () {
               if (selectedIndex != -1) {
@@ -60,7 +60,7 @@ class _SelectableUserState extends State<SelectableUser> {
                 );
               }
             },
-            color: ColorsManager.primaryColor,
+            color: AppColors.primaryColor,
             textColor: Colors.white,
             width: double.infinity,
             height: 50,
@@ -90,7 +90,7 @@ class _SelectableUserState extends State<SelectableUser> {
         width: isSelected ? 170 : 150,
         height: isSelected ? 180 : 160,
         decoration: BoxDecoration(
-          color: ColorsManager.primaryColor,
+          color: AppColors.primaryColor,
           borderRadius: BorderRadius.circular(16),
           border: Border.all(
             color: isSelected ? Colors.white : Colors.transparent,
