@@ -1,5 +1,5 @@
 const String imagePath = 'assets/images/';
 
-class AppAssets{
-  static const String logo = '${imagePath}weather icon.svg';
+class AppAssets {
+  static final String logo = '${imagePath}logo.svg';
 }
