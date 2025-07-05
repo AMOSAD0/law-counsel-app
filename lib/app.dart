@@ -14,8 +14,8 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Law Counsel App',
-        theme:AppTheme.lightTheme,
-        home: SignupForLawyer2(),
+        theme: AppTheme.lightTheme,
+        home: SplaahScreen(),
       ),
     );
   }

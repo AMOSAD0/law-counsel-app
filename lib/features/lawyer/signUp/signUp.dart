@@ -5,6 +5,7 @@ import 'package:law_counsel_app/core/helper/spacing.dart';
 import 'package:law_counsel_app/core/theming/text_style_manger.dart';
 import 'package:law_counsel_app/core/widgets/minBackground.dart';
 import 'package:law_counsel_app/core/widgets/public_text_form_field.dart';
+import 'package:law_counsel_app/features/lawyer/signUp/signUp2.dart';
 
 class SignupForLawyer extends StatelessWidget {
   const SignupForLawyer({super.key});
@@ -20,11 +21,14 @@ class SignupForLawyer extends StatelessWidget {
               children: [
                 minBackground(),
                 verticalSpace(10),
-                Text('!سجّل الأن مجاناً', style: AppTextStyles.heading),
+                Text(
+                  '!سجّل الأن مجاناً',
+                  style: AppTextStyles.font24PrimarySemiBold,
+                ),
                 verticalSpace(15),
                 Text(
                   '. ادخل البيانات التالية لانشاء حساب جديد',
-                  style: AppTextStyles.subHeading,
+                  style: AppTextStyles.font20gray600,
                 ),
                 verticalSpace(15),
                 PublicTextFormField(label: 'الأسم الكامل'),
@@ -34,7 +38,14 @@ class SignupForLawyer extends StatelessWidget {
                 PublicTextFormField(label: 'تأكيد كلمه المرور'),
                 verticalSpace(25),
                 InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => SignupForLawyer2(),
+                      ),
+                    );
+                  },
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -63,7 +74,7 @@ class SignupForLawyer extends StatelessWidget {
                     Text(
                       "لديك حساب بالفعل ؟",
                       textDirection: TextDirection.rtl,
-                      style: AppTextStyles.subHeading,
+                      style: AppTextStyles.font20gray600,
                     ),
                     horizontalSpace(10),
                     TextButton(

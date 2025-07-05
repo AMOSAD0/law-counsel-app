@@ -5,6 +5,8 @@ import 'package:law_counsel_app/core/theming/color_manger.dart';
 import 'package:law_counsel_app/core/routing/routes.dart';
 import 'package:law_counsel_app/core/widgets/public_button.dart';
 import 'package:law_counsel_app/features/Client/auth/login_or_signupClient/RegisterClient.dart';
+import 'package:law_counsel_app/features/lawyer/signUp/signUp.dart';
+import 'package:law_counsel_app/features/lawyer/signUp/signUp2.dart';
 
 class SelectableUser extends StatefulWidget {
   const SelectableUser({super.key});
@@ -29,7 +31,7 @@ class _SelectableUserState extends State<SelectableUser> {
               image: AppAssets.Client,
               text: "عميل",
             ),
-           horizontalSpace(20),
+            horizontalSpace(20),
             buildSelectableCard(
               index: 1,
               image: AppAssets.Lawyer,
@@ -37,7 +39,7 @@ class _SelectableUserState extends State<SelectableUser> {
             ),
           ],
         ),
-       verticalSpace(60),
+        verticalSpace(60),
 
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 24.0),
@@ -51,9 +53,9 @@ class _SelectableUserState extends State<SelectableUser> {
                     MaterialPageRoute(builder: (context) => RegisterClient()),
                   );
                 } else if (selectedIndex == 1) {
-                  Navigator.pushReplacementNamed(
+                  Navigator.pushReplacement(
                     context,
-                    Routes.registerLawyer,
+                    MaterialPageRoute(builder: (context) => SignupForLawyer()),
                   );
                 }
               } else {

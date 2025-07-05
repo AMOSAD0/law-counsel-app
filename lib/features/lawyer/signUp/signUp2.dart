@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:law_counsel_app/core/assets/assets_manger.dart';
 import 'package:law_counsel_app/core/helper/spacing.dart';
 import 'package:law_counsel_app/core/theming/text_style_manger.dart';
 import 'package:law_counsel_app/core/widgets/minBackground.dart';
@@ -21,11 +19,11 @@ class SignupForLawyer2 extends StatelessWidget {
               children: [
                 minBackground(),
                 verticalSpace(10),
-                Text('!سجّل الأن مجاناً', style: AppTextStyles.heading),
+                Text('!سجّل الأن مجاناً', style: AppTextStyles.font24PrimarySemiBold),
                 verticalSpace(15),
                 Text(
                   '. ادخل البيانات التالية لانشاء حساب جديد',
-                  style: AppTextStyles.subHeading,
+                  style: AppTextStyles.font20gray600,
                 ),
                 verticalSpace(15),
                 PublicTextFormField(label: 'تاريخ الميلاد'),
@@ -44,7 +42,7 @@ class SignupForLawyer2 extends StatelessWidget {
                     Text(
                       "لديك حساب بالفعل ؟",
                       textDirection: TextDirection.rtl,
-                      style: AppTextStyles.subHeading,
+                      style: AppTextStyles.font20gray600,
                     ),
                     horizontalSpace(10),
                     TextButton(

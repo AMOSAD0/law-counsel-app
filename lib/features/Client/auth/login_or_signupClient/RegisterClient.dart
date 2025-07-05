@@ -45,12 +45,12 @@ class _RegisterClientState extends State<RegisterClient> {
         return Scaffold(
           body: Column(
             children: [
-              minBackground(),
               if (state is ClientLoading) const LinearProgressIndicator(),
               Expanded(
                 child: SingleChildScrollView(
                   child: Column(
                     children: [
+                      minBackground(),
                       verticalSpace(20),
                       Text(
                         "سجل الان مجانا",
