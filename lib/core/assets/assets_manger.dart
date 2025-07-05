@@ -10,4 +10,7 @@ class AppAssets {
   static final String background = '${imagePath}background.png';
   static final String Client = '${imagePath}client.png';
   static final String Lawyer = '${imagePath}Lawyer.png';
+    static final String topImg = '${imagePath}top Img.png';
+     static final String iconDoubleRight = '${imagePath}Icon Double Right.png';
+
 }

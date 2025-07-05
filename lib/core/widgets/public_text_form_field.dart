@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:law_counsel_app/core/theming/text_style_manger.dart';
 
 class PublicTextFormField extends StatelessWidget {
   final String label;
@@ -16,16 +17,20 @@ class PublicTextFormField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Directionality(
-      textDirection: TextDirection.rtl,
-      child: TextFormField(
-        controller: controller,
-        keyboardType: keyboardType,
-        obscureText: obscureText,
-        decoration: InputDecoration(
-          labelText: '$label :',
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 10,horizontal: 25),
+      child: Directionality(
+        textDirection: TextDirection.rtl,
+        child: TextFormField(
+          controller: controller,
+          keyboardType: keyboardType,
+          obscureText: obscureText,
+          decoration: InputDecoration(
+            labelText: '$label :',
+            labelStyle: AppTextStyles.font14PrimarySemiBold,
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
           ),
         ),
       ),
