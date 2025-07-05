@@ -1,5 +1,9 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 import 'package:law_counsel_app/core/theming/color_manger.dart';
+import 'package:law_counsel_app/core/theming/text_style_manger.dart';
 
 class PublicButton extends StatelessWidget {
   final String text;
@@ -65,6 +69,25 @@ class OnboradingButton {
       child: Text(
         text,
         style: TextStyle(color: textColor ?? Colors.white, fontSize: 25),
+      ),
+    );
+  }
+
+}
+class TextbuttonAuth extends StatelessWidget {
+  final VoidCallback? onPressed;
+  final String? text;
+  final TextStyle? style;
+  const TextbuttonAuth({super.key, this.onPressed, this.text, this.style});
+
+  @override
+  Widget build(BuildContext context) {
+    return TextButton(
+      onPressed: onPressed,
+      child: Text(
+        text ?? "تسجيل مستخدم جديد",
+        style: style ??
+            AppTextStyles.font16primaryColorBold
       ),
     );
   }
