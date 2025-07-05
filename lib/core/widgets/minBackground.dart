@@ -7,5 +7,7 @@ Widget minBackground() {
     height: 185.h,
     width: double.infinity,
     child: Image.asset(AppAssets.topImg, fit: BoxFit.cover),
+
+   
   );
 }

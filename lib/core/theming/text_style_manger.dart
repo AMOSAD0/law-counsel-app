@@ -18,23 +18,29 @@ class AppTextStyles {
 // 700: Bold
 // 800-900: Extra-bold or Black
   
-    static const TextStyle heading = TextStyle(
-    fontSize: 26,
+
+    static  TextStyle font28primaryColorBold = TextStyle(
+    fontSize: 28.sp,
     fontFamily: 'Cairo',
     fontWeight: FontWeight.bold,
     color: AppColors.primaryColor,
   );
 
-  static const TextStyle subHeading = TextStyle(
-    fontSize: 16,
+  static  TextStyle  font20gray600= TextStyle(
+    fontSize: 20.sp,
     fontFamily: 'Cairo',
     fontWeight: FontWeight.w600,
     color: AppColors.greyColor,
   );
-  static const TextStyle selectText = TextStyle(
-    fontSize: 30,
-     fontFamily: 'Cairo',
+
+  static  TextStyle  font30primaryColorBold = TextStyle(
+    fontSize: 30.sp,
     fontWeight: FontWeight.bold,
+    color: AppColors.primaryColor,
+  );
+static TextStyle font16primaryColorBold = TextStyle(
+    fontSize: 16.sp,
+    fontWeight: FontWeight.normal,
     color: AppColors.primaryColor,
   );
 

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:law_counsel_app/core/routing/routes.dart';
 import 'package:law_counsel_app/features/SelectUser/selectUser.dart';
 import 'package:law_counsel_app/features/login-signUpLawyer/RegisterLawer.dart';
-import 'package:law_counsel_app/features/login_or_signupClient/RegisterClient.dart';
+import 'package:law_counsel_app/features/Client/auth/login_or_signupClient/RegisterClient.dart';
 import 'package:law_counsel_app/features/onbording/onbordingScreen.dart';
 import 'package:law_counsel_app/features/splash/ui/splaah_screen.dart';
 

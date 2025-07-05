@@ -18,13 +18,13 @@ Widget bordingWidget({
         const SizedBox(height: 30),
         Text(
           title,
-          style: AppTextStyles.heading,
+          style: AppTextStyles.font28primaryColorBold,
           textAlign: TextAlign.center,
         ),
         const SizedBox(height: 16),
         Text(
           subTitle,
-          style: AppTextStyles.subHeading,
+          style: AppTextStyles.font20gray600,
           textAlign: TextAlign.center,
         ),
       ],
