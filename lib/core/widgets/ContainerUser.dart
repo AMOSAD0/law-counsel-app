@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:law_counsel_app/core/assets/assets_manger.dart';
+import 'package:law_counsel_app/core/helper/spacing.dart';
 import 'package:law_counsel_app/core/theming/color_manger.dart';
 import 'package:law_counsel_app/core/routing/routes.dart';
 import 'package:law_counsel_app/core/widgets/public_button.dart';
+import 'package:law_counsel_app/features/Client/auth/login_or_signupClient/RegisterClient.dart';
 
 class SelectableUser extends StatefulWidget {
   const SelectableUser({super.key});
@@ -27,7 +29,7 @@ class _SelectableUserState extends State<SelectableUser> {
               image: AppAssets.Client,
               text: "عميل",
             ),
-            const SizedBox(width: 20),
+           horizontalSpace(20),
             buildSelectableCard(
               index: 1,
               image: AppAssets.Lawyer,
@@ -35,7 +37,7 @@ class _SelectableUserState extends State<SelectableUser> {
             ),
           ],
         ),
-        const SizedBox(height: 60),
+       verticalSpace(60),
 
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 24.0),
@@ -44,9 +46,9 @@ class _SelectableUserState extends State<SelectableUser> {
             onPressed: () {
               if (selectedIndex != -1) {
                 if (selectedIndex == 0) {
-                  Navigator.pushReplacementNamed(
+                  Navigator.pushReplacement(
                     context,
-                    Routes.registerClient,
+                    MaterialPageRoute(builder: (context) => RegisterClient()),
                   );
                 } else if (selectedIndex == 1) {
                   Navigator.pushReplacementNamed(
@@ -101,7 +103,7 @@ class _SelectableUserState extends State<SelectableUser> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image.asset(image, height: 80),
-            const SizedBox(height: 10),
+            verticalSpace(10),
             Text(
               text,
               style: const TextStyle(
