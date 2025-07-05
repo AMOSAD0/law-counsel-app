@@ -59,7 +59,7 @@ class _RegisterClientState extends State<RegisterClient> {
                       const SizedBox(height: 5),
                       Text(
                         "ادخل البيانات التالية لانشاء حساب جديد.",
-                        style: AppTextStyles.font20gray600,
+                        style: AppTextStyles.font16GrayNormal,
                       ),
                       verticalSpace(20),
                       Form(

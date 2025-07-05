@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:law_counsel_app/core/helper/spacing.dart';
 import 'package:law_counsel_app/core/theming/text_style_manger.dart';
 import 'package:law_counsel_app/core/widgets/minBackground.dart';
+import 'package:law_counsel_app/core/widgets/public_button.dart';
 import 'package:law_counsel_app/core/widgets/public_text_form_field.dart';
 import 'package:law_counsel_app/features/lawyer/signUp/widgets/specialization_selector.dart';
 
@@ -19,11 +20,14 @@ class SignupForLawyer2 extends StatelessWidget {
               children: [
                 minBackground(),
                 verticalSpace(10),
-                Text('!سجّل الأن مجاناً', style: AppTextStyles.font24PrimarySemiBold),
+                Text(
+                  '!سجّل الأن مجاناً',
+                  style: AppTextStyles.font24PrimarySemiBold,
+                ),
                 verticalSpace(15),
                 Text(
                   '. ادخل البيانات التالية لانشاء حساب جديد',
-                  style: AppTextStyles.font20gray600,
+                  style: AppTextStyles.font16GrayNormal,
                 ),
                 verticalSpace(15),
                 PublicTextFormField(label: 'تاريخ الميلاد'),
@@ -32,8 +36,9 @@ class SignupForLawyer2 extends StatelessWidget {
                 PublicTextFormField(label: 'ارفع بطاقة عضوية نقابة المحامين'),
                 verticalSpace(25),
                 SpecializationSelector(),
-                
                 verticalSpace(15),
+                PublicButton(text: "تسجيل مستخدم جديد", onPressed: () {}),
+
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -42,7 +47,7 @@ class SignupForLawyer2 extends StatelessWidget {
                     Text(
                       "لديك حساب بالفعل ؟",
                       textDirection: TextDirection.rtl,
-                      style: AppTextStyles.font20gray600,
+                      style: AppTextStyles.font14PrimarySemiBold
                     ),
                     horizontalSpace(10),
                     TextButton(
@@ -55,12 +60,12 @@ class SignupForLawyer2 extends StatelessWidget {
                     ),
                   ],
                 ),
+                verticalSpace(15),
               ],
             ),
           ),
         ),
       ),
     );
- 
   }
 }

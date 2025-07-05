@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Law Counsel App',
         theme: AppTheme.lightTheme,
-        home: SplaahScreen(),
+        home: SignupForLawyer2(),
       ),
     );
   }

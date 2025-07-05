@@ -55,7 +55,7 @@ class _LoginclientState extends State<Loginclient> {
                       verticalSpace(5),
                       Text(
                         "ادخل البيانات التاليه لتتمكن من الوصول الي حسابك",
-                        style: AppTextStyles.font20gray600,
+                        style: AppTextStyles.font16GrayNormal,
                       ),
                       verticalSpace(20),
                       Form(
@@ -77,7 +77,7 @@ class _LoginclientState extends State<Loginclient> {
                               onPressed: () {},
                               child: Text(
                                 "نسيت كلمة المرور؟",
-                                style: AppTextStyles.font20gray600,
+                                style: AppTextStyles.font16GrayNormal,
                               ),
                             ),
                             verticalSpace(20),

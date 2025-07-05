@@ -109,10 +109,10 @@ class _SpecializationSelectorState extends State<SpecializationSelector> {
                   _selectedList.map((spec) {
                     return Chip(
                       label: Text(spec),
-                      labelStyle: const TextStyle(fontWeight: FontWeight.w500),
-                      backgroundColor: Colors.white,
+                      labelStyle: AppTextStyles.font18PrimaryNormal,
+                      backgroundColor: AppColors.whiteColor,
                       shape: StadiumBorder(
-                        side: BorderSide(color: Colors.grey.shade400),
+                        side: BorderSide(color: AppColors.primaryColor),
                       ),
                       deleteIcon: const Icon(Icons.close, color: Colors.red),
                       onDeleted: () => _removeSpecialization(spec),

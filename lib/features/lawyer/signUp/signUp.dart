@@ -28,7 +28,7 @@ class SignupForLawyer extends StatelessWidget {
                 verticalSpace(15),
                 Text(
                   '. ادخل البيانات التالية لانشاء حساب جديد',
-                  style: AppTextStyles.font20gray600,
+                  style: AppTextStyles.font16GrayNormal,
                 ),
                 verticalSpace(15),
                 PublicTextFormField(label: 'الأسم الكامل'),
@@ -74,7 +74,7 @@ class SignupForLawyer extends StatelessWidget {
                     Text(
                       "لديك حساب بالفعل ؟",
                       textDirection: TextDirection.rtl,
-                      style: AppTextStyles.font20gray600,
+                      style: AppTextStyles.font16GrayNormal,
                     ),
                     horizontalSpace(10),
                     TextButton(
