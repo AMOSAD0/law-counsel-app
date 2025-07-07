@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:law_counsel_app/features/Client/auth/client_bloc/client_event.dart';
 import 'package:law_counsel_app/features/Client/auth/client_bloc/client_state.dart';
 import 'package:law_counsel_app/features/Client/auth/data/ModelClient.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ClientBloc extends Bloc<ClientEvent, ClientState> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -26,6 +27,7 @@ class ClientBloc extends Bloc<ClientEvent, ClientState> {
           email: event.email,
           phone: event.phone,
           password: event.password,
+          isDelete: false,
         );
 
         await FirebaseFirestore.instance
@@ -47,6 +49,10 @@ class ClientBloc extends Bloc<ClientEvent, ClientState> {
         );
 
         final uid = userCredential.user!.uid;
+
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setString('userId', uid);
+        print(uid);
 
         DocumentSnapshot doc = await FirebaseFirestore.instance
             .collection('clients')

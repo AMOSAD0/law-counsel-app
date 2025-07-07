@@ -4,9 +4,13 @@ class ClientModel {
   final String email;
   final String phone;
   final String password;
+  final String? imageUrl;
+  final bool isDelete;
 
   const ClientModel({
+    required this.isDelete,
     this.id,
+    this.imageUrl,
     required this.name,
     required this.email,
     required this.phone,
@@ -20,6 +24,8 @@ class ClientModel {
       email: json['email'] ?? '',
       phone: json['phone'] ?? '',
       password: json['password'] ?? '',
+      imageUrl: json['imageUrl'],
+      isDelete: json['isDelete'] ?? false,
     );
   }
 
@@ -28,6 +34,9 @@ class ClientModel {
       'name': name,
       'email': email,
       'phone': phone,
+      'password': password,
+      'imageUrl': imageUrl,
+      'isDelete': isDelete,
     };
   }
 }
