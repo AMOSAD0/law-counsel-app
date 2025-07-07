@@ -35,12 +35,14 @@ class AppTextStyles {
 
   static  TextStyle  font30primaryColorBold = TextStyle(
     fontSize: 30.sp,
+    fontFamily: 'Cairo',
     fontWeight: FontWeight.bold,
     color: AppColors.primaryColor,
   );
 static TextStyle font16primaryColorBold = TextStyle(
     fontSize: 16.sp,
-    fontWeight: FontWeight.normal,
+    fontFamily: 'Cairo',
+    fontWeight: FontWeight.bold,
     color: AppColors.primaryColor,
   );
 

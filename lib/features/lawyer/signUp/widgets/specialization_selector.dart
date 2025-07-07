@@ -5,7 +5,9 @@ import 'package:law_counsel_app/core/theming/color_manger.dart';
 import 'package:law_counsel_app/core/theming/text_style_manger.dart';
 
 class SpecializationSelector extends StatefulWidget {
-  const SpecializationSelector({super.key});
+   final ValueNotifier<List<String>> selectedSpecializationsNotifier;
+   const SpecializationSelector({super.key,required this.selectedSpecializationsNotifier});
+   
 
   @override
   State<SpecializationSelector> createState() => _SpecializationSelectorState();
@@ -14,20 +16,20 @@ class SpecializationSelector extends StatefulWidget {
 class _SpecializationSelectorState extends State<SpecializationSelector> {
   final List<String> _availableSpecializations = ['جنائي', 'مدني', 'تجاري'];
   String? _selectedSpecialization = 'جنائي';
-  final List<String> _selectedList = [];
+ 
 
   void _addSpecialization() {
     if (_selectedSpecialization != null &&
-        !_selectedList.contains(_selectedSpecialization)) {
+        !widget.selectedSpecializationsNotifier.value.contains(_selectedSpecialization)) {
       setState(() {
-        _selectedList.add(_selectedSpecialization!);
+        widget.selectedSpecializationsNotifier.value.add(_selectedSpecialization!);
       });
     }
   }
 
   void _removeSpecialization(String value) {
     setState(() {
-      _selectedList.remove(value);
+      widget.selectedSpecializationsNotifier.value.remove(value);
     });
   }
 
@@ -106,7 +108,7 @@ class _SpecializationSelectorState extends State<SpecializationSelector> {
             Wrap(
               spacing: 8,
               children:
-                  _selectedList.map((spec) {
+                  widget.selectedSpecializationsNotifier.value.map((spec) {
                     return Chip(
                       label: Text(spec),
                       labelStyle: AppTextStyles.font18PrimaryNormal,

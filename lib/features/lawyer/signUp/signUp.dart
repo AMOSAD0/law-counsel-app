@@ -2,13 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:law_counsel_app/core/assets/assets_manger.dart';
 import 'package:law_counsel_app/core/helper/spacing.dart';
+import 'package:law_counsel_app/core/helper/validators.dart';
 import 'package:law_counsel_app/core/theming/text_style_manger.dart';
 import 'package:law_counsel_app/core/widgets/minBackground.dart';
 import 'package:law_counsel_app/core/widgets/public_text_form_field.dart';
+import 'package:law_counsel_app/features/lawyer/model/lawyerModel.dart';
 import 'package:law_counsel_app/features/lawyer/signUp/signUp2.dart';
 
 class SignupForLawyer extends StatelessWidget {
-  const SignupForLawyer({super.key});
+  SignupForLawyer({super.key});
+
+  final _formKey = GlobalKey<FormState>();
+
+  final nameController = TextEditingController();
+  final emailController = TextEditingController();
+  final phoneController = TextEditingController();
+  final passwordController = TextEditingController();
+  final confirmPasswordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -16,6 +26,7 @@ class SignupForLawyer extends StatelessWidget {
       body: SafeArea(
         child: SingleChildScrollView(
           child: Form(
+            key: _formKey,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
@@ -31,20 +42,53 @@ class SignupForLawyer extends StatelessWidget {
                   style: AppTextStyles.font16GrayNormal,
                 ),
                 verticalSpace(15),
-                PublicTextFormField(label: 'الأسم الكامل'),
-                PublicTextFormField(label: 'البريد الأكتروني'),
-                PublicTextFormField(label: 'رقم الهاتف'),
-                PublicTextFormField(label: 'كلمه المرور'),
-                PublicTextFormField(label: 'تأكيد كلمه المرور'),
+                PublicTextFormField(
+                  label: 'الأسم الكامل',
+                  controller: nameController,
+                  validator: Validators.validateName,
+                ),
+                PublicTextFormField(
+                  label: 'البريد الأكتروني',
+                  controller: emailController,
+                  validator: Validators.validateEmail,
+                ),
+                PublicTextFormField(
+                  label: 'رقم الهاتف',
+                  controller: phoneController,
+                  validator: Validators.validatePhone,
+                ),
+                PublicTextFormField(
+                  label: 'كلمه المرور',
+                  controller: passwordController,
+                  obscureText: true,
+                  validator: Validators.validatePassword,
+                ),
+                PublicTextFormField(
+                  label: 'تأكيد كلمه المرور',
+                  controller: confirmPasswordController,
+                  obscureText: true,
+                  validator:
+                      (value) => Validators.validateConfirmPassword(
+                        value,
+                        passwordController.text,
+                      ),
+                ),
                 verticalSpace(25),
                 InkWell(
                   onTap: () {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => SignupForLawyer2(),
-                      ),
-                    );
+                    if (_formKey.currentState!.validate()) {
+                      final lawyer = Lawyer(
+                        name: nameController.text,
+                        email: emailController.text,
+                        phoneNumber: phoneController.text,  
+                      );
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => SignupForLawyer2(lawyer: lawyer,password: passwordController.text,),
+                        ),
+                      );
+                    }
                   },
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:law_counsel_app/core/helper/spacing.dart';
+import 'package:law_counsel_app/core/helper/validators.dart';
 import 'package:law_counsel_app/core/theming/text_style_manger.dart';
 import 'package:law_counsel_app/core/widgets/AlertDialogApp.dart';
 import 'package:law_counsel_app/core/widgets/minBackground.dart';
@@ -71,54 +72,66 @@ class _RegisterClientState extends State<RegisterClient> {
                               PublicTextFormField(
                                 label: "الاسم الكامل",
                                 controller: _nameController,
+                                validator: Validators.validateName,
                               ),
-                              verticalSpace(20),
+
                               PublicTextFormField(
                                 label: "البريد الإلكتروني",
                                 controller: _emailController,
+                                validator: Validators.validateEmail,
                               ),
-                              verticalSpace(20),
+
                               PublicTextFormField(
                                 label: "رقم الهاتف",
                                 controller: _phoneController,
                                 keyboardType: TextInputType.phone,
+                                validator: Validators.validatePhone,
                               ),
-                              verticalSpace(20),
+
                               PublicTextFormField(
                                 label: "كلمة المرور",
                                 controller: _passwordController,
                                 obscureText: true,
+                                validator: Validators.validatePassword,
                               ),
-                              verticalSpace(20),
+
                               PublicTextFormField(
                                 label: "تأكيد كلمة المرور",
                                 controller: _confirmPasswordController,
                                 obscureText: true,
+                                validator:
+                                    (value) =>
+                                        Validators.validateConfirmPassword(
+                                          value,
+                                          _passwordController.text,
+                                        ),
                               ),
                               verticalSpace(20),
 
                               PublicButton(
                                 onPressed: () {
                                   if (_formKey.currentState!.validate()) {
-                                    if (_passwordController.text !=
-                                        _confirmPasswordController.text) {
-                                      showDialog(
-                                        context: context,
-                                        builder: (context) => AlrtDialogApp(
-                                          title: "خطأ",
-                                          content: "كلمتا المرور غير متطابقتين",
-                                          buttonText: "حسنًا",
-                                        ),
-                                      );
-                                      return;
-                                    }
+                                    // if (_passwordController.text !=
+                                    //     _confirmPasswordController.text) {
+                                    //   showDialog(
+                                    //     context: context,
+                                    //     builder:
+                                    //         (context) => AlrtDialogApp(
+                                    //           title: "خطأ",
+                                    //           content:
+                                    //               "كلمتا المرور غير متطابقتين",
+                                    //           buttonText: "حسنًا",
+                                    //         ),
+                                    //   );
+                                    //   return;
+                                    // }
                                     context.read<ClientBloc>().add(
                                       ClientRegisterEvent(
                                         _nameController.text.trim(),
                                         email: _emailController.text.trim(),
                                         _phoneController.text.trim(),
-                                        password: _passwordController.text
-                                            .trim(),
+                                        password:
+                                            _passwordController.text.trim(),
                                       ),
                                     );
                                   }
@@ -128,25 +141,27 @@ class _RegisterClientState extends State<RegisterClient> {
                               ),
                               verticalSpace(20),
                               Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                textDirection: TextDirection.rtl,
                                 children: [
                                   Text(
-                                    "لديك حساب بالفعل؟",
-                                    style: AppTextStyles.font16primaryColorBold,
+                                    "لديك حساب بالفعل ؟",
+                                    textDirection: TextDirection.rtl,
+                                    style: AppTextStyles.font16GrayNormal,
                                   ),
-                                  TextbuttonAuth(
-                                    onPressed: () {
-                                      Navigator.pushReplacement(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) => Loginclient(),
-                                        ),
-                                      );
-                                    },
-                                    text: "تسجيل الدخول",
-                                    style: AppTextStyles.font16primaryColorBold,
+                                  horizontalSpace(10),
+                                  TextButton(
+                                    onPressed: () {},
+                                    child: Text(
+                                      "سجل الدخول",
+                                      textDirection: TextDirection.rtl,
+                                      style: AppTextStyles.font14PrimaryBold,
+                                    ),
                                   ),
                                 ],
                               ),
+                              verticalSpace(20)
                             ],
                           ),
                         ),
