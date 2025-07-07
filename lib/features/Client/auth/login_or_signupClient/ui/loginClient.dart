@@ -3,9 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:law_counsel_app/core/helper/spacing.dart';
 import 'package:law_counsel_app/core/helper/validators.dart';
 import 'package:law_counsel_app/core/theming/text_style_manger.dart';
+import 'package:law_counsel_app/core/widgets/bottomNav.dart';
 import 'package:law_counsel_app/core/widgets/minBackground.dart';
 import 'package:law_counsel_app/core/widgets/public_button.dart';
 import 'package:law_counsel_app/core/widgets/public_text_form_field.dart';
+import 'package:law_counsel_app/features/Client/ScreenClient/UI/Profile.dart';
 import 'package:law_counsel_app/features/Client/auth/client_bloc/client_bloc.dart';
 import 'package:law_counsel_app/features/Client/auth/client_bloc/client_event.dart';
 import 'package:law_counsel_app/features/Client/auth/client_bloc/client_state.dart';
@@ -34,7 +36,7 @@ class _LoginclientState extends State<Loginclient> {
         } else if (state is ClientLoaded) {
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) => SelectUser()),
+            MaterialPageRoute(builder: (context) => BottomNavBarApp()),
           );
         }
       },
