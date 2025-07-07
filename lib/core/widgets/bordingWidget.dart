@@ -24,7 +24,7 @@ Widget bordingWidget({
         const SizedBox(height: 16),
         Text(
           subTitle,
-          style: AppTextStyles.font20gray600,
+          style: AppTextStyles.font16GrayNormal,
           textAlign: TextAlign.center,
         ),
       ],

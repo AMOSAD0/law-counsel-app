@@ -12,6 +12,12 @@ class AppAssets {
   static final String Lawyer = '${imagePath}Lawyer.png';
   static final String topImg = '${imagePath}top Img.png';
   static final String iconDoubleRight = '${imagePath}Icon Double Right.png';
+
+  static final String iconCalendar = '${imagePath}Calendar.png';
+  static final String iconCity = '${imagePath}city.png';
+ 
+
+
   static final String home = '${imagePath}Home.png';
   static final String chatbot = '${imagePath}Chatbot.png';
   static final String profile = '${imagePath}User.png';
@@ -20,5 +26,6 @@ class AppAssets {
   static final String activeChatbot='${imagePath}Chatbot (1).png';
   static final String activeProfile='${imagePath}User (1).png';
   static final String activeConsolation='${imagePath}Chat (1).png';
+
 
 }

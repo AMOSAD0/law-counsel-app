@@ -26,21 +26,23 @@ class AppTextStyles {
     color: AppColors.primaryColor,
   );
 
-  static  TextStyle  font20gray600= TextStyle(
-    fontSize: 20.sp,
+  static  TextStyle  font16GrayNormal= TextStyle(
+    fontSize: 16.sp,
     fontFamily: 'Cairo',
-    fontWeight: FontWeight.w600,
+    fontWeight: FontWeight.normal,
     color: AppColors.greyColor,
   );
 
   static  TextStyle  font30primaryColorBold = TextStyle(
     fontSize: 30.sp,
+    fontFamily: 'Cairo',
     fontWeight: FontWeight.bold,
     color: AppColors.primaryColor,
   );
 static TextStyle font16primaryColorBold = TextStyle(
     fontSize: 16.sp,
-    fontWeight: FontWeight.normal,
+    fontFamily: 'Cairo',
+    fontWeight: FontWeight.bold,
     color: AppColors.primaryColor,
   );
 
@@ -69,6 +71,12 @@ static TextStyle font16primaryColorBold = TextStyle(
     fontSize: 18.sp,
      fontFamily: 'Cairo',
     fontWeight: FontWeight.normal,
+    color: AppColors.whiteColor,
+  );
+  static TextStyle font16WhiteNormal = TextStyle(
+    fontSize: 16.sp,
+     fontFamily: 'Cairo',
+    fontWeight: FontWeight.w600,
     color: AppColors.whiteColor,
   );
 

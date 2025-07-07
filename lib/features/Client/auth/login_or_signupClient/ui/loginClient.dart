@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:law_counsel_app/core/helper/spacing.dart';
+import 'package:law_counsel_app/core/helper/validators.dart';
 import 'package:law_counsel_app/core/theming/text_style_manger.dart';
 import 'package:law_counsel_app/core/widgets/bottomNav.dart';
 import 'package:law_counsel_app/core/widgets/minBackground.dart';
@@ -51,15 +52,16 @@ class _LoginclientState extends State<Loginclient> {
                     children: [
                       verticalSpace(20),
                       Text(
-                        "أهلا بعودتك !",
+                        "! أهلا بعودتك",
                         style: AppTextStyles.font28primaryColorBold,
                       ),
-                      verticalSpace(5),
+                      verticalSpace(15),
                       Text(
-                        "ادخل البيانات التاليه لتتمكن من الوصول الي حسابك",
-                        style: AppTextStyles.font20gray600,
+                        "ادخل البيانات التاليه لتتمكن من الوصول \nالي حسابك",
+                        style: AppTextStyles.font16GrayNormal,
+                        textAlign: TextAlign.center,
                       ),
-                      verticalSpace(20),
+                      verticalSpace(30),
                       Form(
                         key: _formKey,
                         child: Column(
@@ -68,22 +70,25 @@ class _LoginclientState extends State<Loginclient> {
                               controller: _emailController,
                               label: "البريد الإلكتروني",
                               keyboardType: TextInputType.emailAddress,
+                              validator: Validators.validateEmail,
                             ),
-                            verticalSpace(10),
+
                             PublicTextFormField(
                               controller: _passwordController,
                               label: "كلمة المرور",
                               obscureText: true,
+                              validator: Validators.validatePassword,
                             ),
                             TextButton(
                               onPressed: () {},
                               child: Text(
                                 "نسيت كلمة المرور؟",
-                                style: AppTextStyles.font20gray600,
+                                style: AppTextStyles.font16primaryColorBold,
                               ),
                             ),
                             verticalSpace(20),
-                            ElevatedButton(
+                            PublicButton(
+                              text: "تسجيل الدخول",
                               onPressed: () {
                                 if (_formKey.currentState!.validate()) {
                                   BlocProvider.of<ClientBloc>(context).add(
@@ -94,28 +99,30 @@ class _LoginclientState extends State<Loginclient> {
                                   );
                                 }
                               },
-                              child: const Text("تسجيل الدخول"),
                             ),
+                            verticalSpace(20),
                             Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              textDirection: TextDirection.rtl,
                               children: [
                                 Text(
                                   "لم تقم بإنشاء حساب؟",
-                                  style: AppTextStyles.font16primaryColorBold,
+                                  textDirection: TextDirection.rtl,
+                                  style: AppTextStyles.font16GrayNormal,
                                 ),
-                                TextbuttonAuth(
-                                  onPressed: () {
-                                    Navigator.pushReplacement(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => RegisterClient(),
-                                      ),
-                                    );
-                                  },
-                                  text: "انشائي حساب",
-                                  style: AppTextStyles.font16primaryColorBold,
+                                horizontalSpace(10),
+                                TextButton(
+                                  onPressed: () {},
+                                  child: Text(
+                                    "انشائي حساب",
+                                    textDirection: TextDirection.rtl,
+                                    style: AppTextStyles.font14PrimaryBold,
+                                  ),
                                 ),
                               ],
                             ),
+                            verticalSpace(20),
                           ],
                         ),
                       ),
