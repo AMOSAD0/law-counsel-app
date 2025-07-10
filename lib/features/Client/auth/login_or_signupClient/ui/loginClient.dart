@@ -11,7 +11,7 @@ import 'package:law_counsel_app/features/Client/ScreenClient/UI/Profile.dart';
 import 'package:law_counsel_app/features/Client/auth/client_bloc/client_bloc.dart';
 import 'package:law_counsel_app/features/Client/auth/client_bloc/client_event.dart';
 import 'package:law_counsel_app/features/Client/auth/client_bloc/client_state.dart';
-import 'package:law_counsel_app/features/Client/auth/login_or_signupClient/RegisterClient.dart';
+import 'package:law_counsel_app/features/Client/auth/login_or_signupClient/ui/RegisterClient.dart';
 import 'package:law_counsel_app/features/SelectUser/selectUser.dart';
 
 class Loginclient extends StatefulWidget {

@@ -6,6 +6,7 @@ import 'package:law_counsel_app/core/helper/validators.dart';
 import 'package:law_counsel_app/core/theming/text_style_manger.dart';
 import 'package:law_counsel_app/core/widgets/minBackground.dart';
 import 'package:law_counsel_app/core/widgets/public_text_form_field.dart';
+import 'package:law_counsel_app/features/Client/auth/login_or_signupClient/ui/loginClient.dart';
 import 'package:law_counsel_app/features/lawyer/model/lawyerModel.dart';
 import 'package:law_counsel_app/features/lawyer/signUp/signUp2.dart';
 
@@ -67,11 +68,10 @@ class SignupForLawyer extends StatelessWidget {
                   label: 'تأكيد كلمه المرور',
                   controller: confirmPasswordController,
                   obscureText: true,
-                  validator:
-                      (value) => Validators.validateConfirmPassword(
-                        value,
-                        passwordController.text,
-                      ),
+                  validator: (value) => Validators.validateConfirmPassword(
+                    value,
+                    passwordController.text,
+                  ),
                 ),
                 verticalSpace(25),
                 InkWell(
@@ -80,12 +80,15 @@ class SignupForLawyer extends StatelessWidget {
                       final lawyer = Lawyer(
                         name: nameController.text,
                         email: emailController.text,
-                        phoneNumber: phoneController.text,  
+                        phoneNumber: phoneController.text,
                       );
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => SignupForLawyer2(lawyer: lawyer,password: passwordController.text,),
+                          builder: (context) => SignupForLawyer2(
+                            lawyer: lawyer,
+                            password: passwordController.text,
+                          ),
                         ),
                       );
                     }
@@ -122,7 +125,14 @@ class SignupForLawyer extends StatelessWidget {
                     ),
                     horizontalSpace(10),
                     TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => Loginclient(),
+                          ),
+                        );
+                      },
                       child: Text(
                         "سجل الدخول",
                         textDirection: TextDirection.rtl,

@@ -18,20 +18,20 @@ class Profilebackground extends StatelessWidget {
           ),
         ),
         Positioned(
-          top: 120,
+          top: 130,
           left: 0,
           right: 0,
           bottom: 0,
           child: Container(
-            padding: const EdgeInsets.only(top: 60),
+            padding: const EdgeInsets.only(top: 100),
             decoration: const BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(30),
-                topRight: Radius.circular(30),
+                topLeft: Radius.circular(40),
+                topRight: Radius.circular(40),
               ),
             ),
-            child: child ?? const SizedBox(),
+
           ),
         ),
       ],
