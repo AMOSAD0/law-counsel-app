@@ -99,12 +99,11 @@ class _RegisterClientState extends State<RegisterClient> {
                                 label: "تأكيد كلمة المرور",
                                 controller: _confirmPasswordController,
                                 obscureText: true,
-                                validator:
-                                    (value) =>
-                                        Validators.validateConfirmPassword(
-                                          value,
-                                          _passwordController.text,
-                                        ),
+                                validator: (value) =>
+                                    Validators.validateConfirmPassword(
+                                      value,
+                                      _passwordController.text,
+                                    ),
                               ),
                               verticalSpace(20),
 
@@ -130,8 +129,8 @@ class _RegisterClientState extends State<RegisterClient> {
                                         _nameController.text.trim(),
                                         email: _emailController.text.trim(),
                                         _phoneController.text.trim(),
-                                        password:
-                                            _passwordController.text.trim(),
+                                        password: _passwordController.text
+                                            .trim(),
                                       ),
                                     );
                                   }
@@ -152,7 +151,14 @@ class _RegisterClientState extends State<RegisterClient> {
                                   ),
                                   horizontalSpace(10),
                                   TextButton(
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => Loginclient(),
+                                        ),
+                                      );
+                                    },
                                     child: Text(
                                       "سجل الدخول",
                                       textDirection: TextDirection.rtl,
@@ -161,7 +167,7 @@ class _RegisterClientState extends State<RegisterClient> {
                                   ),
                                 ],
                               ),
-                              verticalSpace(20)
+                              verticalSpace(20),
                             ],
                           ),
                         ),

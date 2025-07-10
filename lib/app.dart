@@ -5,7 +5,10 @@ import 'package:law_counsel_app/core/theming/app_theme.dart';
 import 'package:law_counsel_app/core/widgets/bottomNav.dart';
 import 'package:law_counsel_app/features/Client/ScreenClient/UI/Profile.dart';
 import 'package:law_counsel_app/features/Client/ScreenClient/UI/homeClient.dart';
+
 import 'package:law_counsel_app/features/chatbot/ui/chatbot.dart';
+import 'package:law_counsel_app/features/lawyer/testChat.dart';
+
 
 import 'package:law_counsel_app/features/splash/ui/splaah_screen.dart';
 // import 'package:law_counsel_app/features/lawyer/signUp/signUp.dart';
@@ -23,8 +26,8 @@ class MyApp extends StatelessWidget {
         title: 'Law Counsel App',
         theme: AppTheme.lightTheme,
 
-        home:ChatScreen
-        ()
+
+        home: SplaahScreen(),
 
       ),
     );
