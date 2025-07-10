@@ -1,9 +1,12 @@
 import 'dart:io';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:law_counsel_app/core/helper/UploadImage.dart';
 import 'package:law_counsel_app/core/helper/imagePickerApp.dart';
+import 'package:law_counsel_app/core/helper/spacing.dart';
 import 'package:law_counsel_app/core/widgets/ProfileBackground.dart';
+import 'package:law_counsel_app/features/Chat/UI/Chat.dart';
 import 'package:law_counsel_app/features/Client/ScreenClient/LogicClient/Profile-block/ProfileClient_bloc.dart';
 import 'package:law_counsel_app/features/Client/ScreenClient/LogicClient/Profile-block/ProfileClient_event.dart';
 import 'package:law_counsel_app/features/Client/ScreenClient/LogicClient/Profile-block/ProfileClient_state.dart';
@@ -66,59 +69,67 @@ class _ProfileClientState extends State<ProfileClient> {
           final client = state.client;
 
           return Scaffold(
-            body: Stack(
+            body: Column(
               children: [
-                const Profilebackground(),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        const SizedBox(height: 100),
-
-                        Positioned(
-                          top: 100,
-                          left: 20,
-                          child: CircleAvatar(
-                            radius: 60,
-                            backgroundImage: client.imageUrl != null
-                                ? NetworkImage(client.imageUrl!)
-                                : const AssetImage(
-                                        'assets/images/background.png',
-                                      )
-                                      as ImageProvider,
-                          ),
-                        ),
-                        const SizedBox(height: 20),
-                        TextButton.icon(
-                          onPressed: _changeProfileImage,
-                          icon: const Icon(Icons.camera_alt),
-                          label: const Text("تغيير الصورة"),
-                        ),
-
-                        Text(
-                          client.name ?? "لا يوجد اسم",
-                          style: Theme.of(context).textTheme.titleLarge,
-                        ),
-                        const SizedBox(height: 10),
-
-                        Text(
-                          client.email ?? "لا يوجد بريد",
-                          style: Theme.of(context).textTheme.bodyMedium,
-                        ),
-                        const SizedBox(height: 10),
-               
-                        Text(
-                          client.phone ?? "لا يوجد رقم هاتف",
-                          style: Theme.of(context).textTheme.bodyMedium,
-                        ),
-                        const SizedBox(height: 20),
-                      ],
+                Profilebackground(),
+                Stack(
+                  children: [
+                    CircleAvatar(
+                      radius: 60,
+                      backgroundImage: client.imageUrl != null
+                          ? NetworkImage(client.imageUrl!)
+                          : const AssetImage(
+                        'assets/images/background.png',
+                      )
+                      as ImageProvider,
                     ),
-                  ),
+                    const SizedBox(height: 20),
+                    TextButton.icon(
+                      onPressed: _changeProfileImage,
+                      icon: const Icon(Icons.camera_alt),
+                      label: const Text("تغيير الصورة"),
+                    ),
+
+                    Text(
+                      client.name ?? "لا يوجد اسم",
+                      style: Theme.of(context).textTheme.titleLarge,
+                    ),
+                    const SizedBox(height: 10),
+
+                    Text(
+                      client.email ?? "لا يوجد بريد",
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                    const SizedBox(height: 10),
+
+                    Text(
+                      client.phone ?? "لا يوجد رقم هاتف",
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                    const SizedBox(height: 20),
+                    TextButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ChatScreen(
+                              currentUserId: FirebaseAuth.instance.currentUser!.uid,
+                              currentUserEmail:  client.email,
+                              receiverId: "1LgdtODjbta0gnUVWaGNwFqmMTm2",
+                              receiverEmail: "j@j.com",
+                            ),
+                          ),
+                        );
+                      },
+                      child: Text("Chats"),
+                    ),
+                  ],
                 ),
               ],
-            ),
+
+            )
+
+
           );
         }
 

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:law_counsel_app/app.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:law_counsel_app/features/Chat/Chat_bloc/ChatBloc.dart';
+import 'package:law_counsel_app/features/Chat/r/repository.dart';
 import 'package:law_counsel_app/features/Client/ScreenClient/LogicClient/Profile-block/ProfileClient_bloc.dart';
 import 'package:law_counsel_app/features/Client/auth/client_bloc/client_bloc.dart';
 import 'firebase_options.dart';
@@ -17,6 +19,7 @@ void main()async {
       providers: [
         BlocProvider(create: (_) => ClientBloc()),
         BlocProvider(create: (_) => ProfileclientBloc()),
+        BlocProvider(create: (_)=>ChatBloc(ChatRepository()))
       ],
       child: MyApp(),
     ),

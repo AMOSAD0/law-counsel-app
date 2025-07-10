@@ -13,11 +13,14 @@ import 'package:law_counsel_app/core/theming/text_style_manger.dart';
 import 'package:law_counsel_app/core/widgets/minBackground.dart';
 import 'package:law_counsel_app/core/widgets/public_button.dart';
 import 'package:law_counsel_app/core/widgets/public_text_form_field.dart';
+import 'package:law_counsel_app/features/Client/auth/login_or_signupClient/ui/loginClient.dart';
 import 'package:law_counsel_app/features/lawyer/model/lawyerModel.dart';
 import 'package:law_counsel_app/features/lawyer/signUp/bloc/signUpBloc.dart';
 import 'package:law_counsel_app/features/lawyer/signUp/bloc/signUpEvent.dart';
 import 'package:law_counsel_app/features/lawyer/signUp/bloc/signUpState.dart';
+import 'package:law_counsel_app/features/lawyer/signUp/widgets/LoginLawer.dart';
 import 'package:law_counsel_app/features/lawyer/signUp/widgets/specialization_selector.dart';
+import 'package:law_counsel_app/features/lawyer/testChat.dart';
 
 class SignupForLawyer2 extends StatefulWidget {
   final Lawyer lawyer;
@@ -174,6 +177,7 @@ class _SignupForLawyer2State extends State<SignupForLawyer2> {
                       if (state.status == SignUpLawyerStatus.success) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(content: Text("تم التسجيل بنجاح")),
+
                         );
                       } else if (state.status == SignUpLawyerStatus.failure) {
                         ScaffoldMessenger.of(context).showSnackBar(
@@ -225,7 +229,7 @@ class _SignupForLawyer2State extends State<SignupForLawyer2> {
                                           password: widget.password,
                                         ),
                                       );
-                                    
+                                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>TestChatForLawyer()));
                                   }
                                 },
                       );
@@ -244,7 +248,9 @@ class _SignupForLawyer2State extends State<SignupForLawyer2> {
                       ),
                       horizontalSpace(10),
                       TextButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>TestChatForLawyer()));
+                        },
                         child: Text(
                           "سجل الدخول",
                           textDirection: TextDirection.rtl,
