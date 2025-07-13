@@ -95,6 +95,11 @@ static TextStyle font16primaryColorBold = TextStyle(
     color: AppColors.primaryColor,
   );
 
- 
+  static TextStyle font24WhiteSemiBold = TextStyle(
+    fontSize: 24.sp,
+     fontFamily: 'Cairo',
+    fontWeight: FontWeight.w600,
+    color: AppColors.whiteColor,
+  );
 }
 

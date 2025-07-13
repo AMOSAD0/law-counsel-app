@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:law_counsel_app/core/assets/assets_manger.dart';
-import 'package:law_counsel_app/features/Client/ScreenClient/UI/ChatBot.dart';
 import 'package:law_counsel_app/features/Client/ScreenClient/UI/Conslution.dart';
 import 'package:law_counsel_app/features/Client/ScreenClient/UI/Profile.dart';
 import 'package:law_counsel_app/features/Client/ScreenClient/UI/homeClient.dart';
+import 'package:law_counsel_app/features/Consultion/UI/MyConsultion.dart';
+import 'package:law_counsel_app/features/Consultion/UI/AddConsultion.dart';
+import 'package:law_counsel_app/features/chatbot/ui/chatbot.dart';
 
 class BottomNavBarApp extends StatefulWidget {
   const BottomNavBarApp({super.key});
@@ -16,9 +18,9 @@ class _BottomNavBarAppState extends State<BottomNavBarApp> {
   int _selectedIndex = 0;
 
   final List<Widget> _screens = const [
-    Homeclient(),
-    Consolation(),
-    Chatbot(),
+    ConsultationApp(),
+    MyConsultation(),
+    ChatbotScreen(),
     ProfileClient(),
   ];
 
