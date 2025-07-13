@@ -26,6 +26,9 @@ class AppAssets {
   static final String activeChatbot='${imagePath}Chatbot (1).png';
   static final String activeProfile='${imagePath}User (1).png';
   static final String activeConsolation='${imagePath}Chat (1).png';
+  static final String trash='${imagePath}Trash.png';
+  static final String logout='${imagePath}Logout.png';
+  static final String chatMassager='${imagePath}Chat Message.png';
 
 
 }

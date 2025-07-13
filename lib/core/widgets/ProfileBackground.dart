@@ -13,12 +13,10 @@ class Profilebackground extends StatelessWidget {
         Container(
           width: double.infinity,
           height: 250,
-          decoration: const BoxDecoration(
-            color: AppColors.primaryColor,
-          ),
+          decoration: const BoxDecoration(color: AppColors.primaryColor),
         ),
         Positioned(
-          top: 130,
+          top: 50,
           left: 0,
           right: 0,
           bottom: 0,
@@ -31,7 +29,7 @@ class Profilebackground extends StatelessWidget {
                 topRight: Radius.circular(40),
               ),
             ),
-
+            child: child,
           ),
         ),
       ],
