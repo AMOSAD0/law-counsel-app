@@ -12,7 +12,7 @@ class AppAssets {
   static final String Lawyer = '${imagePath}Lawyer.png';
   static final String topImg = '${imagePath}top Img.png';
   static final String iconDoubleRight = '${imagePath}Icon Double Right.png';
-
+static final String sendIcon='${imagePath}Paper Plane.png';
   static final String iconCalendar = '${imagePath}Calendar.png';
   static final String iconCity = '${imagePath}city.png';
  

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:law_counsel_app/core/assets/assets_manger.dart';
-import 'package:law_counsel_app/features/Client/ScreenClient/UI/Conslution.dart';
 import 'package:law_counsel_app/features/Client/ScreenClient/UI/Profile.dart';
 import 'package:law_counsel_app/features/Client/ScreenClient/UI/homeClient.dart';
 import 'package:law_counsel_app/features/Consultion/UI/MyConsultion.dart';
@@ -18,7 +17,7 @@ class _BottomNavBarAppState extends State<BottomNavBarApp> {
   int _selectedIndex = 0;
 
   final List<Widget> _screens = const [
-    ConsultationApp(),
+    Homeclient(),
     MyConsultation(),
     ChatbotScreen(),
     ProfileClient(),

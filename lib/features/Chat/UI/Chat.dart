@@ -1,12 +1,18 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:law_counsel_app/core/assets/assets_manger.dart';
+import 'package:law_counsel_app/core/helper/spacing.dart';
+import 'package:law_counsel_app/core/theming/color_manger.dart';
+import 'package:law_counsel_app/core/theming/text_style_manger.dart';
 import 'package:law_counsel_app/features/Chat/Chat_bloc/ChatBloc.dart';
 import 'package:law_counsel_app/features/Chat/Chat_bloc/ChatEvent.dart';
 import 'package:law_counsel_app/features/Chat/Chat_bloc/ChatState.dart';
 import 'package:law_counsel_app/features/Chat/data/MessageModel.dart';
+import 'package:law_counsel_app/features/Chat/r/repository.dart';
 
-class ChatScreen extends StatefulWidget {
+class ChatScreen extends StatelessWidget {
   final String currentUserId;
   final String currentUserEmail;
   final String receiverId;
@@ -21,10 +27,38 @@ class ChatScreen extends StatefulWidget {
   });
 
   @override
-  State<ChatScreen> createState() => _ChatScreenState();
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (_) => ChatBloc(ChatRepository()),
+      child: ChatScreenBody(
+        currentUserId: currentUserId,
+        currentUserEmail: currentUserEmail,
+        receiverId: receiverId,
+        receiverEmail: receiverEmail,
+      ),
+    );
+  }
 }
 
-class _ChatScreenState extends State<ChatScreen> {
+class ChatScreenBody extends StatefulWidget {
+  final String currentUserId;
+  final String currentUserEmail;
+  final String receiverId;
+  final String receiverEmail;
+
+  const ChatScreenBody({
+    super.key,
+    required this.currentUserId,
+    required this.currentUserEmail,
+    required this.receiverId,
+    required this.receiverEmail,
+  });
+
+  @override
+  State<ChatScreenBody> createState() => _ChatScreenBodyState();
+}
+
+class _ChatScreenBodyState extends State<ChatScreenBody> {
   late final String chatId;
   final TextEditingController _controller = TextEditingController();
 
@@ -50,7 +84,6 @@ class _ChatScreenState extends State<ChatScreen> {
       receiverId: widget.receiverId,
       receiverEmail: widget.receiverEmail,
       timestamp: Timestamp.now(),
-
     );
 
     context.read<ChatBloc>().add(SendMessageEvent(chatId, message));
@@ -61,7 +94,12 @@ class _ChatScreenState extends State<ChatScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.receiverEmail),
+        iconTheme: IconThemeData(color: Colors.white),
+        title: Text(
+          widget.receiverEmail,
+          style: AppTextStyles.font18WhiteNormal,
+        ),
+        backgroundColor: AppColors.primaryColor,
       ),
       body: Column(
         children: [
@@ -69,7 +107,7 @@ class _ChatScreenState extends State<ChatScreen> {
             child: BlocBuilder<ChatBloc, ChatState>(
               builder: (context, state) {
                 if (state is ChatLoadingState) {
-                  return Center(child: CircularProgressIndicator());
+                  return const Center(child: CircularProgressIndicator());
                 } else if (state is ChatOnLoadedState) {
                   final messages = state.messages;
                   return ListView.builder(
@@ -79,20 +117,44 @@ class _ChatScreenState extends State<ChatScreen> {
                     itemBuilder: (context, index) {
                       final msg = messages[messages.length - index - 1];
                       final isMe = msg.senderId == widget.currentUserId;
-                      return Align(
-                        alignment: isMe ? Alignment.centerRight : Alignment.centerLeft,
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: 10, horizontal: 14),
-                          margin: const EdgeInsets.symmetric(vertical: 4),
-                          decoration: BoxDecoration(
-                            color: isMe ? Colors.blue[200] : Colors.grey[300],
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: Text(
-                            msg.text,
-                            style: TextStyle(fontSize: 16),
-                          ),
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 4),
+                        child: Row(
+                          mainAxisAlignment: isMe
+                              ? MainAxisAlignment.end
+                              : MainAxisAlignment.start,
+                          children: [
+                            if (!isMe)
+                              CircleAvatar(
+                                radius: 18,
+                                backgroundImage: AssetImage(
+                                  "assets/images/profile.png",
+                                ),
+                              ),
+                            const SizedBox(width: 8),
+                            Container(
+                              padding: const EdgeInsets.all(12),
+                              constraints: BoxConstraints(
+                                maxWidth:
+                                    MediaQuery.of(context).size.width * 0.6,
+                              ),
+                              decoration: BoxDecoration(
+                                color: isMe
+                                    ? AppColors.primaryColor
+                                    : Colors.grey[300],
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              child: Text(
+                                msg.text,
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  color: isMe
+                                      ? AppColors.whiteColor
+                                      : const Color.fromARGB(255, 3, 3, 3),
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       );
                     },
@@ -100,13 +162,14 @@ class _ChatScreenState extends State<ChatScreen> {
                 } else if (state is ChatErrorState) {
                   return Center(child: Text("حصل خطأ: ${state.ErrorMassage}"));
                 } else {
-                  return Center(child: Text("ابدأ المحادثة"));
+                  return const Center(child: Text("ابدأ المحادثة"));
                 }
               },
             ),
           ),
+
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+            padding: EdgeInsets.symmetric(horizontal: 15.sp, vertical: 10.sp),
             color: Colors.grey[100],
             child: Row(
               children: [
@@ -121,10 +184,9 @@ class _ChatScreenState extends State<ChatScreen> {
                     ),
                   ),
                 ),
-                const SizedBox(width: 8),
+                horizontalSpace(10),
                 IconButton(
-                  icon: const Icon(Icons.send),
-                  color: Colors.blue,
+                  icon: Image.asset(AppAssets.sendIcon),
                   onPressed: sendMessage,
                 ),
               ],

@@ -220,7 +220,6 @@ class _SignupForLawyer2State extends State<SignupForLawyer2> {
                                       specializations: selectedSpecs.value,
                                       profileImageUrl: 'img',
                                     );
-                                
                                       context.read<SignUpLawerBloc>().add(
                                         SignUpLawyerSubmitted(
                                           lawyer: updateLawyer,
