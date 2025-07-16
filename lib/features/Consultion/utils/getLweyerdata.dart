@@ -8,4 +8,11 @@ class LawyerService {
     }
     return null;
   }
+    static Future<String?> getLawyerImageById(String lawyerId) async {
+    final doc = await FirebaseFirestore.instance.collection('lawyers').doc(lawyerId).get();
+    if (doc.exists) {
+      return doc['profileImageUrl'];
+    }
+    return null;
+  }
 }

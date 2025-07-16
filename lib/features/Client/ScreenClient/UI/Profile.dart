@@ -13,21 +13,27 @@ import 'package:law_counsel_app/features/Client/ScreenClient/LogicClient/Profile
 import 'package:law_counsel_app/features/Client/ScreenClient/LogicClient/Profile-block/ProfileClient_state.dart';
 import 'package:law_counsel_app/core/theming/color_manger.dart';
 
-class ProfileClient extends StatefulWidget {
+class ProfileClient extends StatelessWidget {
   const ProfileClient({super.key});
 
   @override
-  State<ProfileClient> createState() => _ProfileClientState();
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (_) => ProfileclientBloc()..add(ProfileClientLoadEvent()),
+      child: const ProfileClientBody(),
+    );
+  }
 }
 
-class _ProfileClientState extends State<ProfileClient> {
-  File? selectedImage;
+class ProfileClientBody extends StatefulWidget {
+  const ProfileClientBody({super.key});
 
   @override
-  void initState() {
-    super.initState();
-    context.read<ProfileclientBloc>().add(ProfileClientLoadEvent());
-  }
+  State<ProfileClientBody> createState() => _ProfileClientBodyState();
+}
+
+class _ProfileClientBodyState extends State<ProfileClientBody> {
+  File? selectedImage;
 
   Future<void> _changeProfileImage() async {
     final image = await ImagePickerHelper.pickImageFromGallery();
@@ -38,12 +44,11 @@ class _ProfileClientState extends State<ProfileClient> {
     final imageUrl = await ImageUploadHelper.uploadImageToKit(image);
     if (imageUrl != null) {
       context.read<ProfileclientBloc>().add(
-        ProfileClientImageUpdateEvent(imageUrl: imageUrl),
-      );
+            ProfileClientImageUpdateEvent(imageUrl: imageUrl),
+          );
     } else {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(const SnackBar(content: Text("فشل رفع الصورة")));
+      ScaffoldMessenger.of(context)
+          .showSnackBar(const SnackBar(content: Text("فشل رفع الصورة")));
     }
   }
 
@@ -61,13 +66,11 @@ class _ProfileClientState extends State<ProfileClient> {
       body: BlocConsumer<ProfileclientBloc, ProfileClientState>(
         listener: (context, state) {
           if (state is ProfileClientError) {
-            ScaffoldMessenger.of(
-              context,
-            ).showSnackBar(SnackBar(content: Text(state.message)));
+            ScaffoldMessenger.of(context)
+                .showSnackBar(SnackBar(content: Text(state.message)));
           } else if (state is ProfileClientSuccess) {
-            ScaffoldMessenger.of(
-              context,
-            ).showSnackBar(SnackBar(content: Text(state.message)));
+            ScaffoldMessenger.of(context)
+                .showSnackBar(SnackBar(content: Text(state.message)));
           }
         },
         builder: (context, state) {
@@ -94,10 +97,8 @@ class _ProfileClientState extends State<ProfileClient> {
                             backgroundColor: Colors.white,
                             backgroundImage: client.imageUrl != null
                                 ? NetworkImage(client.imageUrl!)
-                                : const AssetImage(
-                                        'assets/images/background.png',
-                                      )
-                                      as ImageProvider,
+                                : const AssetImage('assets/images/background.png')
+                                    as ImageProvider,
                           ),
                           IconButton(
                             icon: const Icon(Icons.camera_alt, size: 20),
@@ -115,7 +116,6 @@ class _ProfileClientState extends State<ProfileClient> {
                     ],
                   ),
                 ),
-
                 Padding(
                   padding: const EdgeInsets.only(top: 150),
                   child: SingleChildScrollView(
@@ -132,7 +132,6 @@ class _ProfileClientState extends State<ProfileClient> {
                           style: TextStyle(color: Colors.grey),
                         ),
                         verticalSpace(40),
-
                         TextField(
                           readOnly: true,
                           decoration: InputDecoration(
@@ -153,7 +152,6 @@ class _ProfileClientState extends State<ProfileClient> {
                           ),
                         ),
                         verticalSpace(20),
-
                         TextField(
                           readOnly: true,
                           decoration: InputDecoration(
@@ -174,7 +172,6 @@ class _ProfileClientState extends State<ProfileClient> {
                           ),
                         ),
                         const SizedBox(height: 20),
-
                         ElevatedButton.icon(
                           onPressed: () {
                             Navigator.push(

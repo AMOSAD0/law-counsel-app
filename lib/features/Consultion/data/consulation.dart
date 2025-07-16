@@ -8,7 +8,7 @@ class Consultation {
   final DateTime createdAt;
   final DateTime? updatedAt;
   final bool deletedByClient;
-  final String? responseMessage;
+
 
   Consultation({
     required this.id,
@@ -20,7 +20,7 @@ class Consultation {
     required this.createdAt,
     this.updatedAt,
     this.deletedByClient = false,
-    this.responseMessage,
+
   });
 
   Map<String, dynamic> toMap() {
@@ -34,7 +34,6 @@ class Consultation {
       'createdAt': createdAt.toIso8601String(),
       'updatedAt': updatedAt?.toIso8601String(),
       'deletedByClient': deletedByClient,
-      'responseMessage': responseMessage,
     };
   }
 
@@ -51,7 +50,6 @@ class Consultation {
           ? DateTime.parse(map['updatedAt'])
           : null,
       deletedByClient: map['deletedByClient'] ?? false,
-      responseMessage: map['responseMessage'],
     );
   }
 }

@@ -27,7 +27,7 @@ class DrwerApp extends StatelessWidget {
                 ListTile(
                   leading: Text(
                     "المحادثات",
-                    style: AppTextStyles.font24WhiteSemiBold,
+                    style: AppTextStyles.font18WhiteNormal,
                   ),
                   trailing: IconButton(
                     onPressed: () {
@@ -44,13 +44,13 @@ class DrwerApp extends StatelessWidget {
                         ),
                       );
                     },
-                    icon: Image.asset(AppAssets.chatMassager),
+                    icon: Image.asset(AppAssets.chatMassager, width: 30),
                   ),
                 ),
                 ListTile(
                   leading: Text(
                     "تسجيل الخروج",
-                    style: AppTextStyles.font24WhiteSemiBold,
+                    style: AppTextStyles.font18WhiteNormal,
                   ),
                   trailing: IconButton(
                     onPressed: () async {
@@ -60,13 +60,13 @@ class DrwerApp extends StatelessWidget {
                         MaterialPageRoute(builder: (context) => Loginclient()),
                       );
                     },
-                    icon: Image.asset(AppAssets.logout),
+                    icon: Image.asset(AppAssets.logout, width: 30),
                   ),
                 ),
                 ListTile(
                   leading: Text(
                     "حذف حساب",
-                    style: AppTextStyles.font24WhiteSemiBold,
+                    style: AppTextStyles.font18WhiteNormal,
                   ),
                   trailing: IconButton(
                     onPressed: () async {
@@ -76,7 +76,7 @@ class DrwerApp extends StatelessWidget {
                         MaterialPageRoute(builder: (context) => Loginclient()),
                       );
                     },
-                    icon: Image.asset(AppAssets.trash),
+                    icon: Image.asset(AppAssets.trash, width: 30),
                   ),
                 ),
               ],
