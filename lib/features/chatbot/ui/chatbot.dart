@@ -5,14 +5,14 @@ import 'package:law_counsel_app/features/chatbot/bloc/chatbotEvent.dart';
 import 'package:law_counsel_app/features/chatbot/bloc/chatbotState.dart';
 
 
-class ChatScreen extends StatefulWidget {
-  const ChatScreen({Key? key}) : super(key: key);
+class ChatbotScreen extends StatefulWidget {
+  const ChatbotScreen({Key? key}) : super(key: key);
 
   @override
-  State<ChatScreen> createState() => _ChatScreenState();
+  State<ChatbotScreen> createState() => _ChatbotScreenState();
 }
 
-class _ChatScreenState extends State<ChatScreen> {
+class _ChatbotScreenState extends State<ChatbotScreen> {
   final TextEditingController _controller = TextEditingController();
   final ScrollController _scrollController = ScrollController();
 

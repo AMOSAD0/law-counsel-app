@@ -5,7 +5,7 @@ import 'package:law_counsel_app/core/theming/text_style_manger.dart';
 
 class PublicButton extends StatelessWidget {
   final String text;
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
   final Color backgroundColor;
   final Color textColor;
 

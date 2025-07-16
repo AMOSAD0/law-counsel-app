@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:law_counsel_app/core/assets/assets_manger.dart';
-import 'package:law_counsel_app/features/Client/ScreenClient/UI/ChatBot.dart';
-import 'package:law_counsel_app/features/Client/ScreenClient/UI/Conslution.dart';
 import 'package:law_counsel_app/features/Client/ScreenClient/UI/Profile.dart';
 import 'package:law_counsel_app/features/Client/ScreenClient/UI/homeClient.dart';
+
 import 'package:law_counsel_app/features/lawyer/home/homeLawyer.dart';
 import 'package:law_counsel_app/features/lawyer/myArticals/myArticals.dart';
 import 'package:law_counsel_app/features/lawyer/profileLawer/profileLawyer.dart';
+
+import 'package:law_counsel_app/features/Consultion/UI/MyConsultion.dart';
+import 'package:law_counsel_app/features/Consultion/UI/AddConsultion.dart';
+import 'package:law_counsel_app/features/chatbot/ui/chatbot.dart';
+
 
 class BottomNavBarApp extends StatefulWidget {
  final bool isLawyer ;
@@ -18,6 +22,7 @@ class BottomNavBarApp extends StatefulWidget {
 
 class _BottomNavBarAppState extends State<BottomNavBarApp> {
   int _selectedIndex = 0;
+
 
   List<Widget> get _screens => !widget.isLawyer
       ? const [
@@ -32,6 +37,7 @@ class _BottomNavBarAppState extends State<BottomNavBarApp> {
          Myarticals(),
          LawyerProfilePage(),
         ];
+
 
    List<BottomNavigationBarItem>get items => !widget.isLawyer? [
     BottomNavigationBarItem(

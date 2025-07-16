@@ -51,6 +51,7 @@ class SignUpLawerBloc extends Bloc<SignUpLawyerEvent, SignUpLawyerState> {
         barAssociationImageUrl: barImageUrl,
         specializations: lawyer.specializations,
         isApproved: false,
+        rating: 0.0
       );
       await _firestore
           .collection('lawyers')

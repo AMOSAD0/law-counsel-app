@@ -5,27 +5,34 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:law_counsel_app/core/helper/UploadImage.dart';
 import 'package:law_counsel_app/core/helper/imagePickerApp.dart';
 import 'package:law_counsel_app/core/helper/spacing.dart';
+import 'package:law_counsel_app/core/widgets/DerwerApp.dart';
 import 'package:law_counsel_app/core/widgets/ProfileBackground.dart';
 import 'package:law_counsel_app/features/Chat/UI/Chat.dart';
 import 'package:law_counsel_app/features/Client/ScreenClient/LogicClient/Profile-block/ProfileClient_bloc.dart';
 import 'package:law_counsel_app/features/Client/ScreenClient/LogicClient/Profile-block/ProfileClient_event.dart';
 import 'package:law_counsel_app/features/Client/ScreenClient/LogicClient/Profile-block/ProfileClient_state.dart';
+import 'package:law_counsel_app/core/theming/color_manger.dart';
 
-class ProfileClient extends StatefulWidget {
+class ProfileClient extends StatelessWidget {
   const ProfileClient({super.key});
 
   @override
-  State<ProfileClient> createState() => _ProfileClientState();
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (_) => ProfileclientBloc()..add(ProfileClientLoadEvent()),
+      child: const ProfileClientBody(),
+    );
+  }
 }
 
-class _ProfileClientState extends State<ProfileClient> {
+class ProfileClientBody extends StatefulWidget {
+  const ProfileClientBody({super.key});
+
   @override
-  void initState() {
-    super.initState();
+  State<ProfileClientBody> createState() => _ProfileClientBodyState();
+}
 
-    context.read<ProfileclientBloc>().add(ProfileClientLoadEvent());
-  }
-
+class _ProfileClientBodyState extends State<ProfileClientBody> {
   File? selectedImage;
 
   Future<void> _changeProfileImage() async {
@@ -37,106 +44,166 @@ class _ProfileClientState extends State<ProfileClient> {
     final imageUrl = await ImageUploadHelper.uploadImageToKit(image);
     if (imageUrl != null) {
       context.read<ProfileclientBloc>().add(
-        ProfileClientImageUpdateEvent(imageUrl: imageUrl),
-      );
+            ProfileClientImageUpdateEvent(imageUrl: imageUrl),
+          );
     } else {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(const SnackBar(content: Text("فشل رفع الصورة")));
+      ScaffoldMessenger.of(context)
+          .showSnackBar(const SnackBar(content: Text("فشل رفع الصورة")));
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<ProfileclientBloc, ProfileClientState>(
-      listener: (context, state) {
-        if (state is ProfileClientError) {
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(SnackBar(content: Text(state.message)));
-        } else if (state is ProfileClientSuccess) {
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(SnackBar(content: Text(state.message)));
-        }
-      },
-      builder: (context, state) {
-        if (state is ProfileClientLoading) {
-          return const Center(child: CircularProgressIndicator());
-        }
+    final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
-        if (state is ProfileClientLoaded) {
-          final client = state.client;
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: AppColors.primaryColor,
+        iconTheme: const IconThemeData(color: Colors.white),
+      ),
+      key: _scaffoldKey,
+      drawer: DrwerApp(),
+      body: BlocConsumer<ProfileclientBloc, ProfileClientState>(
+        listener: (context, state) {
+          if (state is ProfileClientError) {
+            ScaffoldMessenger.of(context)
+                .showSnackBar(SnackBar(content: Text(state.message)));
+          } else if (state is ProfileClientSuccess) {
+            ScaffoldMessenger.of(context)
+                .showSnackBar(SnackBar(content: Text(state.message)));
+          }
+        },
+        builder: (context, state) {
+          if (state is ProfileClientLoading) {
+            return const Center(child: CircularProgressIndicator());
+          }
 
-          return Scaffold(
-            body: Column(
+          if (state is ProfileClientLoaded) {
+            final client = state.client;
+            return Stack(
               children: [
-                Profilebackground(),
-                Stack(
-                  children: [
-                    CircleAvatar(
-                      radius: 60,
-                      backgroundImage: client.imageUrl != null
-                          ? NetworkImage(client.imageUrl!)
-                          : const AssetImage(
-                        'assets/images/background.png',
-                      )
-                      as ImageProvider,
-                    ),
-                    const SizedBox(height: 20),
-                    TextButton.icon(
-                      onPressed: _changeProfileImage,
-                      icon: const Icon(Icons.camera_alt),
-                      label: const Text("تغيير الصورة"),
-                    ),
-
-                    Text(
-                      client.name ?? "لا يوجد اسم",
-                      style: Theme.of(context).textTheme.titleLarge,
-                    ),
-                    const SizedBox(height: 10),
-
-                    Text(
-                      client.email ?? "لا يوجد بريد",
-                      style: Theme.of(context).textTheme.bodyMedium,
-                    ),
-                    const SizedBox(height: 10),
-
-                    Text(
-                      client.phone ?? "لا يوجد رقم هاتف",
-                      style: Theme.of(context).textTheme.bodyMedium,
-                    ),
-                    const SizedBox(height: 20),
-                    TextButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => ChatScreen(
-                              currentUserId: FirebaseAuth.instance.currentUser!.uid,
-                              currentUserEmail:  client.email,
-                              receiverId: "1LgdtODjbta0gnUVWaGNwFqmMTm2",
-                              receiverEmail: "j@j.com",
+                const Profilebackground(),
+                Positioned(
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  child: Column(
+                    children: [
+                      Stack(
+                        alignment: Alignment.bottomRight,
+                        children: [
+                          CircleAvatar(
+                            radius: 60,
+                            backgroundColor: Colors.white,
+                            backgroundImage: client.imageUrl != null
+                                ? NetworkImage(client.imageUrl!)
+                                : const AssetImage('assets/images/background.png')
+                                    as ImageProvider,
+                          ),
+                          IconButton(
+                            icon: const Icon(Icons.camera_alt, size: 20),
+                            onPressed: _changeProfileImage,
+                            color: Colors.white,
+                            padding: const EdgeInsets.all(3),
+                            style: IconButton.styleFrom(
+                              backgroundColor: Colors.black54,
+                              shape: const CircleBorder(),
+                              minimumSize: const Size(30, 30),
                             ),
                           ),
-                        );
-                      },
-                      child: Text("Chats"),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 150),
+                  child: SingleChildScrollView(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Column(
+                      children: [
+                        Text(
+                          client.name ?? "لا يوجد اسم",
+                          style: Theme.of(context).textTheme.titleLarge,
+                        ),
+                        const SizedBox(height: 4),
+                        const Text(
+                          "عميل",
+                          style: TextStyle(color: Colors.grey),
+                        ),
+                        verticalSpace(40),
+                        TextField(
+                          readOnly: true,
+                          decoration: InputDecoration(
+                            labelText: "البريد الإلكتروني",
+                            labelStyle: TextStyle(
+                              color: AppColors.primaryColor,
+                            ),
+                            prefixIcon: Icon(
+                              Icons.email,
+                              color: AppColors.primaryColor,
+                            ),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                          ),
+                          controller: TextEditingController(
+                            text: client.email ?? "",
+                          ),
+                        ),
+                        verticalSpace(20),
+                        TextField(
+                          readOnly: true,
+                          decoration: InputDecoration(
+                            labelText: "رقم الهاتف",
+                            labelStyle: TextStyle(
+                              color: AppColors.primaryColor,
+                            ),
+                            prefixIcon: const Icon(
+                              Icons.phone,
+                              color: AppColors.primaryColor,
+                            ),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                          ),
+                          controller: TextEditingController(
+                            text: client.phone ?? "",
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+                        ElevatedButton.icon(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ChatScreen(
+                                  currentUserId:
+                                      FirebaseAuth.instance.currentUser!.uid,
+                                  currentUserEmail: client.email,
+                                  receiverId: "1LgdtODjbta0gnUVWaGNwFqmMTm2",
+                                  receiverEmail: "j@j.com",
+                                ),
+                              ),
+                            );
+                          },
+                          icon: const Icon(Icons.chat),
+                          label: const Text("المحادثات"),
+                        ),
+                        const SizedBox(height: 40),
+                      ],
                     ),
-                  ],
+                  ),
                 ),
               ],
+            );
+          }
 
-            )
-
-
+          return const Scaffold(
+            body: Center(child: Text("لا توجد بيانات متاحة")),
           );
-        }
-
-        return const Scaffold(
-          body: Center(child: Text("لا توجد بيانات متاحة")),
-        );
-      },
+        },
+      ),
     );
   }
 }
