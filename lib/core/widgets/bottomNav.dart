@@ -4,9 +4,13 @@ import 'package:law_counsel_app/features/Client/ScreenClient/UI/ChatBot.dart';
 import 'package:law_counsel_app/features/Client/ScreenClient/UI/Conslution.dart';
 import 'package:law_counsel_app/features/Client/ScreenClient/UI/Profile.dart';
 import 'package:law_counsel_app/features/Client/ScreenClient/UI/homeClient.dart';
+import 'package:law_counsel_app/features/lawyer/home/homeLawyer.dart';
+import 'package:law_counsel_app/features/lawyer/myArticals/myArticals.dart';
+import 'package:law_counsel_app/features/lawyer/profileLawer/profileLawyer.dart';
 
 class BottomNavBarApp extends StatefulWidget {
-  const BottomNavBarApp({super.key});
+ final bool isLawyer ;
+   BottomNavBarApp({super.key,this.isLawyer=false});
 
   @override
   State<BottomNavBarApp> createState() => _BottomNavBarAppState();
@@ -15,14 +19,21 @@ class BottomNavBarApp extends StatefulWidget {
 class _BottomNavBarAppState extends State<BottomNavBarApp> {
   int _selectedIndex = 0;
 
-  final List<Widget> _screens = const [
-    Homeclient(),
-    Consolation(),
-    Chatbot(),
-    ProfileClient(),
-  ];
+  List<Widget> get _screens => !widget.isLawyer
+      ? const [
+          Homeclient(),
+          Consolation(),
+          Chatbot(),
+          ProfileClient(),
+        ]
+      : const [
+         Homelawyer(),
+         Homelawyer(),
+         Myarticals(),
+         LawyerProfilePage(),
+        ];
 
-  final List<BottomNavigationBarItem> items = [
+   List<BottomNavigationBarItem>get items => !widget.isLawyer? [
     BottomNavigationBarItem(
       icon: ImageIcon(AssetImage(AppAssets.home)),
       activeIcon: ImageIcon(AssetImage(AppAssets.activeHome)),
@@ -43,6 +54,29 @@ class _BottomNavBarAppState extends State<BottomNavBarApp> {
       activeIcon: ImageIcon(AssetImage(AppAssets.activeProfile)),
       label: 'الملف الشخصي',
     ),
+  ]:[
+    BottomNavigationBarItem(
+      icon: ImageIcon(AssetImage(AppAssets.home)),
+      activeIcon: ImageIcon(AssetImage(AppAssets.activeHome)),
+      label: 'الرئيسية',
+    ),
+    BottomNavigationBarItem(
+      icon: ImageIcon(AssetImage(AppAssets.consolation)),
+      activeIcon: ImageIcon(AssetImage(AppAssets.activeConsolation)),
+      label: 'استشارتي',
+    ),
+    BottomNavigationBarItem(
+      icon: ImageIcon(AssetImage(AppAssets.articls)),
+      activeIcon: ImageIcon(AssetImage(AppAssets.activeArticls)),
+      label: 'مقالاتي',
+    ),
+
+    BottomNavigationBarItem(
+      icon: ImageIcon(AssetImage(AppAssets.profile)),
+      activeIcon: ImageIcon(AssetImage(AppAssets.activeProfile)),
+      label: 'الملف الشخصي',
+    ),
+
   ];
 
   void _onItemTapped(int index) {

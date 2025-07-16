@@ -11,6 +11,7 @@ class PublicTextFormField extends StatelessWidget {
   final bool readOnly;
   final VoidCallback? onTap;
   final Widget? suffixIcon;
+  final EdgeInsetsGeometry ? padding;
 
   const PublicTextFormField({
     Key? key,
@@ -21,13 +22,14 @@ class PublicTextFormField extends StatelessWidget {
     this.validator,
     this.readOnly = false,
     this.onTap,
-    this.suffixIcon,
+    this.suffixIcon, 
+    this.padding,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 25),
+      padding:padding?? const EdgeInsets.symmetric(vertical: 10, horizontal: 25),
       child: Directionality(
         textDirection: TextDirection.rtl,
         child: TextFormField(

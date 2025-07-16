@@ -15,17 +15,21 @@ class AppAssets {
 
   static final String iconCalendar = '${imagePath}Calendar.png';
   static final String iconCity = '${imagePath}city.png';
+  static final String heart ='${imagePath}Heart.png';
+  static final String activeHeart ='${imagePath}Heart (1).png';
+  static final String comment ='${imagePath}comment.png';
  
-
-
   static final String home = '${imagePath}Home.png';
   static final String chatbot = '${imagePath}Chatbot.png';
   static final String profile = '${imagePath}User.png';
   static final String consolation = '${imagePath}Chat.png';
+  static final String articls ='${imagePath}Purchase Order.png';
   static final String activeHome='${imagePath}Home (1).png';
   static final String activeChatbot='${imagePath}Chatbot (1).png';
   static final String activeProfile='${imagePath}User (1).png';
   static final String activeConsolation='${imagePath}Chat (1).png';
+  static final String activeArticls ='${imagePath}Purchase Order (1).png';
+
 
 
 }

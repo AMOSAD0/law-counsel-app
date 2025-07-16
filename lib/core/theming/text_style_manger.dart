@@ -46,8 +46,22 @@ static TextStyle font16primaryColorBold = TextStyle(
     color: AppColors.primaryColor,
   );
 
+  static TextStyle font16primaryColorNormal = TextStyle(
+    fontSize: 16.sp,
+    fontFamily: 'Cairo',
+    fontWeight: FontWeight.normal,
+    color: AppColors.primaryColor,
+  );
+
   static TextStyle font14PrimarySemiBold = TextStyle(
     fontSize: 14.sp,
+     fontFamily: 'Cairo',
+    fontWeight: FontWeight.w600,
+    color: AppColors.primaryColor,
+  );
+
+  static TextStyle font12PrimarySemiBold = TextStyle(
+    fontSize: 12.sp,
      fontFamily: 'Cairo',
     fontWeight: FontWeight.w600,
     color: AppColors.primaryColor,
