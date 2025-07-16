@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
         theme: AppTheme.lightTheme,
 
 
-        home: SplaahScreen(),
+        home: BottomNavBarApp(isLawyer: true,),
 
       ),
     );
