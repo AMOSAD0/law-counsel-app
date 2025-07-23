@@ -11,6 +11,8 @@ class Lawyer {
   final List<String> specializations;
   final bool isApproved;
   final double rating;
+  final String? aboutMe;
+  final String? achievements;
 
   Lawyer({
     this.id,
@@ -25,6 +27,8 @@ class Lawyer {
     this.specializations = const [],
     this.isApproved = false,
     this.rating = 0.0,
+    this.aboutMe,
+    this.achievements,
   });
   Lawyer copyWith({
     String? id,
@@ -39,6 +43,8 @@ class Lawyer {
     List<String>? specializations,
     bool? isApproved,
     double? rating,
+    String? aboutMe,
+    String? achievements,
   }) {
     return Lawyer(
       id: id ?? this.id,
@@ -54,6 +60,8 @@ class Lawyer {
       specializations: specializations ?? this.specializations,
       isApproved: isApproved ?? this.isApproved,
       rating: rating ?? this.rating,
+      aboutMe: aboutMe ?? this.aboutMe,
+      achievements: achievements ?? this.achievements,
     );
   }
 
@@ -71,6 +79,8 @@ class Lawyer {
       'specializations': specializations,
       'isApproved': isApproved,
       'rating': rating,
+      'aboutMe': aboutMe,
+      'achievements': achievements,
     };
   }
 
@@ -87,8 +97,9 @@ class Lawyer {
       profileImageUrl: json['profileImageUrl'] ?? '',
       specializations: List<String>.from(json['specializations'] ?? []),
       isApproved: json['isApproved'],
-    rating: (json['rating'] ?? 0).toDouble(),
-
+      rating: (json['rating'] ?? 0).toDouble(),
+      aboutMe: json['aboutMe'],
+      achievements: json['achievements'],
     );
   }
 

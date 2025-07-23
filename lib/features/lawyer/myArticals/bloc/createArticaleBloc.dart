@@ -18,16 +18,20 @@ class CreateArticleBloc extends Bloc<CreateArticleEvent, CreateArticleState> {
 
     try {
       String? imageUrl;
-
+      if(event.image!=null){
+        
         imageUrl = await ImageUploadHelper.uploadImageToKit(
         event.image,
       );
+      }
+      
 
       final article = ArticleModel(
         content: event.content,
         imageUrl: imageUrl,
         userId: event.userId,
         userName: event.userName,
+        userImage: event.userImage,
         createdAt: DateTime.now(),
       );
 

@@ -27,8 +27,8 @@ class _BottomNavBarAppState extends State<BottomNavBarApp> {
   List<Widget> get _screens => !widget.isLawyer
       ? const [
           Homeclient(),
-          Consolation(),
-          Chatbot(),
+          MyConsultation(),
+          ChatbotScreen(),
           ProfileClient(),
         ]
       : const [

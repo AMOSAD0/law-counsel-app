@@ -3,10 +3,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:law_counsel_app/core/assets/assets_manger.dart';
 import 'package:law_counsel_app/core/helper/spacing.dart';
 import 'package:law_counsel_app/core/helper/validators.dart';
+import 'package:law_counsel_app/core/routing/routes.dart';
 import 'package:law_counsel_app/core/theming/text_style_manger.dart';
 import 'package:law_counsel_app/core/widgets/minBackground.dart';
 import 'package:law_counsel_app/core/widgets/public_text_form_field.dart';
-import 'package:law_counsel_app/features/Client/auth/login_or_signupClient/ui/loginClient.dart';
 import 'package:law_counsel_app/features/lawyer/model/lawyerModel.dart';
 import 'package:law_counsel_app/features/lawyer/signUp/signUp2.dart';
 
@@ -126,12 +126,7 @@ class SignupForLawyer extends StatelessWidget {
                     horizontalSpace(10),
                     TextButton(
                       onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => Loginclient(),
-                          ),
-                        );
+                        Navigator.pushNamed(context, Routes.login);
                       },
                       child: Text(
                         "سجل الدخول",

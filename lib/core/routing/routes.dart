@@ -6,4 +6,7 @@ class Routes {
   static const String registerLawyer = '/registerLawyer';
   static const String login = '/login';
   static const String home = '/home';
+  static const String profileLawyer = '/profileLawyer';
+  static const String editProfileLawyer = '/editProfileLawyer';
+
 }

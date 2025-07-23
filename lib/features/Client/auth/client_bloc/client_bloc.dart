@@ -51,20 +51,32 @@ class ClientBloc extends Bloc<ClientEvent, ClientState> {
         final uid = userCredential.user!.uid;
 
         final prefs = await SharedPreferences.getInstance();
-        await prefs.setString('userId', uid);
-        print(uid);
+       
+        print('UID Logged in: $uid');
 
-        DocumentSnapshot doc = await FirebaseFirestore.instance
-            .collection('clients')
-            .doc(uid)
-            .get();
+        DocumentSnapshot clientDoc =
+            await FirebaseFirestore.instance
+                .collection('clients')
+                .doc(uid)
+                .get();
 
-        if (doc.exists) {
-          ClientModel client = ClientModel.fromJson(
-            doc.data() as Map<String, dynamic>,
-            uid,
-          );
-          emit(ClientLoaded(client: client));
+        if (clientDoc.exists) {
+          await prefs.setString('uid', uid);
+          await prefs.setString('userType', 'client');
+          emit(IsClient());
+          return;
+        }
+
+        DocumentSnapshot lawyerDoc =
+            await FirebaseFirestore.instance
+                .collection('lawyers')
+                .doc(uid)
+                .get();
+
+        if (lawyerDoc.exists) {
+          await prefs.setString('uid', uid);
+          await prefs.setString('userType', 'lawyer');
+          emit(IsLawyer());
         } else {
           emit(ClientError(message: 'Client not found'));
         }

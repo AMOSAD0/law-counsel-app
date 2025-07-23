@@ -8,12 +8,14 @@ class PublishArticle extends CreateArticleEvent {
   final File? image;
   final String userId;
   final String userName;
+  final String? userImage;
 
   PublishArticle({
     required this.content,
     this.image,
     required this.userId,
     required this.userName,
+    this.userImage,
   });
 }
 

@@ -130,6 +130,7 @@ class _CreateArticleWidgetState extends State<CreateArticleWidget> {
                                 image: _selectedImage,
                                 userId: user.uid,
                                 userName: userName,
+                                userImage: userDoc.data()?['profileImageUrl'],
                               ),
                             );
                           }

@@ -36,6 +36,8 @@ static final String sendIcon='${imagePath}Paper Plane.png';
   static final String logout='${imagePath}Logout.png';
   static final String chatMassager='${imagePath}Chat Message.png';
 
+  static final String defaultImgProfile='${imagePath}profile.png';
+
 
 
 }

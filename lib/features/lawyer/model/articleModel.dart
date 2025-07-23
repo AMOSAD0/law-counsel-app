@@ -1,6 +1,7 @@
 class ArticleModel {
   final String content;
   final String? imageUrl;
+  final String? userImage;
   final String userId;
   final String userName;
   final DateTime createdAt;
@@ -8,6 +9,7 @@ class ArticleModel {
   ArticleModel({
     required this.content,
     this.imageUrl,
+    this.userImage,
     required this.userId,
     required this.userName,
     required this.createdAt,
@@ -18,6 +20,7 @@ class ArticleModel {
       'content': content,
       'imageUrl': imageUrl,
       'userId': userId,
+      'userImage': userImage,
       'userName': userName,
       'createdAt': createdAt.toIso8601String(),
     };
@@ -29,6 +32,7 @@ class ArticleModel {
       imageUrl: map['imageUrl'],
       userId: map['userId'] ?? '',
       userName: map['userName'] ?? '',
+      userImage: map['userImage'],
       createdAt: DateTime.parse(map['createdAt']),
     );
   }

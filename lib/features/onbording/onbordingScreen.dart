@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:law_counsel_app/core/assets/assets_manger.dart';
+import 'package:law_counsel_app/core/routing/routes.dart';
 import 'package:law_counsel_app/core/theming/color_manger.dart';
 import 'package:law_counsel_app/core/widgets/bordingWidget.dart';
 import 'package:law_counsel_app/core/widgets/public_button.dart';
-import 'package:law_counsel_app/features/SelectUser/selectUser.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class Onbordingscreen1 extends StatefulWidget {
@@ -77,12 +77,7 @@ class _Onbordingscreen1State extends State<Onbordingscreen1> {
                     ? OnboradingButton(
                         text: "ابدأ الآن",
                         onPressed: () {
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const SelectUser(),
-                            ),
-                          );
+                          Navigator.pushReplacementNamed(context, Routes.selectUserType);
                         },
                       ).buildButtonBoarding()
                     : OnboradingButton(

@@ -8,17 +8,17 @@ import 'package:law_counsel_app/core/assets/assets_manger.dart';
 import 'package:law_counsel_app/core/helper/image_picker_helper.dart';
 import 'package:law_counsel_app/core/helper/spacing.dart';
 import 'package:law_counsel_app/core/helper/validators.dart';
+import 'package:law_counsel_app/core/routing/routes.dart';
 import 'package:law_counsel_app/core/theming/color_manger.dart';
 import 'package:law_counsel_app/core/theming/text_style_manger.dart';
+import 'package:law_counsel_app/core/widgets/customAlertPopup.dart';
 import 'package:law_counsel_app/core/widgets/minBackground.dart';
 import 'package:law_counsel_app/core/widgets/public_button.dart';
 import 'package:law_counsel_app/core/widgets/public_text_form_field.dart';
-import 'package:law_counsel_app/features/Client/auth/login_or_signupClient/ui/loginClient.dart';
 import 'package:law_counsel_app/features/lawyer/model/lawyerModel.dart';
 import 'package:law_counsel_app/features/lawyer/signUp/bloc/signUpBloc.dart';
 import 'package:law_counsel_app/features/lawyer/signUp/bloc/signUpEvent.dart';
 import 'package:law_counsel_app/features/lawyer/signUp/bloc/signUpState.dart';
-import 'package:law_counsel_app/features/lawyer/signUp/widgets/LoginLawer.dart';
 import 'package:law_counsel_app/features/lawyer/signUp/widgets/specialization_selector.dart';
 import 'package:law_counsel_app/features/lawyer/testChat.dart';
 
@@ -173,20 +173,21 @@ class _SignupForLawyer2State extends State<SignupForLawyer2> {
                   verticalSpace(15),
                   // PublicButton(text: "تسجيل مستخدم جديد", onPressed: () {}),
                   BlocConsumer<SignUpLawerBloc, SignUpLawyerState>(
-                    listener: (context, state) {
+                    listener: (context, state) async{
                       if (state.status == SignUpLawyerStatus.success) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text("تم التسجيل بنجاح")),
-
-                        );
+                        
+                       await AlertPopup.show(context,
+                         message: "تم التسجيل بنجاح",
+                         type: AlertType.success,
+                         );
+                         if(context.mounted){
+                         Navigator.pushReplacementNamed(context, Routes.login);
+                         }
                       } else if (state.status == SignUpLawyerStatus.failure) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text(
-                              "فشل في التسجيل: ${state.error ?? ''}",
-                            ),
-                          ),
-                        );
+                        AlertPopup.show(context,
+                         message:"فشل في التسجيل: ${state.error ?? ''}",
+                          );
+                        
                       }
                     },
                     builder: (context, state) {
@@ -201,22 +202,15 @@ class _SignupForLawyer2State extends State<SignupForLawyer2> {
                                 : () {
                                   if (_formKey.currentState!.validate()) {
                                     if (selectedSpecs.value.isEmpty) {
-                                      ScaffoldMessenger.of(
-                                        context,
-                                      ).showSnackBar(
-                                        const SnackBar(
-                                          content: Text(
-                                            'من فضلك اختر التخصصات',
-                                          ),
-                                        ),
+                                      AlertPopup.show(context, 
+                                      message: "من فضلك اختر التخصصات",
+                                      type: AlertType.error,
                                       );
                                       return;
                                     }
                                     final updateLawyer = widget.lawyer.copyWith(
                                       birthDate: birthDateController.text,
                                       city: cityController.text,
-                                      idImageUrl: "id",
-                                      barAssociationImageUrl: 'img',
                                       specializations: selectedSpecs.value,
                                       profileImageUrl: 'img',
                                     );
@@ -228,7 +222,7 @@ class _SignupForLawyer2State extends State<SignupForLawyer2> {
                                           password: widget.password,
                                         ),
                                       );
-                                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>TestChatForLawyer()));
+                                    
                                   }
                                 },
                       );
