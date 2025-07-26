@@ -112,25 +112,33 @@ class _CreateArticleWidgetState extends State<CreateArticleWidget> {
 
                       return ElevatedButton(
                         onPressed: () async {
-                 
-                          final user = FirebaseAuth.instance.currentUser;
-                          if (user != null) {
-                            final userDoc =
-                                await FirebaseFirestore.instance
-                                    .collection('lawyers')
-                                    .doc(user.uid)
-                                    .get();
+                          if (_selectedImage != null ||
+                              _contentController.text.isNotEmpty) {
+                            final user = FirebaseAuth.instance.currentUser;
+                            if (user != null) {
+                              final userDoc =
+                                  await FirebaseFirestore.instance
+                                      .collection('lawyers')
+                                      .doc(user.uid)
+                                      .get();
 
-                            final userName =
-                                userDoc.data()?['name'] ?? 'مستخدم';
+                              final userName =
+                                  userDoc.data()?['name'] ?? 'مستخدم';
 
-                            context.read<CreateArticleBloc>().add(
-                              PublishArticle(
-                                content: _contentController.text,
-                                image: _selectedImage,
-                                userId: user.uid,
-                                userName: userName,
-                                userImage: userDoc.data()?['profileImageUrl'],
+                              context.read<CreateArticleBloc>().add(
+                                PublishArticle(
+                                  content: _contentController.text,
+                                  image: _selectedImage,
+                                  userId: user.uid,
+                                  userName: userName,
+                                  userImage: userDoc.data()?['profileImageUrl'],
+                                ),
+                              );
+                            }
+                          }else{
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text('يرجى إضافة محتوى أو صورة'),
                               ),
                             );
                           }
