@@ -9,11 +9,15 @@ class ClientLoading extends ClientState {}
 class ClientLoaded extends ClientState {
   final ClientModel client;
 
-   ClientLoaded({required this.client});
+  ClientLoaded({required this.client});
 }
+
+class IsClient extends ClientState {}
+
+class IsLawyer extends ClientState {}
 
 class ClientError extends ClientState {
   final String message;
 
-   ClientError({required this.message});
+  ClientError({required this.message});
 }

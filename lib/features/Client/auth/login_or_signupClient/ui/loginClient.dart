@@ -4,6 +4,7 @@ import 'package:law_counsel_app/core/helper/spacing.dart';
 import 'package:law_counsel_app/core/helper/validators.dart';
 import 'package:law_counsel_app/core/theming/text_style_manger.dart';
 import 'package:law_counsel_app/core/widgets/bottomNav.dart';
+import 'package:law_counsel_app/core/widgets/customAlertPopup.dart';
 import 'package:law_counsel_app/core/widgets/minBackground.dart';
 import 'package:law_counsel_app/core/widgets/public_button.dart';
 import 'package:law_counsel_app/core/widgets/public_text_form_field.dart';
@@ -40,13 +41,17 @@ class _LoginClientBodyState extends State<LoginClientBody> {
     return BlocConsumer<ClientBloc, ClientState>(
       listener: (context, state) {
         if (state is ClientError) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(state.message)),
-          );
-        } else if (state is ClientLoaded) {
+          AlertPopup.show(context,
+           message: state.message);
+        } else if (state is IsClient) {
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(builder: (context) => BottomNavBarApp()),
+          );
+        }else if(state is IsLawyer){
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => BottomNavBarApp(isLawyer: true,)),
           );
         }
       },
@@ -58,8 +63,9 @@ class _LoginClientBodyState extends State<LoginClientBody> {
               if (state is ClientLoading) const LinearProgressIndicator(),
               Expanded(
                 child: SingleChildScrollView(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  // padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       verticalSpace(20),
                       Text(
@@ -89,15 +95,12 @@ class _LoginClientBodyState extends State<LoginClientBody> {
                               obscureText: true,
                               validator: Validators.validatePassword,
                             ),
-                            Align(
-                              alignment: Alignment.centerRight,
-                              child: TextButton(
-                                onPressed: () {
-                                },
-                                child: Text(
-                                  "نسيت كلمة المرور؟",
-                                  style: AppTextStyles.font16primaryColorBold,
-                                ),
+                            TextButton(
+                              onPressed: () {
+                              },
+                              child: Text(
+                                "نسيت كلمة المرور؟",
+                                style: AppTextStyles.font16primaryColorBold,
                               ),
                             ),
                             verticalSpace(20),

@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:law_counsel_app/core/assets/assets_manger.dart';
 import 'package:law_counsel_app/features/Client/ScreenClient/UI/Profile.dart';
 import 'package:law_counsel_app/features/Client/ScreenClient/UI/homeClient.dart';
+import 'package:law_counsel_app/features/lawyer/MyConsultationsLawyer/MyConsultationsLawyer.dart';
 
 import 'package:law_counsel_app/features/lawyer/home/homeLawyer.dart';
 import 'package:law_counsel_app/features/lawyer/myArticals/myArticals.dart';
 import 'package:law_counsel_app/features/lawyer/profileLawer/profileLawyer.dart';
 
 import 'package:law_counsel_app/features/Consultion/UI/MyConsultion.dart';
-import 'package:law_counsel_app/features/Consultion/UI/AddConsultion.dart';
 import 'package:law_counsel_app/features/chatbot/ui/chatbot.dart';
 
 
@@ -27,13 +27,13 @@ class _BottomNavBarAppState extends State<BottomNavBarApp> {
   List<Widget> get _screens => !widget.isLawyer
       ? const [
           Homeclient(),
-          Consolation(),
-          Chatbot(),
+          MyConsultation(),
+          ChatbotScreen(),
           ProfileClient(),
         ]
       : const [
          Homelawyer(),
-         Homelawyer(),
+         MyConsultationsLawyer(),
          Myarticals(),
          LawyerProfilePage(),
         ];

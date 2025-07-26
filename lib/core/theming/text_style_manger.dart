@@ -31,6 +31,20 @@ class AppTextStyles {
     color: AppColors.greyColor,
   );
 
+  static TextStyle font14GrayNormal = TextStyle(
+    fontSize: 14.sp,
+    fontFamily: 'Cairo',
+    fontWeight: FontWeight.normal,
+    color: AppColors.greyColor,
+  );
+
+  static TextStyle font14WhiteNormal = TextStyle(
+    fontSize: 14.sp,
+    fontFamily: 'Cairo',
+    fontWeight: FontWeight.normal,
+    color: AppColors.whiteColor,
+  );
+
   static TextStyle font30primaryColorBold = TextStyle(
     fontSize: 30.sp,
     fontFamily: 'Cairo',
@@ -71,6 +85,12 @@ class AppTextStyles {
     fontWeight: FontWeight.bold,
     color: AppColors.primaryColor,
   );
+  static TextStyle font14PrimaryNormal = TextStyle(
+    fontSize: 14.sp,
+    fontFamily: 'Cairo',
+    fontWeight: FontWeight.normal,
+    color: AppColors.primaryColor,
+  );
 
   static TextStyle font18PrimaryNormal = TextStyle(
     fontSize: 18.sp,
@@ -103,6 +123,13 @@ class AppTextStyles {
     fontSize: 20.sp,
     fontFamily: 'Cairo',
     fontWeight: FontWeight.w600,
+    color: AppColors.primaryColor,
+  );
+
+  static TextStyle font20PrimaryNormal = TextStyle(
+    fontSize: 20.sp,
+    fontFamily: 'Cairo',
+    fontWeight: FontWeight.normal,
     color: AppColors.primaryColor,
   );
 
