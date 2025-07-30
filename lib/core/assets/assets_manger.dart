@@ -39,5 +39,9 @@ static final String sendIcon='${imagePath}Paper Plane.png';
   static final String defaultImgProfile='${imagePath}profile.png';
 
 
+static final String Slider1='${imagePath}image 13.png';
+static final String Slider2='${imagePath}image 14.png';
+static final String Slider3='${imagePath}image 15.png';
+
 
 }

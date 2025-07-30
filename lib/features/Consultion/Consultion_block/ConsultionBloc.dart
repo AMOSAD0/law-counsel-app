@@ -35,10 +35,7 @@ class ConsultationBloc extends Bloc<ConsultationEvent, ConsultationState> {
   ) async {
     emit(ConsultationLoading());
     try {
-      await firestore
-          .collection('consultations')
-          .doc(event.consultationId)
-          .delete();
+      await event.docRef.delete(); // ✅ حذف بالـ reference مباشرة
 
       emit(ConsultationSuccess('تم حذف الاستشارة بنجاح'));
     } catch (e) {

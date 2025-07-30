@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:law_counsel_app/core/helper/spacing.dart';
+import 'package:law_counsel_app/core/theming/color_manger.dart';
 import 'package:law_counsel_app/core/theming/text_style_manger.dart';
 import 'package:law_counsel_app/features/Client/LaywerMangmentForClient.dart/UI/ShowLawyer.dart';
 
@@ -45,7 +46,6 @@ class LawyerCategoryList extends StatelessWidget {
             onTap: () {
               final category = item['type'];
               if (category != null && category.isNotEmpty) {
-                print("ببعت التخصص: ${category.trim()}");
                 Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -58,39 +58,44 @@ class LawyerCategoryList extends StatelessWidget {
                 );
               }
             },
-
-            child: Row(
-              children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(12.r),
-                  child: Image.asset(
-                    item['image']!,
-                    width: 80.w,
-                    height: 80.w,
-                    fit: BoxFit.cover,
+            child: Container(
+              padding: EdgeInsets.all(12.w),
+              decoration: BoxDecoration(
+                border: Border.all(color: AppColors.lightBlueWithOpacity),
+                borderRadius: BorderRadius.circular(12.r),
+              ),
+              child: Row(
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(12.r),
+                    child: Image.asset(
+                      item['image']!,
+                      width: 80.w,
+                      height: 80.w,
+                      fit: BoxFit.cover,
+                    ),
                   ),
-                ),
-                horizontalSpace(15),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        item['type']!,
-                        style: AppTextStyles.font16primaryColorBold,
-                      ),
-                      horizontalSpace(5),
-                      SizedBox(height: 4.h),
-                      Text(
-                        item['desc']!,
-                        style: AppTextStyles.font14PrimarySemiBold,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ],
+                  horizontalSpace(15),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          item['type']!,
+                          style: AppTextStyles.font16primaryColorBold,
+                        ),
+                        SizedBox(height: 4.h),
+                        Text(
+                          item['desc']!,
+                          style: AppTextStyles.font14PrimarySemiBold,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         );

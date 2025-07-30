@@ -9,6 +9,7 @@ abstract class ConsultationEvent extends Equatable {
   List<Object?> get props => [];
 }
 
+// إرسال استشارة جديدة
 class SendConsultationEvent extends ConsultationEvent {
   final Consultation consultation;
   final DocumentReference docRef;
@@ -16,18 +17,21 @@ class SendConsultationEvent extends ConsultationEvent {
   const SendConsultationEvent(this.consultation, this.docRef);
 
   @override
-  List<Object?> get props => [consultation];
+  List<Object?> get props => [consultation, docRef]; 
 }
 
+// حذف استشارة
 class DeleteConsultationEvent extends ConsultationEvent {
-  final String consultationId;
+  final DocumentReference docRef;
 
-  const DeleteConsultationEvent(this.consultationId);
+  const DeleteConsultationEvent(this.docRef);
 
   @override
-  List<Object?> get props => [consultationId];
+  List<Object?> get props => [docRef];
 }
 
+
+// تعديل استشارة
 class UpdateConsultationEvent extends ConsultationEvent {
   final Consultation consultation;
   final DocumentReference docRef;
@@ -35,5 +39,5 @@ class UpdateConsultationEvent extends ConsultationEvent {
   const UpdateConsultationEvent(this.consultation, this.docRef);
 
   @override
-  List<Object?> get props => [consultation];
+  List<Object?> get props => [consultation, docRef]; 
 }

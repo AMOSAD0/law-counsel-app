@@ -39,6 +39,7 @@ class Cardarticale extends StatefulWidget {
 
 class _CardarticaleState extends State<Cardarticale> {
   String? userId;
+  String? userType;
   late final DocumentReference articleRef;
 
   @override
@@ -54,6 +55,7 @@ class _CardarticaleState extends State<Cardarticale> {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
       userId = prefs.getString('uid');
+      userType = prefs.getString('userType');
     });
   }
 
@@ -64,13 +66,12 @@ class _CardarticaleState extends State<Cardarticale> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Author Info
           ListTile(
             leading: CircleAvatar(
-              backgroundImage: widget.userImage != null? NetworkImage(
-                widget.userImage!,
-              ) : AssetImage(AppAssets.defaultImgProfile),
-              ), 
+              backgroundImage: widget.userImage != null
+                  ? NetworkImage(widget.userImage!)
+                  : AssetImage(AppAssets.defaultImgProfile) as ImageProvider,
+            ),
             title: Text(
               widget.userName,
               style: AppTextStyles.font14PrimaryBold,
@@ -79,69 +80,63 @@ class _CardarticaleState extends State<Cardarticale> {
               formatDateToArabic(widget.date),
               style: AppTextStyles.font12PrimarySemiBold,
             ),
-
-            trailing:
-                userId == widget.uderId
-                    ? PopupMenuButton<String>(
-                      icon: Icon(
-                        Icons.more_vert,
-                        color: AppColors.primaryColor,
-                      ),
-                      onSelected: (value) {
-                        if (value == 'edit') {
-                          showModalBottomSheet(
-                            context: context,
-                            shape: const RoundedRectangleBorder(
-                              borderRadius: BorderRadius.vertical(
-                                top: Radius.circular(16),
-                              ),
+            trailing: userId == widget.uderId
+                ? PopupMenuButton<String>(
+                    icon: Icon(Icons.more_vert, color: AppColors.primaryColor),
+                    onSelected: (value) {
+                      if (value == 'edit') {
+                        showModalBottomSheet(
+                          context: context,
+                          shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.vertical(
+                              top: Radius.circular(16),
                             ),
-                            builder: (BuildContext context) {
-                              return EditArticleBottomSheet(
-                                articleId: widget.articleId,
-                                content: widget.content,
-                                imageUrl: widget.articleImage,
-                              );
-                            },
-                          );
-                        } else if (value == 'delete') {
-                          showModalBottomSheet(
-                            context: context,
-                            shape: const RoundedRectangleBorder(
-                              borderRadius: BorderRadius.vertical(
-                                top: Radius.circular(16),
-                              ),
+                          ),
+                          builder: (BuildContext context) {
+                            return EditArticleBottomSheet(
+                              articleId: widget.articleId,
+                              content: widget.content,
+                              imageUrl: widget.articleImage,
+                            );
+                          },
+                        );
+                      } else if (value == 'delete') {
+                        showModalBottomSheet(
+                          context: context,
+                          shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.vertical(
+                              top: Radius.circular(16),
                             ),
-                            builder: (BuildContext context) {
-                              return ConfirmDeleteBottomSheet(
-                                articleId: widget.articleId,
-                              );
-                            },
-                          );
-                        }
-                      },
-                      itemBuilder:
-                          (BuildContext context) => <PopupMenuEntry<String>>[
-                            const PopupMenuItem<String>(
-                              value: 'edit',
-                              child: Text('تعديل'),
-                            ),
-                            const PopupMenuItem<String>(
-                              value: 'delete',
-                              child: Text('حذف'),
-                            ),
-                          ],
-                    )
-                    : SizedBox.shrink(),
+                          ),
+                          builder: (BuildContext context) {
+                            return ConfirmDeleteBottomSheet(
+                              articleId: widget.articleId,
+                            );
+                          },
+                        );
+                      }
+                    },
+                    itemBuilder: (BuildContext context) =>
+                        <PopupMenuEntry<String>>[
+                          const PopupMenuItem<String>(
+                            value: 'edit',
+                            child: Text('تعديل'),
+                          ),
+                          const PopupMenuItem<String>(
+                            value: 'delete',
+                            child: Text('حذف'),
+                          ),
+                        ],
+                  )
+                : SizedBox.shrink(),
           ),
-
-          // Article Image
           if (widget.articleImage != null && widget.articleImage != '')
-            ClipRRect(
-              borderRadius: BorderRadius.circular(12),
-              child: Image.network(widget.articleImage!, fit: BoxFit.cover),
+            Center(
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(12),
+                child: Image.network(widget.articleImage!, fit: BoxFit.cover),
+              ),
             ),
-
           Padding(
             padding: EdgeInsets.all(12.0),
             child: Text(
@@ -152,68 +147,70 @@ class _CardarticaleState extends State<Cardarticale> {
             ),
           ),
           verticalSpace(15),
-
-          // Interactions
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 10),
-            child: Row(
-              children: [
-                InkWell(
-                  onTap: () async {
-                    if (widget.likes!.contains(userId)) {
-                      widget.likes!.remove(userId);
-                    } else {
-                      widget.likes!.add(userId!);
-                    }
-
-                    await articleRef.update({'likes': widget.likes});
-                  },
-                  child: Image.asset(
-                    widget.likes!.isNotEmpty || widget.likes!.contains(userId)
-                        ? AppAssets.activeHeart
-                        : AppAssets.heart,
-
-                    height: 25.h,
-                    width: 25.w,
+          if (userType == 'lawyer')
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 25.0,
+                vertical: 10,
+              ),
+              child: Row(
+                children: [
+                  InkWell(
+                    onTap: () async {
+                      if (widget.likes!.contains(userId)) {
+                        widget.likes!.remove(userId);
+                      } else {
+                        widget.likes!.add(userId!);
+                      }
+                      await articleRef.update({'likes': widget.likes});
+                    },
+                    child: Image.asset(
+                      widget.likes!.isNotEmpty || widget.likes!.contains(userId)
+                          ? AppAssets.activeHeart
+                          : AppAssets.heart,
+                      height: 25.h,
+                      width: 25.w,
+                    ),
                   ),
-                ),
-                horizontalSpace(4),
-                Text(
-                  widget.likes!.isEmpty ? '' : widget.likes!.length.toString(),
-                  style: AppTextStyles.font14PrimarySemiBold,
-                ),
-                horizontalSpace(8),
-                Text("أعجبني", style: AppTextStyles.font14PrimarySemiBold),
-                Spacer(),
-                InkWell(
-                  onTap: () {
-                    showModalBottomSheet(
-                      context: context,
-                      isScrollControlled: true,
-                      shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.vertical(
-                          top: Radius.circular(20),
+                  horizontalSpace(4),
+                  Text(
+                    widget.likes!.isEmpty
+                        ? ''
+                        : widget.likes!.length.toString(),
+                    style: AppTextStyles.font14PrimarySemiBold,
+                  ),
+                  horizontalSpace(8),
+                  Text("أعجبني", style: AppTextStyles.font14PrimarySemiBold),
+                  Spacer(),
+                  InkWell(
+                    onTap: () {
+                      showModalBottomSheet(
+                        context: context,
+                        isScrollControlled: true,
+                        shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.vertical(
+                            top: Radius.circular(20),
+                          ),
                         ),
-                      ),
-                      builder: (context) {
-                        return CommentsBottomSheet(
-                          articleId: widget.articleId,
-                          userId: userId!,
-                        );
-                      },
-                    );
-                  },
-                  child: Image.asset(
-                    AppAssets.comment,
-                    height: 25.h,
-                    width: 25.w,
+                        builder: (context) {
+                          return CommentsBottomSheet(
+                            articleId: widget.articleId,
+                            userId: userId!,
+                          );
+                        },
+                      );
+                    },
+                    child: Image.asset(
+                      AppAssets.comment,
+                      height: 25.h,
+                      width: 25.w,
+                    ),
                   ),
-                ),
-                horizontalSpace(4),
-                Text("تعليق", style: AppTextStyles.font14PrimarySemiBold),
-              ],
+                  horizontalSpace(4),
+                  Text("تعليق", style: AppTextStyles.font14PrimarySemiBold),
+                ],
+              ),
             ),
-          ),
           verticalSpace(12),
         ],
       ),

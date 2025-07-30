@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class Consultation {
   final String id;
   final String title;
@@ -9,7 +11,6 @@ class Consultation {
   final DateTime? updatedAt;
   final bool deletedByClient;
 
-
   Consultation({
     required this.id,
     required this.title,
@@ -20,7 +21,6 @@ class Consultation {
     required this.createdAt,
     this.updatedAt,
     this.deletedByClient = false,
-
   });
 
   Map<String, dynamic> toMap() {
@@ -31,13 +31,23 @@ class Consultation {
       'userId': userId,
       'lawyerId': lawyerId,
       'status': status,
-      'createdAt': createdAt.toIso8601String(),
-      'updatedAt': updatedAt?.toIso8601String(),
+      'createdAt': createdAt,
+      'updatedAt': updatedAt,
       'deletedByClient': deletedByClient,
     };
   }
 
   factory Consultation.fromMap(Map<String, dynamic> map) {
+    DateTime parseDate(dynamic value) {
+      if (value is Timestamp) {
+        return value.toDate();
+      } else if (value is String) {
+        return DateTime.parse(value);
+      } else {
+        throw Exception("Unsupported date format");
+      }
+    }
+
     return Consultation(
       id: map['id'] ?? '',
       title: map['title'] ?? '',
@@ -45,10 +55,8 @@ class Consultation {
       userId: map['userId'] ?? '',
       lawyerId: map['lawyerId'] ?? '',
       status: map['status'] ?? 'pending',
-      createdAt: DateTime.parse(map['createdAt']),
-      updatedAt: map['updatedAt'] != null
-          ? DateTime.parse(map['updatedAt'])
-          : null,
+      createdAt: parseDate(map['createdAt']),
+      updatedAt: map['updatedAt'] != null ? parseDate(map['updatedAt']) : null,
       deletedByClient: map['deletedByClient'] ?? false,
     );
   }

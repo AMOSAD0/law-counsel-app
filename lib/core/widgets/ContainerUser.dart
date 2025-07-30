@@ -42,35 +42,34 @@ class _SelectableUserState extends State<SelectableUser> {
 
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 24.0),
-          child:
-              OnboradingButton(
-                text: "التالي",
-                onPressed: () {
-                  if (selectedIndex != -1) {
-                    if (selectedIndex == 0) {
-                      Navigator.pushReplacementNamed(
-                        context,
-                        Routes.registerClient,
-                      );
-                    } else if (selectedIndex == 1) {
-                      Navigator.pushReplacementNamed(
-                        context,
-                        Routes.registerLawyer,
-                      );
-                    }
-                  } else {
-                    AlertPopup.show(
-                      context,
-                      message: "الرجاء اختيار نوع المستخدم",
-                      type: AlertType.info,
-                    );
-                  }
-                },
-                color: AppColors.primaryColor,
-                textColor: Colors.white,
-                width: double.infinity,
-                height: 50,
-              ).buildButtonBoarding(),
+          child: OnboradingButton(
+            text: "التالي",
+            onPressed: () {
+              if (selectedIndex != -1) {
+                if (selectedIndex == 0) {
+                  Navigator.pushReplacementNamed(
+                    context,
+                    Routes.registerClient,
+                  );
+                } else if (selectedIndex == 1) {
+                  Navigator.pushReplacementNamed(
+                    context,
+                    Routes.registerLawyer,
+                  );
+                }
+              } else {
+                AlertPopup.show(
+                  context,
+                  message: "الرجاء اختيار نوع المستخدم",
+                  type: AlertType.info,
+                );
+              }
+            },
+            color: AppColors.primaryColor,
+            textColor: Colors.white,
+            width: double.infinity,
+            height: 50,
+          ).buildButtonBoarding(),
         ),
       ],
     );
@@ -93,8 +92,8 @@ class _SelectableUserState extends State<SelectableUser> {
         duration: const Duration(milliseconds: 200),
         curve: Curves.easeInOut,
         padding: const EdgeInsets.all(16),
-        width: isSelected ? 170.w : 150.w,
-        height: isSelected ? 180.h : 160.h,
+        width: isSelected ? 160.w : 150.w,
+        height: isSelected ? 190.h : 180.h,
         decoration: BoxDecoration(
           color: AppColors.primaryColor,
           borderRadius: BorderRadius.circular(16),
@@ -102,11 +101,11 @@ class _SelectableUserState extends State<SelectableUser> {
         ),
         child: Container(
           decoration: BoxDecoration(
-            color: AppColors.primaryColor, 
-            borderRadius: BorderRadius.circular(16), 
+            color: AppColors.primaryColor,
+            borderRadius: BorderRadius.circular(16),
             border: Border.all(
               color: isSelected ? Colors.white : Colors.transparent,
-              width: 2, 
+              width: 2,
             ),
           ),
           child: Column(

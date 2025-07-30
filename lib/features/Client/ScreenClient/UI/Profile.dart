@@ -1,13 +1,12 @@
 import 'dart:io';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:law_counsel_app/core/helper/UploadImage.dart';
 import 'package:law_counsel_app/core/helper/imagePickerApp.dart';
 import 'package:law_counsel_app/core/helper/spacing.dart';
+import 'package:law_counsel_app/core/widgets/Conslution/Messages.dart';
 import 'package:law_counsel_app/core/widgets/DerwerApp.dart';
 import 'package:law_counsel_app/core/widgets/ProfileBackground.dart';
-import 'package:law_counsel_app/features/Chat/UI/Chat.dart';
 import 'package:law_counsel_app/features/Client/ScreenClient/LogicClient/Profile-block/ProfileClient_bloc.dart';
 import 'package:law_counsel_app/features/Client/ScreenClient/LogicClient/Profile-block/ProfileClient_event.dart';
 import 'package:law_counsel_app/features/Client/ScreenClient/LogicClient/Profile-block/ProfileClient_state.dart';
@@ -177,13 +176,7 @@ class _ProfileClientBodyState extends State<ProfileClientBody> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => ChatScreen(
-                                  currentUserId:
-                                      FirebaseAuth.instance.currentUser!.uid,
-                                  currentUserEmail: client.email,
-                                  receiverId: "1LgdtODjbta0gnUVWaGNwFqmMTm2",
-                                  receiverEmail: "j@j.com",
-                                ),
+                                builder: (context) => Messages()
                               ),
                             );
                           },

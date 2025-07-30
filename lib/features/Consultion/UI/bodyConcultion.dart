@@ -21,7 +21,6 @@ class MyConsultationBody extends StatefulWidget {
 
 class _MyConsultationBodyState extends State<MyConsultationBody> {
   final String currentUserId = FirebaseAuth.instance.currentUser!.uid;
-
   final _titleController = TextEditingController();
   final _descController = TextEditingController();
 
@@ -56,9 +55,12 @@ class _MyConsultationBodyState extends State<MyConsultationBody> {
           updatedAt: DateTime.now(),
         );
 
-        BlocProvider.of<ConsultationBloc>(
-          context,
-        ).add(UpdateConsultationEvent(updatedConsultation, docRef));
+        BlocProvider.of<ConsultationBloc>(context).add(
+          UpdateConsultationEvent(updatedConsultation, docRef),
+        );
+
+        _titleController.clear();
+        _descController.clear();
 
         Navigator.pop(context);
       },
@@ -78,9 +80,9 @@ class _MyConsultationBodyState extends State<MyConsultationBody> {
       body: BlocListener<ConsultationBloc, ConsultationState>(
         listener: (context, state) {
           if (state is ConsultationSuccess) {
-            ScaffoldMessenger.of(
-              context,
-            ).showSnackBar(SnackBar(content: Text(state.message)));
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text(state.message)),
+            );
           } else if (state is ConsultationError) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text(state.error), backgroundColor: Colors.red),
@@ -103,10 +105,10 @@ class _MyConsultationBodyState extends State<MyConsultationBody> {
             }
 
             final consultations = snapshot.data!.docs.map((doc) {
+              final data = doc.data() as Map<String, dynamic>;
+              data['id'] = doc.id;
               return {
-                'consultation': Consultation.fromMap(
-                  doc.data() as Map<String, dynamic>,
-                ),
+                'consultation': Consultation.fromMap(data),
                 'docRef': doc.reference,
               };
             }).toList();
@@ -127,7 +129,7 @@ class _MyConsultationBodyState extends State<MyConsultationBody> {
                     statusColor = const Color.fromARGB(255, 198, 159, 43);
                     statusText = "قيد الانتظار";
                     break;
-                  case "accepted":
+                  case "approved":
                     statusColor = Colors.green;
                     statusText = "تمت الموافقة";
                     break;
@@ -152,12 +154,14 @@ class _MyConsultationBodyState extends State<MyConsultationBody> {
                   child: Padding(
                     padding: const EdgeInsets.all(16),
                     child: FutureBuilder<String?>(
-                      future: LawyerService.getLawyerNameById(consult.lawyerId),
+                      future: consult.lawyerId.isNotEmpty
+                          ? LawyerService.getLawyerNameById(consult.lawyerId)
+                          : Future.value("غير معروف"),
                       builder: (context, snapshot) {
                         final lawyerName =
                             snapshot.connectionState == ConnectionState.waiting
-                            ? "جاري تحميل اسم المحامي..."
-                            : snapshot.data ?? "غير معروف";
+                                ? "جاري تحميل اسم المحامي..."
+                                : snapshot.data ?? "غير معروف";
 
                         return Column(
                           crossAxisAlignment: CrossAxisAlignment.end,
@@ -242,7 +246,7 @@ class _MyConsultationBodyState extends State<MyConsultationBody> {
                                           BlocProvider.of<ConsultationBloc>(
                                             context,
                                           ).add(
-                                            DeleteConsultationEvent(consult.id),
+                                            DeleteConsultationEvent(docRef),
                                           );
                                         },
                                       ),
