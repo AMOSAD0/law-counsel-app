@@ -43,11 +43,10 @@ class Homelawyer extends StatelessWidget {
                   verticalSpace(16),
                   Expanded(
                     child: StreamBuilder<QuerySnapshot>(
-                      stream:
-                          FirebaseFirestore.instance
-                              .collection('articles')
-                              .orderBy('createdAt', descending: true)
-                              .snapshots(),
+                      stream: FirebaseFirestore.instance
+                          .collection('articles')
+                          .orderBy('createdAt', descending: true)
+                          .snapshots(),
                       builder: (context, snapshot) {
                         if (snapshot.connectionState ==
                             ConnectionState.waiting) {
@@ -70,19 +69,18 @@ class Homelawyer extends StatelessWidget {
                         final articles = snapshot.data!.docs;
 
                         return ListView.builder(
-                           
                           itemCount: articles.length,
                           itemBuilder: (context, index) {
                             final article = articles[index];
                             final data = article.data() as Map<String, dynamic>;
                             return Cardarticale(
-                              uderId: data['userId'] ,
-                              userImage: data['userImage'],
+                              uderId: data['userId'] ?? '',
+                              userImage: data['userImage'] ?? '',
                               articleId: article.id,
-                              userName: data['userName'],
-                              date: data['createdAt'],
-                              articleImage: data['imageUrl'],
-                              content: data['content'],
+                              userName: data['userName'] ?? '',
+                              date: data['createdAt'] ?? '',
+                              articleImage: data['imageUrl'] ?? '',
+                              content: data['content'] ?? '',
                               likes: data['likes'] != null
                                   ? List<String>.from(data['likes'])
                                   : [],
@@ -92,7 +90,6 @@ class Homelawyer extends StatelessWidget {
                       },
                     ),
                   ),
-                  
                 ],
               ),
             ),

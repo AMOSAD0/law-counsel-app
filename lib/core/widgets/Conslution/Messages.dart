@@ -1,66 +1,118 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:law_counsel_app/features/lawyer/chats/chat.dart';
 
-class Messages extends StatefulWidget {
+class Messages extends StatelessWidget {
   const Messages({super.key});
 
-  @override
-  State<Messages> createState() => _MessagesState();
-}
+  final defaultImage = 'https://cdn-icons-png.flaticon.com/512/149/149071.png';
 
-class _MessagesState extends State<Messages> {
-    final List<String> messages = List.generate(10, (index) => 'أشرف طلعت');
+  Future<Map<String, String>> getLawyerInfo(String lawyerId) async {
+    final doc = await FirebaseFirestore.instance
+        .collection('lawyers')
+        .doc(lawyerId)
+        .get();
+    if (doc.exists) {
+      final data = doc.data()!;
+      return {
+        'name': data['name'] ?? 'غير معروف',
+        'image': data['profileImageUrl'] ?? defaultImage,
+      };
+    }
+    return {'name': 'غير معروف', 'image': defaultImage};
+  }
 
   @override
   Widget build(BuildContext context) {
-     return ListView.builder(
-      itemCount: messages.length,
-      itemBuilder: (context, index) {
-        return Card(
-          margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-          elevation: 2,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
-                  children: [
-                    const CircleAvatar(
-                      radius: 20,
-                      backgroundColor: Colors.grey,
-                      child: Icon(Icons.person, color: Colors.white),
+    final currentUserId = FirebaseAuth.instance.currentUser!.uid;
+
+    return Scaffold(
+      appBar: AppBar(title: const Text("الرسائل")),
+      body: StreamBuilder<QuerySnapshot>(
+        stream: FirebaseFirestore.instance
+            .collection('chats')
+            .where('clientId', isEqualTo: currentUserId)
+            .orderBy('lastMessageTime', descending: true)
+            .snapshots(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
+          if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+            return const Center(child: Text("لا توجد محادثات حالياً"));
+          }
+
+          final chatDocs = snapshot.data!.docs;
+
+          return ListView.builder(
+            itemCount: chatDocs.length,
+            itemBuilder: (context, index) {
+              final chat = chatDocs[index].data() as Map<String, dynamic>;
+              final chatId = chatDocs[index].id;
+              final lawyerId = chat['lawyerId'];
+
+              return FutureBuilder<Map<String, String>>(
+                future: getLawyerInfo(lawyerId),
+                builder: (context, lawyerSnapshot) {
+                  if (!lawyerSnapshot.hasData) {
+                    return const ListTile(
+                      title: Text("جارٍ تحميل بيانات المحامي..."),
+                    );
+                  }
+
+                  final lawyerName = lawyerSnapshot.data!['name']!;
+                  final imageUrl = lawyerSnapshot.data!['image']!;
+
+                  return ListTile(
+                    contentPadding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 8,
                     ),
-                    const SizedBox(width: 10),
-                    Text(
-                      messages[index],
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                      ),
+                    leading: CircleAvatar(
+                      radius: 28,
+                      backgroundImage: NetworkImage(imageUrl),
                     ),
-                  ],
-                ),
-                Container(
-                  width: 30,
-                  height: 30,
-                  alignment: Alignment.center,
-                  decoration: const BoxDecoration(
-                    color: Colors.black,
-                    shape: BoxShape.circle,
-                  ),
-                  child: const Text(
-                    '5',
-                    style: TextStyle(color: Colors.white, fontSize: 12),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        );
-      },
+                    title: Text(
+                      lawyerName,
+                      style: const TextStyle(fontSize: 16),
+                    ),
+                    subtitle: Text(
+                      chat['lastMessage'] ?? '',
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    trailing: Text(
+                      _formatTimestamp(chat['lastMessageTime']),
+                      style: const TextStyle(fontSize: 12),
+                    ),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ChatScreen(
+                            chatId: chatId,
+                            currentUserId:
+                                FirebaseAuth.instance.currentUser!.uid,
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                },
+              );
+            },
+          );
+        },
+      ),
     );
+  }
+
+  String _formatTimestamp(Timestamp timestamp) {
+    final date = timestamp.toDate();
+    final hour = date.hour.toString().padLeft(2, '0');
+    final minute = date.minute.toString().padLeft(2, '0');
+    return "${date.year}/${date.month}/${date.day} $hour:$minute";
   }
 }

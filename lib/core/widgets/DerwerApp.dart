@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:law_counsel_app/core/assets/assets_manger.dart';
 import 'package:law_counsel_app/core/theming/color_manger.dart';
 import 'package:law_counsel_app/core/theming/text_style_manger.dart';
-import 'package:law_counsel_app/features/Chat/UI/Chat.dart';
+import 'package:law_counsel_app/core/widgets/Conslution/Messages.dart';
 import 'package:law_counsel_app/features/Client/ScreenClient/LogicClient/Profile-block/ProfileClient_bloc.dart';
 import 'package:law_counsel_app/features/Client/ScreenClient/LogicClient/Profile-block/ProfileClient_state.dart';
 import 'package:law_counsel_app/features/Client/auth/login_or_signupClient/ui/loginClient.dart';
@@ -34,13 +34,7 @@ class DrwerApp extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => ChatScreen(
-                            currentUserId:
-                                FirebaseAuth.instance.currentUser!.uid,
-                            currentUserEmail: client.email,
-                            receiverId: "1LgdtODjbta0gnUVWaGNwFqmMTm2",
-                            receiverEmail: "j@j.com",
-                          ),
+                          builder: (context) => Messages(),
                         ),
                       );
                     },
