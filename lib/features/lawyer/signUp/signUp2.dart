@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -19,6 +20,7 @@ import 'package:law_counsel_app/features/lawyer/model/lawyerModel.dart';
 import 'package:law_counsel_app/features/lawyer/signUp/bloc/signUpBloc.dart';
 import 'package:law_counsel_app/features/lawyer/signUp/bloc/signUpEvent.dart';
 import 'package:law_counsel_app/features/lawyer/signUp/bloc/signUpState.dart';
+import 'package:law_counsel_app/features/lawyer/signUp/waitingScreen.dart';
 import 'package:law_counsel_app/features/lawyer/signUp/widgets/specialization_selector.dart';
 import 'package:law_counsel_app/features/lawyer/testChat.dart';
 
@@ -171,60 +173,67 @@ class _SignupForLawyer2State extends State<SignupForLawyer2> {
                     selectedSpecializationsNotifier: selectedSpecs,
                   ),
                   verticalSpace(15),
-                  // PublicButton(text: "تسجيل مستخدم جديد", onPressed: () {}),
-                  BlocConsumer<SignUpLawerBloc, SignUpLawyerState>(
-                    listener: (context, state) async{
-                      if (state.status == SignUpLawyerStatus.success) {
-                        
-                       await AlertPopup.show(context,
-                         message: "تم التسجيل بنجاح",
-                         type: AlertType.success,
-                         );
-                         if(context.mounted){
-                         Navigator.pushReplacementNamed(context, Routes.login);
-                         }
-                      } else if (state.status == SignUpLawyerStatus.failure) {
-                        AlertPopup.show(context,
-                         message:"فشل في التسجيل: ${state.error ?? ''}",
-                          );
-                        
-                      }
-                    },
+            BlocConsumer<SignUpLawerBloc, SignUpLawyerState>(
+  listener: (context, state) async {
+    if (state.status == SignUpLawyerStatus.success) {
+      await AlertPopup.show(
+        context,
+        message: "تم التسجيل بنجاح",
+        type: AlertType.success,
+      );
+
+      if (context.mounted) {
+        final userId = FirebaseAuth.instance.currentUser!.uid;
+
+
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (_) => WaitingScreen(userId: userId),
+          ),
+        );
+      }
+    } else if (state.status == SignUpLawyerStatus.failure) {
+      AlertPopup.show(
+        context,
+        message: "فشل في التسجيل: ${state.error ?? ''}",
+      );
+    }
+  },
+
                     builder: (context, state) {
                       return PublicButton(
-                        text:
-                            state.status == SignUpLawyerStatus.loading
-                                ? 'جاري التسجيل...'
-                                : 'تسجيل مستخدم جديد',
-                        onPressed:
-                            state.status == SignUpLawyerStatus.loading
-                                ? () {}
-                                : () {
-                                  if (_formKey.currentState!.validate()) {
-                                    if (selectedSpecs.value.isEmpty) {
-                                      AlertPopup.show(context, 
+                        text: state.status == SignUpLawyerStatus.loading
+                            ? 'جاري التسجيل...'
+                            : 'تسجيل مستخدم جديد',
+                        onPressed: state.status == SignUpLawyerStatus.loading
+                            ? () {}
+                            : () {
+                                if (_formKey.currentState!.validate()) {
+                                  if (selectedSpecs.value.isEmpty) {
+                                    AlertPopup.show(
+                                      context,
                                       message: "من فضلك اختر التخصصات",
                                       type: AlertType.error,
-                                      );
-                                      return;
-                                    }
-                                    final updateLawyer = widget.lawyer.copyWith(
-                                      birthDate: birthDateController.text,
-                                      city: cityController.text,
-                                      specializations: selectedSpecs.value,
-                                      profileImageUrl: 'img',
                                     );
-                                      context.read<SignUpLawerBloc>().add(
-                                        SignUpLawyerSubmitted(
-                                          lawyer: updateLawyer,
-                                          idImg: _idImage,
-                                          barImg: _barImage,
-                                          password: widget.password,
-                                        ),
-                                      );
-                                    
+                                    return;
                                   }
-                                },
+                                  final updateLawyer = widget.lawyer.copyWith(
+                                    birthDate: birthDateController.text,
+                                    city: cityController.text,
+                                    specializations: selectedSpecs.value,
+                                    profileImageUrl: 'img',
+                                  );
+                                  context.read<SignUpLawerBloc>().add(
+                                    SignUpLawyerSubmitted(
+                                      lawyer: updateLawyer,
+                                      idImg: _idImage,
+                                      barImg: _barImage,
+                                      password: widget.password,
+                                    ),
+                                  );
+                                }
+                              },
                       );
                     },
                   ),
@@ -242,7 +251,12 @@ class _SignupForLawyer2State extends State<SignupForLawyer2> {
                       horizontalSpace(10),
                       TextButton(
                         onPressed: () {
-                          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>TestChatForLawyer()));
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => TestChatForLawyer(),
+                            ),
+                          );
                         },
                         child: Text(
                           "سجل الدخول",
