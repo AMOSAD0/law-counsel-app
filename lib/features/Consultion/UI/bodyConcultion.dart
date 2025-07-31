@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:law_counsel_app/core/helper/spacing.dart';
 import 'package:law_counsel_app/core/theming/color_manger.dart';
 import 'package:law_counsel_app/core/theming/text_style_manger.dart';
@@ -55,9 +56,9 @@ class _MyConsultationBodyState extends State<MyConsultationBody> {
           updatedAt: DateTime.now(),
         );
 
-        BlocProvider.of<ConsultationBloc>(context).add(
-          UpdateConsultationEvent(updatedConsultation, docRef),
-        );
+        BlocProvider.of<ConsultationBloc>(
+          context,
+        ).add(UpdateConsultationEvent(updatedConsultation, docRef));
 
         _titleController.clear();
         _descController.clear();
@@ -70,19 +71,18 @@ class _MyConsultationBodyState extends State<MyConsultationBody> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.mainBackgroundColor,
       appBar: AppBar(
-        title: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Text("استشاراتي", style: AppTextStyles.font24WhiteSemiBold),
-        ),
+        title: Text("استشاراتي", style: AppTextStyles.font18WhiteNormal),
         backgroundColor: AppColors.primaryColor,
+        iconTheme: IconThemeData(color: AppColors.btnColor),
       ),
       body: BlocListener<ConsultationBloc, ConsultationState>(
         listener: (context, state) {
           if (state is ConsultationSuccess) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(state.message)),
-            );
+            ScaffoldMessenger.of(
+              context,
+            ).showSnackBar(SnackBar(content: Text(state.message)));
           } else if (state is ConsultationError) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text(state.error), backgroundColor: Colors.red),
@@ -143,13 +143,17 @@ class _MyConsultationBodyState extends State<MyConsultationBody> {
                 }
 
                 return Card(
-                  margin: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 8,
+                  margin: EdgeInsets.symmetric(
+                    horizontal: 20.sp,
+                    vertical: 10.sp,
                   ),
-                  elevation: 4,
+                  elevation: 2.sp,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(16),
+                    side: BorderSide(
+                      color: AppColors.primaryColor,
+                      width: 0.8.sp,
+                    ),
                   ),
                   child: Padding(
                     padding: const EdgeInsets.all(16),
@@ -160,52 +164,54 @@ class _MyConsultationBodyState extends State<MyConsultationBody> {
                       builder: (context, snapshot) {
                         final lawyerName =
                             snapshot.connectionState == ConnectionState.waiting
-                                ? "جاري تحميل اسم المحامي..."
-                                : snapshot.data ?? "غير معروف";
+                            ? "جاري تحميل اسم المحامي..."
+                            : snapshot.data ?? "غير معروف";
 
                         return Column(
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Text(
-                                  consult.title,
-                                  style: AppTextStyles.font18PrimaryNormal,
-                                ),
-                                Text(
-                                  ":عنوان الاستشاره",
-                                  style: AppTextStyles.font16primaryColorBold,
-                                ),
-                              ],
+                            /// العنوان
+                            Text(
+                              "عنوان الاستشارة",
+                              style: AppTextStyles.font16primaryColorBold,
                             ),
-                            verticalSpace(25),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: [
-                                Text(
-                                  ": الاستشاره",
-                                  style: AppTextStyles.font16primaryColorBold,
-                                ),
-                                verticalSpace(6),
-                                Text(
-                                  consult.description,
-                                  style: const TextStyle(
-                                    fontSize: 14,
-                                    color: Colors.black87,
-                                  ),
-                                ),
-                              ],
+                            verticalSpace(6),
+                            Text(
+                              consult.title,
+                              style: AppTextStyles.font18PrimaryNormal,
                             ),
-                            verticalSpace(10),
+
+                            verticalSpace(16),
+
+                            /// الوصف
+                            Text(
+                              "الوصف",
+                              style: AppTextStyles.font16primaryColorBold,
+                            ),
+                            verticalSpace(6),
+                            Text(
+                              consult.description,
+                              style: const TextStyle(
+                                fontSize: 14,
+                                color: Colors.black87,
+                              ),
+                            ),
+
+                            verticalSpace(16),
+
+                            /// المحامي
                             Text(
                               "المحامي: $lawyerName",
                               style: AppTextStyles.font16primaryColorBold,
                             ),
-                            const SizedBox(height: 12),
+
+                            verticalSpace(12),
+
+                            /// الحالة والإجراءات
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
+                                /// الحالة
                                 Container(
                                   padding: const EdgeInsets.symmetric(
                                     horizontal: 12,
@@ -224,33 +230,34 @@ class _MyConsultationBodyState extends State<MyConsultationBody> {
                                     ),
                                   ),
                                 ),
+
+                                /// الإجراءات حسب الحالة
                                 if (consult.status == "pending")
                                   Row(
                                     children: [
                                       IconButton(
                                         icon: const Icon(
-                                          Icons.edit,
-                                          color: Colors.blue,
+                                          Icons.edit_note,
+                                          color: Colors.orange,
                                         ),
                                         onPressed: () => _showEditBottomSheet(
                                           consult,
                                           docRef,
                                         ),
                                       ),
-                                      IconButton(
-                                        icon: const Icon(
-                                          Icons.delete,
-                                          color: Colors.red,
-                                        ),
-                                        onPressed: () {
-                                          BlocProvider.of<ConsultationBloc>(
-                                            context,
-                                          ).add(
-                                            DeleteConsultationEvent(docRef),
-                                          );
-                                        },
-                                      ),
                                     ],
+                                  )
+                                else if (consult.status == "rejected")
+                                  IconButton(
+                                    icon: const Icon(
+                                      Icons.delete_forever,
+                                      color: Colors.redAccent,
+                                    ),
+                                    onPressed: () {
+                                      BlocProvider.of<ConsultationBloc>(
+                                        context,
+                                      ).add(DeleteConsultationEvent(docRef));
+                                    },
                                   ),
                               ],
                             ),

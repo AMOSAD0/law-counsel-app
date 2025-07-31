@@ -9,7 +9,6 @@ import 'package:law_counsel_app/core/assets/assets_manger.dart';
 import 'package:law_counsel_app/core/helper/image_picker_helper.dart';
 import 'package:law_counsel_app/core/helper/spacing.dart';
 import 'package:law_counsel_app/core/helper/validators.dart';
-import 'package:law_counsel_app/core/routing/routes.dart';
 import 'package:law_counsel_app/core/theming/color_manger.dart';
 import 'package:law_counsel_app/core/theming/text_style_manger.dart';
 import 'package:law_counsel_app/core/widgets/customAlertPopup.dart';

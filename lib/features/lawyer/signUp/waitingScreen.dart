@@ -57,7 +57,7 @@ class WaitingScreen extends StatelessWidget {
               ],
             );
           } else if (isApproved == false &&
-              (messageToLawyer != null && messageToLawyer!.isNotEmpty)) {
+              (messageToLawyer != null && messageToLawyer.isNotEmpty)) {
             return Column(
               children: [
                 Image.asset(AppAssets.logo2),
@@ -74,7 +74,7 @@ class WaitingScreen extends StatelessWidget {
                           ),
                           SizedBox(height: 10),
                           Text(
-                            messageToLawyer!,
+                            messageToLawyer,
                             textAlign: TextAlign.center,
                             style: AppTextStyles.font16WhiteNormal,
                           ),
