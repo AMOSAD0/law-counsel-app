@@ -53,6 +53,8 @@ class _MyConsultationBodyState extends State<MyConsultationBody> {
           status: consult.status,
           createdAt: consult.createdAt,
           updatedAt: DateTime.now(),
+          nameClient: consult.nameClient,
+          nameLawyer: consult.nameLawyer,
         );
 
         BlocProvider.of<ConsultationBloc>(context).add(

@@ -36,6 +36,39 @@ class _ConsultationButtonBodyState extends State<_ConsultationButtonBody> {
   final titleController = TextEditingController();
   final descriptionController = TextEditingController();
   bool isLoading = false;
+  late String nameClient;
+  late String nameLawyer;
+
+  @override
+  @override
+  void initState() {
+    super.initState();
+    _loadNames();
+  }
+
+  Future<void> _loadNames() async {
+    final nClientDoc =
+        await FirebaseFirestore.instance
+            .collection('clients')
+            .doc(FirebaseAuth.instance.currentUser!.uid)
+            .get();
+
+    final nLawyerDoc =
+        await FirebaseFirestore.instance
+            .collection('lawyers')
+            .doc(widget.lawyerId)
+            .get();
+
+    final nClient = nClientDoc.data()?['name'] ?? 'عميل';
+    final nLawyer = nLawyerDoc.data()?['name'] ?? 'محامي';
+
+    if (mounted) {
+      setState(() {
+        nameClient = nClient;
+        nameLawyer = nLawyer;
+      });
+    }
+  }
 
   @override
   void dispose() {
@@ -69,9 +102,8 @@ class _ConsultationButtonBodyState extends State<_ConsultationButtonBody> {
           return;
         }
 
-        final docRef = FirebaseFirestore.instance
-            .collection('consultations')
-            .doc();
+        final docRef =
+            FirebaseFirestore.instance.collection('consultations').doc();
         final consultation = Consultation(
           id: docRef.id,
           title: title,
@@ -80,6 +112,8 @@ class _ConsultationButtonBodyState extends State<_ConsultationButtonBody> {
           lawyerId: widget.lawyerId,
           status: "pending",
           createdAt: DateTime.now(),
+          nameClient: nameClient,
+          nameLawyer: nameLawyer,
         );
 
         context.read<ConsultationBloc>().add(
@@ -120,16 +154,17 @@ class _ConsultationButtonBodyState extends State<_ConsultationButtonBody> {
             ),
           ),
           onPressed: isLoading ? null : _showBottomSheet,
-          child: isLoading
-              ? const SizedBox(
-                  height: 20,
-                  width: 20,
-                  child: CircularProgressIndicator(
-                    color: Colors.white,
-                    strokeWidth: 2,
-                  ),
-                )
-              : Text("حجز استشارة", style: AppTextStyles.font14WhiteNormal),
+          child:
+              isLoading
+                  ? const SizedBox(
+                    height: 20,
+                    width: 20,
+                    child: CircularProgressIndicator(
+                      color: Colors.white,
+                      strokeWidth: 2,
+                    ),
+                  )
+                  : Text("حجز استشارة", style: AppTextStyles.font14WhiteNormal),
         );
       },
     );

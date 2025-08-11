@@ -79,6 +79,13 @@ class AppTextStyles {
     color: AppColors.primaryColor,
   );
 
+  static TextStyle font12PrimaryNoemal = TextStyle(
+    fontSize: 12.sp,
+     fontFamily: 'Cairo',
+    fontWeight: FontWeight.normal,
+    color: AppColors.primaryColor,
+  );
+
   static TextStyle font14PrimaryBold = TextStyle(
     fontSize: 14.sp,
     fontFamily: 'Cairo',

@@ -37,12 +37,17 @@ class _MyConsultationsLawyerState extends State<MyConsultationsLawyer>
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        
         appBar: AppBar(
-          toolbarHeight: 80.h,
           automaticallyImplyLeading: false,
-          backgroundColor: AppColors.whiteColor,
-          title: Text("استشاراتي", style: AppTextStyles.font20PrimaryNormal),
+           backgroundColor: AppColors.whiteColor,
+          elevation: 0,
+          title: Text(
+            'استشاراتي',
+            style: AppTextStyles.font20PrimarySemiBold,
+          ),
           centerTitle: true,
+          iconTheme: IconThemeData(color: AppColors.primaryColor),
           bottom: TabBar(
             controller: _tabController,
             tabs: [

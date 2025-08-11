@@ -10,6 +10,8 @@ class Consultation {
   final DateTime createdAt;
   final DateTime? updatedAt;
   final bool deletedByClient;
+  final String nameLawyer;
+  final String nameClient;
 
   Consultation({
     required this.id,
@@ -21,6 +23,8 @@ class Consultation {
     required this.createdAt,
     this.updatedAt,
     this.deletedByClient = false,
+    required this.nameLawyer,
+    required this.nameClient,
   });
 
   Map<String, dynamic> toMap() {
@@ -34,6 +38,8 @@ class Consultation {
       'createdAt': createdAt,
       'updatedAt': updatedAt,
       'deletedByClient': deletedByClient,
+      'nameLawyer': nameLawyer,
+      'nameClient': nameClient,
     };
   }
 
@@ -58,6 +64,8 @@ class Consultation {
       createdAt: parseDate(map['createdAt']),
       updatedAt: map['updatedAt'] != null ? parseDate(map['updatedAt']) : null,
       deletedByClient: map['deletedByClient'] ?? false,
+      nameLawyer: map['nameLawyer'],
+      nameClient: map['nameClient'],
     );
   }
 }
