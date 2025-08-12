@@ -52,7 +52,7 @@ class ConsultationModel {
       'status': status,
       'deletedByClient': deletedByClient,
       'responseMessage': responseMessage,
-       'createdAt': createdAt.toIso8601String(),
+      'createdAt': createdAt.toIso8601String(),
     };
   }
 }

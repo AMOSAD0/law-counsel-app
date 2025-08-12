@@ -55,11 +55,12 @@ class _MyConsultationBodyState extends State<MyConsultationBody> {
           updatedAt: DateTime.now(),
           nameClient: consult.nameClient,
           nameLawyer: consult.nameLawyer,
+          paid: consult.paid,
         );
 
-        BlocProvider.of<ConsultationBloc>(context).add(
-          UpdateConsultationEvent(updatedConsultation, docRef),
-        );
+        BlocProvider.of<ConsultationBloc>(
+          context,
+        ).add(UpdateConsultationEvent(updatedConsultation, docRef));
 
         _titleController.clear();
         _descController.clear();
@@ -67,6 +68,23 @@ class _MyConsultationBodyState extends State<MyConsultationBody> {
         Navigator.pop(context);
       },
     );
+  }
+
+  void _onPayNowPressed(Consultation consult, DocumentReference docRef) {
+    if (consult.paid) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('تم الدفع بالفعل')),
+      );
+      return;
+    }
+
+    BlocProvider.of<ConsultationBloc>(
+      context,
+    ).add(UpdatePaymentStatusEvent(docRef, true));
+
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(const SnackBar(content: Text('تم الدفع بنجاح')));
   }
 
   @override
@@ -82,9 +100,9 @@ class _MyConsultationBodyState extends State<MyConsultationBody> {
       body: BlocListener<ConsultationBloc, ConsultationState>(
         listener: (context, state) {
           if (state is ConsultationSuccess) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(state.message)),
-            );
+            ScaffoldMessenger.of(
+              context,
+            ).showSnackBar(SnackBar(content: Text(state.message)));
           } else if (state is ConsultationError) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text(state.error), backgroundColor: Colors.red),
@@ -226,6 +244,12 @@ class _MyConsultationBodyState extends State<MyConsultationBody> {
                                     ),
                                   ),
                                 ),
+                                if (consult.status == "approved" && !consult.paid)
+                                  ElevatedButton(
+                                    onPressed: () =>
+                                        _onPayNowPressed(consult, docRef),
+                                    child: const Text('ادفع الآن'),
+                                  ),
                                 if (consult.status == "pending")
                                   Row(
                                     children: [
@@ -234,10 +258,8 @@ class _MyConsultationBodyState extends State<MyConsultationBody> {
                                           Icons.edit,
                                           color: Colors.blue,
                                         ),
-                                        onPressed: () => _showEditBottomSheet(
-                                          consult,
-                                          docRef,
-                                        ),
+                                        onPressed: () =>
+                                            _showEditBottomSheet(consult, docRef),
                                       ),
                                       IconButton(
                                         icon: const Icon(
@@ -247,9 +269,7 @@ class _MyConsultationBodyState extends State<MyConsultationBody> {
                                         onPressed: () {
                                           BlocProvider.of<ConsultationBloc>(
                                             context,
-                                          ).add(
-                                            DeleteConsultationEvent(docRef),
-                                          );
+                                          ).add(DeleteConsultationEvent(docRef));
                                         },
                                       ),
                                     ],

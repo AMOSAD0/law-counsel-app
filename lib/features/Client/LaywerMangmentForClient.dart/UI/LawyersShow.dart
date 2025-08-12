@@ -129,7 +129,7 @@ class LawyersShow extends StatelessWidget {
                                 ),
                                 const SizedBox(height: 4),
                                 Text(
-                                  "400 جنيه",
+                                  "${lawyer.price} جنية",
                                   style: AppTextStyles.font14PrimarySemiBold,
                                 ),
                               ],

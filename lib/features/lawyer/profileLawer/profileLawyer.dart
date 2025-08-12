@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart';
 import 'package:law_counsel_app/core/helper/spacing.dart';
 import 'package:law_counsel_app/core/routing/routes.dart';
 import 'package:law_counsel_app/core/theming/color_manger.dart';
@@ -93,13 +94,12 @@ class _LawyerProfilePageState extends State<LawyerProfilePage> {
                               Wrap(
                                 spacing: 8,
                                 children: List<Widget>.from(
-                                  (lawyer.specializations
-                                          as List<dynamic>)
-                                      .map((tag) => _buildTag(tag.toString())),
+                                  (lawyer.specializations as List<dynamic>).map(
+                                    (tag) => _buildTag(tag.toString()),
+                                  ),
                                 ),
                               ),
                               verticalSpace(20),
-                          
                               Text(
                                 'سعر الخدمة',
                                 style: AppTextStyles.font20PrimarySemiBold,
@@ -108,10 +108,32 @@ class _LawyerProfilePageState extends State<LawyerProfilePage> {
                               Chip(
                                 backgroundColor: AppColors.primaryColor,
                                 label: Text(
-                                  "500 جنية",
-                                  textDirection: TextDirection.rtl,
+                                  "${lawyer.price ?? 0} جنية",
                                   style: AppTextStyles.font16WhiteNormal,
                                 ),
+                              ),
+                              if (state.netPrice != null)
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                    top: 6,
+                                    right: 8,
+                                  ),
+                                  child: Align(
+                                    alignment: Alignment.centerRight,
+                                    child: Text(
+                                      "السعر بعد الخصم: ${state.netPrice!.toStringAsFixed(2)} جنية",
+                                      style: TextStyle(
+                                        fontSize: 12.sp,
+                                        color: Colors.grey[600],
+                                        fontStyle: FontStyle.italic,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              Text(
+                                'الرصيد الحالي: ${lawyer.balance?.toStringAsFixed(2) ?? "0.00"} جنية',
+                                style: AppTextStyles.font16primaryColorNormal,
+                                textAlign: TextAlign.right,
                               ),
                               verticalSpace(20),
                               Text(
@@ -124,9 +146,124 @@ class _LawyerProfilePageState extends State<LawyerProfilePage> {
                                 style: AppTextStyles.font16primaryColorNormal,
                                 textAlign: TextAlign.right,
                               ),
-                          
-                          
+
                               verticalSpace(40),
+
+                              // ==== هنا التعليقات ====
+                              Text(
+                                'التعليقات',
+                                style: AppTextStyles.font20PrimarySemiBold,
+                                textAlign: TextAlign.right,
+                              ),
+                              verticalSpace(12),
+
+                              SizedBox(
+                                height: 350.h,
+                                child: (lawyer.feedback != null &&
+                                        lawyer.feedback!.isNotEmpty)
+                                    ? ListView.builder(
+                                        physics: const BouncingScrollPhysics(),
+                                        itemCount: lawyer.feedback!.length,
+                                        itemBuilder: (context, index) {
+                                          final feedbackMap =
+                                              lawyer.feedback![index];
+                                          String formattedDate = '';
+                                          final createdAtTimestamp =
+                                              feedbackMap['createdAt'];
+                                          if (createdAtTimestamp != null &&
+                                              createdAtTimestamp is Timestamp) {
+                                            final date =
+                                                createdAtTimestamp.toDate();
+                                            formattedDate = DateFormat(
+                                                    'yyyy-MM-dd – kk:mm')
+                                                .format(date);
+                                          } else if (createdAtTimestamp !=
+                                                  null &&
+                                              createdAtTimestamp is String) {
+                                            formattedDate = createdAtTimestamp;
+                                          }
+
+                                          final rating =
+                                              feedbackMap['rating'] ?? 0;
+
+                                          return Card(
+                                            margin: EdgeInsets.symmetric(
+                                                vertical: 8.h),
+                                            elevation: 3,
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(12),
+                                            ),
+                                            child: Padding(
+                                              padding: EdgeInsets.all(16.w),
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.end,
+                                                children: [
+                                                  Text(
+                                                    feedbackMap['nameClient'] ??
+                                                        'مستخدم مجهول',
+                                                    style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      fontSize: 18.sp,
+                                                    ),
+                                                    textAlign: TextAlign.right,
+                                                  ),
+                                                  SizedBox(height: 6.h),
+                                                  Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.end,
+                                                    children: List.generate(
+                                                        5, (starIndex) {
+                                                      if (starIndex < rating) {
+                                                        return Icon(Icons.star,
+                                                            color:
+                                                                Colors.orange,
+                                                            size: 20.sp);
+                                                      } else {
+                                                        return Icon(
+                                                            Icons.star_border,
+                                                            color:
+                                                                Colors.orange,
+                                                            size: 20.sp);
+                                                      }
+                                                    }),
+                                                  ),
+                                                  SizedBox(height: 8.h),
+                                                  Text(
+                                                    feedbackMap['description'] ??
+                                                        'تعليق غير متوفر',
+                                                    style: TextStyle(
+                                                      fontSize: 16.sp,
+                                                      color: Colors.black87,
+                                                    ),
+                                                    textAlign: TextAlign.right,
+                                                  ),
+                                                  SizedBox(height: 10.h),
+                                                  Text(
+                                                    formattedDate,
+                                                    style: TextStyle(
+                                                      fontSize: 13.sp,
+                                                      color: Colors.grey[600],
+                                                    ),
+                                                    textAlign: TextAlign.right,
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                      )
+                                    : Center(
+                                        child: Text(
+                                          'لا توجد تعليقات متاحة',
+                                          style: AppTextStyles
+                                              .font16primaryColorNormal,
+                                          textAlign: TextAlign.center,
+                                        ),
+                                      ),
+                              ),
                             ],
                           ),
                         ),
@@ -140,9 +277,10 @@ class _LawyerProfilePageState extends State<LawyerProfilePage> {
                               CircleAvatar(
                                 radius: 60.r,
                                 backgroundImage: NetworkImage(
-                                  lawyer.profileImageUrl==''|| lawyer.profileImageUrl==null?
-                                      'https://i.pravatar.cc/300':
-                                      lawyer.profileImageUrl!,
+                                  (lawyer.profileImageUrl == '' ||
+                                          lawyer.profileImageUrl == null)
+                                      ? 'https://i.pravatar.cc/300'
+                                      : lawyer.profileImageUrl!,
                                 ),
                               ),
                               verticalSpace(8),
@@ -164,6 +302,7 @@ class _LawyerProfilePageState extends State<LawyerProfilePage> {
                                   );
                                 },
                               ),
+                              verticalSpace(20),
                             ],
                           ),
                         ),
@@ -174,7 +313,7 @@ class _LawyerProfilePageState extends State<LawyerProfilePage> {
               ),
             );
           } else {
-            return const Text('لم يتم العثور على بيانات');
+            return const Center(child: Text('لم يتم العثور على بيانات'));
           }
         },
       ),
@@ -188,5 +327,3 @@ class _LawyerProfilePageState extends State<LawyerProfilePage> {
     );
   }
 }
-
-

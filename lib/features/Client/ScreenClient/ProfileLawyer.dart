@@ -2,10 +2,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:law_counsel_app/core/assets/assets_manger.dart';
+import 'package:law_counsel_app/core/helper/spacing.dart';
 import 'package:law_counsel_app/core/theming/color_manger.dart';
 import 'package:law_counsel_app/core/theming/text_style_manger.dart';
 import 'package:law_counsel_app/core/widgets/ProfileBackground.dart';
 import 'package:law_counsel_app/features/Consultion/UI/AddConsultion.dart';
+import 'package:intl/intl.dart';
 
 class ProfileLawyer extends StatefulWidget {
   final String lawyerId;
@@ -164,7 +166,7 @@ class _ProfileLawyerState extends State<ProfileLawyer> {
                             vertical: 10.0.sp,
                           ),
                           child: Text(
-                            'سعر الجلسة: 150 جنيه',
+                            '${lawyerData!['price'] ?? 0} جنية',
                             style: const TextStyle(
                               color: Color.fromARGB(255, 255, 255, 255),
                             ),
@@ -189,6 +191,79 @@ class _ProfileLawyerState extends State<ProfileLawyer> {
                   ),
 
                   SizedBox(height: 20.h),
+                   verticalSpace(20),
+                             SizedBox(
+  height: 300.h,  
+  child: (lawyerData!['feedback'] != null &&
+          (lawyerData!['feedback'] as List).isNotEmpty)
+      ? ListView.builder(
+          itemCount: (lawyerData!['feedback'] as List).length,
+          itemBuilder: (context, index) {
+            final feedbackMap =
+                Map<String, dynamic>.from(lawyerData!['feedback'][index]);
+
+            String formattedDate = '';
+            final createdAtTimestamp = feedbackMap['createdAt'];
+            if (createdAtTimestamp != null &&
+                createdAtTimestamp is Timestamp) {
+              final date = createdAtTimestamp.toDate();
+              formattedDate =
+                  DateFormat('yyyy-MM-dd – kk:mm').format(date);
+            } else if (createdAtTimestamp != null &&
+                createdAtTimestamp is String) {
+              formattedDate = createdAtTimestamp;
+            }
+
+            return Card(
+              margin: EdgeInsets.symmetric(vertical: 6.h),
+              child: Padding(
+                padding: EdgeInsets.all(12.w),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      feedbackMap['nameClient'] ?? 'مستخدم مجهول',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16.sp,
+                      ),
+                      textAlign: TextAlign.right,
+                    ),
+                    SizedBox(height: 4.h),
+                    Text(
+                      'التقييم: ${feedbackMap['rating']?.toString() ?? 'غير متوفر'}',
+                      style: TextStyle(
+                        color: Colors.orange[700],
+                      ),
+                      textAlign: TextAlign.right,
+                    ),
+                    SizedBox(height: 8.h),
+                    Text(
+                      feedbackMap['description'] ?? 'تعليق غير متوفر',
+                      style: TextStyle(fontSize: 14.sp),
+                      textAlign: TextAlign.right,
+                    ),
+                    SizedBox(height: 6.h),
+                    Text(
+                      formattedDate,
+                      style: TextStyle(fontSize: 12.sp, color: Colors.grey),
+                      textAlign: TextAlign.right,
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
+        )
+      : Center(
+          child: Text(
+            'لا توجد تعليقات متاحة',
+            style: AppTextStyles.font16primaryColorNormal,
+            textAlign: TextAlign.center,
+          ),
+        ),
+),
+
                 ],
               ),
             ),

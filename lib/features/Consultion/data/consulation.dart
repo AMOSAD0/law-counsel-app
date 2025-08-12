@@ -4,14 +4,20 @@ class Consultation {
   final String id;
   final String title;
   final String description;
-  final String userId;
-  final String lawyerId;
-  final String status;
+  final String userId;         
+  final String lawyerId;       
+  final String status;          
   final DateTime createdAt;
   final DateTime? updatedAt;
   final bool deletedByClient;
   final String nameLawyer;
   final String nameClient;
+  final bool paid;
+  
+  final bool paymentConfirmedByClient;  
+  final bool paymentConfirmedByLawyer;
+  
+  final String? paymentMethod;
 
   Consultation({
     required this.id,
@@ -25,6 +31,10 @@ class Consultation {
     this.deletedByClient = false,
     required this.nameLawyer,
     required this.nameClient,
+    required this.paid,
+    this.paymentConfirmedByClient = false,
+    this.paymentConfirmedByLawyer = false,
+    this.paymentMethod,
   });
 
   Map<String, dynamic> toMap() {
@@ -40,6 +50,10 @@ class Consultation {
       'deletedByClient': deletedByClient,
       'nameLawyer': nameLawyer,
       'nameClient': nameClient,
+      'paid': paid,
+      'paymentConfirmedByClient': paymentConfirmedByClient,
+      'paymentConfirmedByLawyer': paymentConfirmedByLawyer,
+      'paymentMethod': paymentMethod,
     };
   }
 
@@ -64,8 +78,12 @@ class Consultation {
       createdAt: parseDate(map['createdAt']),
       updatedAt: map['updatedAt'] != null ? parseDate(map['updatedAt']) : null,
       deletedByClient: map['deletedByClient'] ?? false,
-      nameLawyer: map['nameLawyer'],
-      nameClient: map['nameClient'],
+      nameLawyer: map['nameLawyer'] ?? '',
+      nameClient: map['nameClient'] ?? '',
+      paid: map['paid'] ?? false,
+      paymentConfirmedByClient: map['paymentConfirmedByClient'] ?? false,
+      paymentConfirmedByLawyer: map['paymentConfirmedByLawyer'] ?? false,
+      paymentMethod: map['paymentMethod'],
     );
   }
 }

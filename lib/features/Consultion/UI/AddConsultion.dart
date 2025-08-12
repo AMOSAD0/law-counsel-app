@@ -114,6 +114,7 @@ class _ConsultationButtonBodyState extends State<_ConsultationButtonBody> {
           createdAt: DateTime.now(),
           nameClient: nameClient,
           nameLawyer: nameLawyer,
+          paid: false
         );
 
         context.read<ConsultationBloc>().add(

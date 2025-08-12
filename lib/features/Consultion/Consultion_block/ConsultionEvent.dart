@@ -41,3 +41,13 @@ class UpdateConsultationEvent extends ConsultationEvent {
   @override
   List<Object?> get props => [consultation, docRef]; 
 }
+
+class UpdatePaymentStatusEvent extends ConsultationEvent {
+  final DocumentReference docRef;
+  final bool paid;
+
+  const UpdatePaymentStatusEvent(this.docRef, this.paid);
+
+  @override
+  List<Object?> get props => [docRef, paid];
+}
