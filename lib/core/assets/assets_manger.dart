@@ -31,7 +31,7 @@ static final String sendIcon='${imagePath}Paper Plane.png';
 
   static final String activeArticls ='${imagePath}Purchase Order (1).png';
 
-
+static final String chatbot2='${imagePath}icons8-chatbot-48 (1).png';
   static final String trash='${imagePath}Trash.png';
   static final String logout='${imagePath}Logout.png';
   static final String chatMassager='${imagePath}Chat Message.png';

@@ -72,9 +72,9 @@ class _MyConsultationBodyState extends State<MyConsultationBody> {
 
   void _onPayNowPressed(Consultation consult, DocumentReference docRef) {
     if (consult.paid) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('تم الدفع بالفعل')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('تم الدفع بالفعل')));
       return;
     }
 
@@ -91,12 +91,12 @@ class _MyConsultationBodyState extends State<MyConsultationBody> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Text("استشاراتي", style: AppTextStyles.font24WhiteSemiBold),
-        ),
+        title: Text("استشاراتي", style: AppTextStyles.font18WhiteNormal),
         backgroundColor: AppColors.primaryColor,
+        centerTitle: true,
+        elevation: 0,
       ),
+      backgroundColor: Colors.grey[100],
       body: BlocListener<ConsultationBloc, ConsultationState>(
         listener: (context, state) {
           if (state is ConsultationSuccess) {
@@ -121,7 +121,12 @@ class _MyConsultationBodyState extends State<MyConsultationBody> {
             }
 
             if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-              return const Center(child: Text("لا توجد استشارات حتى الآن."));
+              return const Center(
+                child: Text(
+                  "لا توجد استشارات حتى الآن.",
+                  style: TextStyle(fontSize: 16, color: Colors.grey),
+                ),
+              );
             }
 
             final consultations = snapshot.data!.docs.map((doc) {
@@ -134,6 +139,7 @@ class _MyConsultationBodyState extends State<MyConsultationBody> {
             }).toList();
 
             return ListView.builder(
+              padding: const EdgeInsets.all(12),
               itemCount: consultations.length,
               itemBuilder: (context, index) {
                 final consult =
@@ -142,32 +148,34 @@ class _MyConsultationBodyState extends State<MyConsultationBody> {
                     consultations[index]['docRef'] as DocumentReference;
 
                 Color statusColor;
+                IconData statusIcon;
                 String statusText;
 
                 switch (consult.status) {
                   case "pending":
-                    statusColor = const Color.fromARGB(255, 198, 159, 43);
+                    statusColor = Colors.orange;
+                    statusIcon = Icons.hourglass_empty;
                     statusText = "قيد الانتظار";
                     break;
                   case "approved":
                     statusColor = Colors.green;
+                    statusIcon = Icons.check_circle_outline;
                     statusText = "تمت الموافقة";
                     break;
                   case "rejected":
                     statusColor = Colors.red;
+                    statusIcon = Icons.cancel_outlined;
                     statusText = "مرفوضة";
                     break;
                   default:
                     statusColor = Colors.grey;
+                    statusIcon = Icons.help_outline;
                     statusText = "غير معروف";
                 }
 
                 return Card(
-                  margin: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 8,
-                  ),
-                  elevation: 4,
+                  elevation: 3,
+                  margin: const EdgeInsets.symmetric(vertical: 8),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(16),
                   ),
@@ -180,75 +188,89 @@ class _MyConsultationBodyState extends State<MyConsultationBody> {
                       builder: (context, snapshot) {
                         final lawyerName =
                             snapshot.connectionState == ConnectionState.waiting
-                                ? "جاري تحميل اسم المحامي..."
-                                : snapshot.data ?? "غير معروف";
+                            ? "جاري تحميل اسم المحامي..."
+                            : snapshot.data ?? "غير معروف";
 
                         return Column(
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
                             Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
+                                Row(
+                                  children: [
+                                    Icon(
+                                      statusIcon,
+                                      color: statusColor,
+                                      size: 20,
+                                    ),
+                                    const SizedBox(width: 6),
+                                    Text(
+                                      statusText,
+                                      style: TextStyle(
+                                        color: statusColor,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ],
+                                ),
                                 Text(
                                   consult.title,
-                                  style: AppTextStyles.font18PrimaryNormal,
-                                ),
-                                Text(
-                                  ":عنوان الاستشاره",
-                                  style: AppTextStyles.font16primaryColorBold,
+                                  style: AppTextStyles.font18PrimaryNormal
+                                      .copyWith(fontWeight: FontWeight.bold),
                                 ),
                               ],
                             ),
-                            verticalSpace(25),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: [
-                                Text(
-                                  ": الاستشاره",
-                                  style: AppTextStyles.font16primaryColorBold,
-                                ),
-                                verticalSpace(6),
-                                Text(
-                                  consult.description,
-                                  style: const TextStyle(
-                                    fontSize: 14,
-                                    color: Colors.black87,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            verticalSpace(10),
+                            const Divider(height: 20, thickness: 0.8),
                             Text(
-                              "المحامي: $lawyerName",
+                              ": الاستشارة",
                               style: AppTextStyles.font16primaryColorBold,
+                            ),
+                            const SizedBox(height: 6),
+                            Text(
+                              consult.description,
+                              style: const TextStyle(
+                                fontSize: 14,
+                                color: Colors.black87,
+                                height: 1.4,
+                              ),
                             ),
                             const SizedBox(height: 12),
                             Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Text(
+                                  "$lawyerName : المحامي",
+                                  style: AppTextStyles.font16primaryColorBold,
+                                ),
+                                const SizedBox(width: 4),
+                                Icon(
+                                  Icons.person,
+                                  color: AppColors.primaryColor,
+                                  size: 18,
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 16),
+                            Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Container(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 12,
-                                    vertical: 6,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: statusColor.withOpacity(0.2),
-                                    border: Border.all(color: statusColor),
-                                    borderRadius: BorderRadius.circular(12),
-                                  ),
-                                  child: Text(
-                                    statusText,
-                                    style: TextStyle(
-                                      color: statusColor,
-                                      fontWeight: FontWeight.bold,
+                                if (consult.status == "approved" &&
+                                    !consult.paid)
+                                  ElevatedButton.icon(
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: AppColors.primaryColor,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(12),
+                                      ),
                                     ),
-                                  ),
-                                ),
-                                if (consult.status == "approved" && !consult.paid)
-                                  ElevatedButton(
                                     onPressed: () =>
                                         _onPayNowPressed(consult, docRef),
-                                    child: const Text('ادفع الآن'),
+                                    icon: const Icon(Icons.payment, size: 18),
+                                    label: Text(
+                                      'ادفع الآن',
+                                      style: AppTextStyles.font16WhiteNormal,
+                                    ),
                                   ),
                                 if (consult.status == "pending")
                                   Row(
@@ -258,8 +280,10 @@ class _MyConsultationBodyState extends State<MyConsultationBody> {
                                           Icons.edit,
                                           color: Colors.blue,
                                         ),
-                                        onPressed: () =>
-                                            _showEditBottomSheet(consult, docRef),
+                                        onPressed: () => _showEditBottomSheet(
+                                          consult,
+                                          docRef,
+                                        ),
                                       ),
                                       IconButton(
                                         icon: const Icon(
@@ -269,7 +293,9 @@ class _MyConsultationBodyState extends State<MyConsultationBody> {
                                         onPressed: () {
                                           BlocProvider.of<ConsultationBloc>(
                                             context,
-                                          ).add(DeleteConsultationEvent(docRef));
+                                          ).add(
+                                            DeleteConsultationEvent(docRef),
+                                          );
                                         },
                                       ),
                                     ],

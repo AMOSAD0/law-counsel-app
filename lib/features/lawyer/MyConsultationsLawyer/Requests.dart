@@ -2,8 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:law_counsel_app/core/theming/text_style_manger.dart';
+import 'package:law_counsel_app/features/Consultion/data/consulation.dart';
 import 'package:law_counsel_app/features/lawyer/MyConsultationsLawyer/widget/ShowConsultationLawyer.dart';
-import 'package:law_counsel_app/features/lawyer/model/consulataionModel.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class RequestsLawyer extends StatefulWidget {
@@ -74,8 +74,8 @@ class _RequestsLawyerState extends State<RequestsLawyer> {
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 20),
-                  
-                  // Stats Card
+
+                  // Stats Card (هنا ممكن تضيف عداد فعلي لو تحب)
                   Container(
                     padding: const EdgeInsets.all(20.0),
                     decoration: BoxDecoration(
@@ -110,23 +110,24 @@ class _RequestsLawyerState extends State<RequestsLawyer> {
                 ],
               ),
             ),
-            
+
             const SizedBox(height: 24),
-            
+
             // Requests List
             Expanded(
               child: StreamBuilder<QuerySnapshot>(
-                stream: FirebaseFirestore.instance
-                    .collection('consultations')
-                    .where('lawyerId', isEqualTo: lawyerId)
-                    .where('status', isEqualTo: 'pending')
-                    .orderBy('createdAt', descending: true)
-                    .snapshots(),
+                stream: (lawyerId == null)
+                    ? null
+                    : FirebaseFirestore.instance
+                        .collection('consultations')
+                        .where('lawyerId', isEqualTo: lawyerId)
+                        .where('status', isEqualTo: 'pending')
+                        .orderBy('createdAt', descending: true)
+                        .snapshots(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return Center(
                       child: Column(
-                   
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           const CircularProgressIndicator(
@@ -143,7 +144,7 @@ class _RequestsLawyerState extends State<RequestsLawyer> {
                       ),
                     );
                   }
-                  
+
                   if (snapshot.hasError) {
                     return Center(
                       child: Container(
@@ -187,7 +188,7 @@ class _RequestsLawyerState extends State<RequestsLawyer> {
                       ),
                     );
                   }
-                  
+
                   final data = snapshot.data;
                   if (data == null || data.docs.isEmpty) {
                     return Center(
@@ -241,16 +242,12 @@ class _RequestsLawyerState extends State<RequestsLawyer> {
                       ),
                     );
                   }
-                  
+
                   final consultations = data.docs.map((doc) {
-                    return ConsultationModel.fromJson(
-                      doc.data() as Map<String, dynamic>,
-                      doc.id,
-                    );
+                    return Consultation.fromMap(doc.data() as Map<String, dynamic>);
                   }).toList();
 
                   return ListView.builder(
-    
                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
                     itemCount: consultations.length,
                     itemBuilder: (context, index) => _buildConsultationItem(
@@ -299,8 +296,8 @@ class _RequestsLawyerState extends State<RequestsLawyer> {
   }
 }
 
-Widget _buildConsultationItem(BuildContext context, ConsultationModel consultation) {
-  final formatDay= DateFormat('d MMMM y', 'ar');
+Widget _buildConsultationItem(BuildContext context, Consultation consultation) {
+  final formatDay = DateFormat('d MMMM y', 'ar');
   return Container(
     margin: const EdgeInsets.only(bottom: 16.0),
     decoration: BoxDecoration(
@@ -317,7 +314,6 @@ Widget _buildConsultationItem(BuildContext context, ConsultationModel consultati
     child: Padding(
       padding: const EdgeInsets.all(20.0),
       child: Row(
-      //  textDirection:TextDirection.rtl,
         children: [
           // Profile Avatar
           Container(
@@ -338,17 +334,16 @@ Widget _buildConsultationItem(BuildContext context, ConsultationModel consultati
               ),
             ),
           ),
-          
+
           const SizedBox(width: 16),
-          
+
           // User Info
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  // consultation.userName ??
-                   "مستخدم",
+                  consultation.nameClient.isNotEmpty ? consultation.nameClient : "مستخدم",
                   style: AppTextStyles.font16primaryColorBold.copyWith(
                     color: const Color(0xFF1C2331),
                   ),
@@ -364,7 +359,6 @@ Widget _buildConsultationItem(BuildContext context, ConsultationModel consultati
                     const SizedBox(width: 6),
                     Expanded(
                       child: Text(
-                        // formatDateToArabic(consultation.createdAt.toString()),
                         formatDay.format(consultation.createdAt),
                         style: AppTextStyles.font12PrimaryNoemal.copyWith(
                           color: const Color(0xFF1C2331).withOpacity(0.7),
@@ -376,7 +370,7 @@ Widget _buildConsultationItem(BuildContext context, ConsultationModel consultati
               ],
             ),
           ),
-          
+
           // Action Button
           Container(
             decoration: BoxDecoration(

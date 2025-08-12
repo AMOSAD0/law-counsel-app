@@ -14,10 +14,6 @@ class Consultation {
   final String nameClient;
   final bool paid;
   
-  final bool paymentConfirmedByClient;  
-  final bool paymentConfirmedByLawyer;
-  
-  final String? paymentMethod;
 
   Consultation({
     required this.id,
@@ -32,9 +28,7 @@ class Consultation {
     required this.nameLawyer,
     required this.nameClient,
     required this.paid,
-    this.paymentConfirmedByClient = false,
-    this.paymentConfirmedByLawyer = false,
-    this.paymentMethod,
+  
   });
 
   Map<String, dynamic> toMap() {
@@ -51,9 +45,7 @@ class Consultation {
       'nameLawyer': nameLawyer,
       'nameClient': nameClient,
       'paid': paid,
-      'paymentConfirmedByClient': paymentConfirmedByClient,
-      'paymentConfirmedByLawyer': paymentConfirmedByLawyer,
-      'paymentMethod': paymentMethod,
+    
     };
   }
 
@@ -81,9 +73,7 @@ class Consultation {
       nameLawyer: map['nameLawyer'] ?? '',
       nameClient: map['nameClient'] ?? '',
       paid: map['paid'] ?? false,
-      paymentConfirmedByClient: map['paymentConfirmedByClient'] ?? false,
-      paymentConfirmedByLawyer: map['paymentConfirmedByLawyer'] ?? false,
-      paymentMethod: map['paymentMethod'],
+   
     );
   }
 }

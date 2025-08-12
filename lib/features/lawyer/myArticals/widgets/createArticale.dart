@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -37,53 +36,91 @@ class _CreateArticleWidgetState extends State<CreateArticleWidget> {
         child: Directionality(
           textDirection: TextDirection.rtl,
           child: Container(
-            padding: const EdgeInsets.all(16),
+            padding: EdgeInsets.all(16.w),
             decoration: BoxDecoration(
-              border: Border.all(color: AppColors.primaryColor),
-              borderRadius: BorderRadius.circular(12),
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(16.r),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.05),
+                  blurRadius: 10,
+                  offset: const Offset(0, 4),
+                ),
+              ],
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('اكتب مقالة', style: AppTextStyles.font16primaryColorBold),
-                verticalSpace(10),
+                Text(
+                  ' اكتب مقالة',
+                  style: AppTextStyles.font18PrimaryNormal.copyWith(
+                    color: AppColors.primaryColor,
+                  ),
+                ),
+                verticalSpace(12),
+
                 // Text Field
                 TextField(
                   controller: _contentController,
                   maxLines: 4,
                   decoration: InputDecoration(
-                    hintText: 'بماذا تفكر..................',
+                    hintText: 'بماذا تفكر؟ شارك أفكارك...',
+                    filled: true,
+                    fillColor: Colors.grey.shade50,
+                    contentPadding: EdgeInsets.all(14.w),
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(12.r),
+                      borderSide: BorderSide(color: Colors.grey.shade300),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12.r),
+                      borderSide: BorderSide(
+                        color: AppColors.primaryColor,
+                        width: 1.5,
+                      ),
                     ),
                   ),
                 ),
-                verticalSpace(10),
 
-                // Add Image Button
+                verticalSpace(12),
+
+                // Add Image
                 PublicTextFormField(
                   onTap: () async {
                     XFile? file =
                         await ImagePickerHelper.pickImageFromGallery();
-                    if (file == null) {
-                      return;
-                    }
+                    if (file == null) return;
                     setState(() {
                       _selectedImage = File(file.path);
                       ImgController.text = file.name;
                     });
                   },
-                  label: 'اضافة صورة',
+                  label: 'إضافة صورة',
                   controller: ImgController,
                   readOnly: true,
-                  padding: EdgeInsets.all(0),
+                  padding: EdgeInsets.zero,
                   suffixIcon: Icon(
-                    Icons.image,
+                    Icons.image_outlined,
                     color: AppColors.primaryColor,
-                    size: 30.r,
+                    size: 26.r,
                   ),
                 ),
-                verticalSpace(12),
+
+                if (_selectedImage != null) ...[
+                  verticalSpace(8),
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(12.r),
+                    child: Image.file(
+                      _selectedImage!,
+                      height: 140.h,
+                      width: double.infinity,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ],
+
+                verticalSpace(16),
+
                 // Publish Button
                 SizedBox(
                   width: double.infinity,
@@ -91,37 +128,38 @@ class _CreateArticleWidgetState extends State<CreateArticleWidget> {
                     listener: (context, state) {
                       if (state is CreateArticleSuccess) {
                         _contentController.clear();
-                        setState(() {
-                          _selectedImage = null;
-                        });
+                        ImgController.clear();
+                        setState(() => _selectedImage = null);
                         ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text('تم نشر المقال بنجاح')),
+                          SnackBar(
+                            content: Text(' تم نشر المقال بنجاح'),
+                            backgroundColor: Colors.green,
+                          ),
                         );
                       } else if (state is CreateArticleFailure) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
-                            content: Text('فشل النشر: ${state.message}'),
+                            content: Text(' فشل النشر: ${state.message}'),
+                            backgroundColor: Colors.red,
                           ),
                         );
                       }
                     },
                     builder: (context, state) {
                       if (state is CreateArticleLoading) {
-                        return const CircularProgressIndicator();
+                        return const Center(child: CircularProgressIndicator());
                       }
 
-                      return ElevatedButton(
+                      return ElevatedButton.icon(
                         onPressed: () async {
                           if (_selectedImage != null ||
                               _contentController.text.isNotEmpty) {
                             final user = FirebaseAuth.instance.currentUser;
                             if (user != null) {
-                              final userDoc =
-                                  await FirebaseFirestore.instance
-                                      .collection('lawyers')
-                                      .doc(user.uid)
-                                      .get();
-
+                              final userDoc = await FirebaseFirestore.instance
+                                  .collection('lawyers')
+                                  .doc(user.uid)
+                                  .get();
                               final userName =
                                   userDoc.data()?['name'] ?? 'مستخدم';
 
@@ -135,22 +173,28 @@ class _CreateArticleWidgetState extends State<CreateArticleWidget> {
                                 ),
                               );
                             }
-                          }else{
+                          } else {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
-                                content: Text('يرجى إضافة محتوى أو صورة'),
+                                content: Text(
+                                  ' يرجى إضافة محتوى أو صورة أولاً',
+                                ),
+                                backgroundColor: Colors.orange,
                               ),
                             );
                           }
                         },
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.black87,
+                          backgroundColor: AppColors.btnColor,
                           foregroundColor: Colors.white,
+                          padding: EdgeInsets.symmetric(vertical: 14.h),
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
+                            borderRadius: BorderRadius.circular(12.r),
                           ),
+                          elevation: 2,
                         ),
-                        child: Text(
+                        icon: Icon(Icons.send_rounded, size: 20.r),
+                        label: Text(
                           'نشر',
                           style: AppTextStyles.font16WhiteNormal,
                         ),

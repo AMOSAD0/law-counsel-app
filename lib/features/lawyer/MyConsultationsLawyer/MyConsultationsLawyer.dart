@@ -4,7 +4,6 @@ import 'package:law_counsel_app/core/theming/color_manger.dart';
 import 'package:law_counsel_app/core/theming/text_style_manger.dart';
 import 'package:law_counsel_app/features/lawyer/MyConsultationsLawyer/Messages.dart';
 import 'package:law_counsel_app/features/lawyer/MyConsultationsLawyer/Requests.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class MyConsultationsLawyer extends StatefulWidget {
   const MyConsultationsLawyer({Key? key}) : super(key: key);
@@ -16,12 +15,10 @@ class MyConsultationsLawyer extends StatefulWidget {
 class _MyConsultationsLawyerState extends State<MyConsultationsLawyer>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
-  
 
   @override
   void initState() {
     super.initState();
-    
     _tabController = TabController(length: 2, vsync: this);
   }
 
@@ -31,64 +28,48 @@ class _MyConsultationsLawyerState extends State<MyConsultationsLawyer>
     super.dispose();
   }
 
- 
-
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-           backgroundColor: AppColors.whiteColor,
-          elevation: 0,
-          title: Text(
-            'استشاراتي',
-            style: AppTextStyles.font20PrimarySemiBold,
-          ),
-          centerTitle: true,
-          iconTheme: IconThemeData(color: AppColors.primaryColor),
-          bottom: TabBar(
-            controller: _tabController,
-            tabs: [
-              Tab(
-                child: SizedBox(
-                  width: double.infinity,
-                  child: Center(child: Text('الطلبات')),
-                ),
-              ),
-              Tab(
-                child: SizedBox(
-                  width: double.infinity,
-                  child: Center(child: Text('الرسائل')),
-                ),
-              ),
-            ],
-
-            labelColor: Colors.white,
-            labelStyle: AppTextStyles.font16WhiteNormal,
-            unselectedLabelStyle: AppTextStyles.font14PrimarySemiBold,
-            unselectedLabelColor: AppColors.primaryColor,
-            indicator: BoxDecoration(
-              color: AppColors.primaryColor,
-
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(8),
-                topRight: Radius.circular(8),
+    return Scaffold(
+      backgroundColor: AppColors.mainBackgroundColor,
+      appBar: AppBar(
+        backgroundColor: AppColors.primaryColor,
+        title: Text(
+          "استشاراتي",
+          style: AppTextStyles.font18WhiteNormal.copyWith(fontSize: 18.sp),
+        ),
+        centerTitle: true,
+        elevation: 0,
+        bottom: PreferredSize(
+          preferredSize: Size.fromHeight(50.h),
+          child: Container(
+            margin: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(8.r),
+            ),
+            child: TabBar(
+              controller: _tabController,
+              tabs: [
+                Tab(text: 'الطلبات'),
+                Tab(text: 'الرسائل'),
+              ],
+              labelColor: Colors.white,
+              unselectedLabelColor: AppColors.primaryColor,
+              labelStyle: AppTextStyles.font16WhiteNormal,
+              unselectedLabelStyle: AppTextStyles.font14PrimarySemiBold,
+              indicatorSize: TabBarIndicatorSize.tab,
+              indicator: BoxDecoration(
+                color: AppColors.btnColor,
+                borderRadius: BorderRadius.circular(8.r),
               ),
             ),
           ),
         ),
-        backgroundColor: const Color(0xFFF5F5F5),
-        body: TabBarView(
-          controller: _tabController,
-          children: [
-        
-            RequestsLawyer(),
-            
-            MessagesLawyer(),
-          ],
-        ),
+      ),
+      body: TabBarView(
+        controller: _tabController,
+        children: [RequestsLawyer(), MessagesLawyer()],
       ),
     );
   }

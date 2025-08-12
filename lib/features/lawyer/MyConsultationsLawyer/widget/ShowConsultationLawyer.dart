@@ -2,11 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:law_counsel_app/core/helper/spacing.dart';
 import 'package:law_counsel_app/core/theming/text_style_manger.dart';
-import 'package:law_counsel_app/features/lawyer/model/consulataionModel.dart';
+import 'package:law_counsel_app/features/Consultion/data/consulation.dart';
 
 void showConsultationDialog(
   BuildContext context,
-  ConsultationModel consultation,
+  Consultation consultation,
 ) {
   showDialog(
     context: context,
@@ -104,7 +104,6 @@ void showConsultationDialog(
               Padding(
                 padding: const EdgeInsets.all(24.0),
                 child: Column(
-                  
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     // Consultation Title
@@ -131,7 +130,7 @@ void showConsultationDialog(
                     _buildInfoSection(
                       icon: Icons.person,
                       label: 'اسم العميل',
-                      value: consultation.userName ?? 'مستخدم',
+                      value: consultation.nameClient ?? 'مستخدم',
                       iconColor: Colors.orange,
                     ),
                     
@@ -158,36 +157,34 @@ void showConsultationDialog(
                             ),
                             child: ElevatedButton(
                               onPressed: () async {
+                                // تحديث حالة الاستشارة
                                 await FirebaseFirestore.instance
                                     .collection('consultations')
                                     .doc(consultation.id)
                                     .update({'status': 'approved'});
 
+                                // إنشاء مستند محادثة جديد مع بيانات المحامي والعميل
                                 final chatDoc = await FirebaseFirestore.instance
                                     .collection('chats')
                                     .add({
                                       'clientId': consultation.userId,
                                       'lawyerId': consultation.lawyerId,
+                                      'nameClient': consultation.nameClient,
+                                      'nameLawyer': consultation.nameLawyer,
                                       'createdAt': FieldValue.serverTimestamp(),
+                                      'lastMessage': 'مرحبا بك، يمكنك البدء في المحادثة الآن.',
+                                      'lastMessageTime': FieldValue.serverTimestamp(),
                                     });
 
+                                // إضافة رسالة ترحيبية في مجموعة الرسائل داخل المحادثة
                                 await FirebaseFirestore.instance
                                     .collection('chats')
                                     .doc(chatDoc.id)
                                     .collection('messages')
                                     .add({
                                       'senderId': consultation.lawyerId,
-                                      'message':
-                                          'مرحبا بك، يمكنك البدء في المحادثة الآن.',
+                                      'message': 'مرحبا بك، يمكنك البدء في المحادثة الآن.',
                                       'timestamp': FieldValue.serverTimestamp(),
-                                    });
-                                
-                                await FirebaseFirestore.instance
-                                    .collection('chats')
-                                    .doc(chatDoc.id)
-                                    .update({
-                                      'lastMessage': 'مرحبا بك، يمكنك البدء في المحادثة الآن.',
-                                      'lastMessageTime': FieldValue.serverTimestamp(),
                                     });
 
                                 Navigator.pop(context);
