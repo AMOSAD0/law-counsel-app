@@ -27,16 +27,53 @@ class _MyarticalsState extends State<Myarticals> {
 
   Future<void> _loadUserId() async {
     final prefs = await SharedPreferences.getInstance();
+    final uid = prefs.getString('uid');
+
+    if (uid != null) {
+      final lawyerDoc = await FirebaseFirestore.instance
+          .collection('lawyers') 
+          .doc(uid)
+          .get();
+
+      if (lawyerDoc.exists) {
+        final newName = lawyerDoc['name'];
+
+        await _updateOldArticlesWithNewLawyerName(uid, newName);
+      }
+    }
+
     setState(() {
-      userId = prefs.getString('uid');
+      userId = uid;
     });
+  }
+
+  Future<void> _updateOldArticlesWithNewLawyerName(
+    String lawyerId,
+    String newName,
+  ) async {
+    try {
+      final querySnapshot = await FirebaseFirestore.instance
+          .collection('articles')
+          .where('userId', isEqualTo: lawyerId)
+          .get();
+
+      WriteBatch batch = FirebaseFirestore.instance.batch();
+
+      for (var doc in querySnapshot.docs) {
+        batch.update(doc.reference, {'userName': newName});
+      }
+
+      await batch.commit();
+      print('تم تحديث جميع المقالات بالاسم الجديد');
+    } catch (e) {
+      print(' حصل خطأ أثناء تحديث المقالات: $e');
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.mainBackgroundColor,
-
       appBar: AppBar(
         title: Text("مقالاتي", style: AppTextStyles.font18WhiteNormal),
         backgroundColor: AppColors.primaryColor,

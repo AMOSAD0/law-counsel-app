@@ -50,7 +50,29 @@ class _LawyerProfilePageState extends State<LawyerProfilePage> {
       child: BlocBuilder<LawyerProfileBloc, LawyerProfileState>(
         builder: (context, state) {
           if (state.isLoading) {
-            return const Center(child: CircularProgressIndicator());
+            return Scaffold(
+              backgroundColor: Colors.grey[50],
+              body: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    CircularProgressIndicator(
+                      valueColor: AlwaysStoppedAnimation<Color>(
+                        AppColors.primaryColor,
+                      ),
+                    ),
+                    SizedBox(height: 16.h),
+                    Text(
+                      'جاري التحميل...',
+                      style: TextStyle(
+                        color: Colors.grey[600],
+                        fontSize: 16.sp,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
           }
           if (state.error != null) {
             return Center(child: Text(state.error!));
@@ -62,234 +84,194 @@ class _LawyerProfilePageState extends State<LawyerProfilePage> {
           final lawyer = Lawyer.fromJson(state.lawyerData!);
 
           return Scaffold(
-            backgroundColor: AppColors.whiteColor,
-            body: SafeArea(
-              child: SingleChildScrollView(
-                child: Stack(
-                  children: [
-                    Container(
-                      width: double.infinity,
-                      height: 130.h,
-                      color: AppColors.primaryColor,
+            backgroundColor: Colors.grey[50],
+            appBar: AppBar(
+              title: Text(
+                "الملف الشخصي",
+                style: AppTextStyles.font16WhiteNormal,
+              ),
+              centerTitle: true,
+              backgroundColor: AppColors.primaryColor,
+
+              elevation: 0,
+            ),
+            body: Stack(
+              children: [
+                SingleChildScrollView(
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 20.w,
+                      vertical: 24.h,
                     ),
-                    Align(
-                      alignment: Alignment.topCenter,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 70),
-                        child: Column(
-                          children: [
-                            CircleAvatar(
-                              radius: 60.r,
-                              backgroundImage: NetworkImage(
-                                (lawyer.profileImageUrl?.isEmpty ?? true)
-                                    ? 'https://i.pravatar.cc/300'
-                                    : lawyer.profileImageUrl!,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        // --- Modern Profile Header Card ---
+                        Container(
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(24),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.08),
+                                blurRadius: 20,
+                                offset: Offset(0, 8),
                               ),
-                            ),
-                            verticalSpace(8),
-                            Text(
-                              lawyer.name,
-                              style: AppTextStyles.font24PrimarySemiBold,
-                            ),
-                            Text(
-                              'محامي',
-                              style: AppTextStyles.font20PrimarySemiBold,
-                            ),
-                            verticalSpace(12),
-                            PublicButton(
-                              text: 'تعديل الملف الشخصي',
-                              onPressed: () {
-                                Navigator.pushNamed(
-                                    context, Routes.editProfileLawyer);
-                              },
-                            ),
-                            verticalSpace(20),
-                          ],
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 16.0, vertical: 8),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          SizedBox(height: 380.h),
-                          _buildSection(
-                            icon: Icons.info_outline,
-                            title: "نبذة عني",
-                            child: Text(
-                              lawyer.aboutMe ?? 'لا توجد معلومات متاحة',
-                              style: AppTextStyles.font16primaryColorNormal
-                                  .copyWith(color: Colors.grey[800]),
-                              textAlign: TextAlign.right,
-                            ),
+                            ],
                           ),
-                          _buildSection(
-                            icon: Icons.gavel,
-                            title: "مجال التخصص",
-                            child: Wrap(
-                              spacing: 8,
-                              runSpacing: 8,
-                              children: List<Widget>.from(
-                                (lawyer.specializations as List<dynamic>).map(
-                                  (tag) => _buildTag(tag.toString()),
-                                ),
-                              ),
-                            ),
-                          ),
-                          _buildSection(
-                            icon: Icons.attach_money,
-                            title: "سعر الخدمة",
+                          child: Padding(
+                            padding: EdgeInsets.all(24.w),
                             child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
-                                Chip(
-                                  backgroundColor: AppColors.primaryColor,
-                                  label: Text(
-                                    "${lawyer.price ?? 0} جنية",
-                                    style: AppTextStyles.font16WhiteNormal,
-                                  ),
-                                ),
-                                if (state.netPrice != null)
-                                  Padding(
-                                    padding: const EdgeInsets.only(top: 6),
-                                    child: Text(
-                                      "السعر بعد الخصم: ${state.netPrice!.toStringAsFixed(2)} جنية",
-                                      style: TextStyle(
-                                        fontSize: 14.sp,
-                                        color: Colors.grey[600],
-                                        fontStyle: FontStyle.italic,
+                                // Profile Image with Modern Border
+                                Container(
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    border: Border.all(
+                                      color: AppColors.primaryColor.withOpacity(
+                                        0.2,
                                       ),
-                                      textAlign: TextAlign.right,
+                                      width: 4,
+                                    ),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: AppColors.primaryColor
+                                            .withOpacity(0.3),
+                                        blurRadius: 20,
+                                        offset: Offset(0, 8),
+                                      ),
+                                    ],
+                                  ),
+                                  child: CircleAvatar(
+                                    radius: 60,
+                                    backgroundColor: Colors.white,
+                                    child: CircleAvatar(
+                                      radius: 56,
+                                      backgroundImage: NetworkImage(
+                                        (lawyer.profileImageUrl?.isEmpty ??
+                                                true)
+                                            ? 'https://i.pravatar.cc/300'
+                                            : lawyer.profileImageUrl!,
+                                      ),
                                     ),
                                   ),
+                                ),
+                                SizedBox(height: 20.h),
+
+                                // Name & Profession
                                 Text(
-                                  'الرصيد الحالي: ${lawyer.balance?.toStringAsFixed(2) ?? "0.00"} جنية',
-                                  style: AppTextStyles
-                                      .font16primaryColorNormal
-                                      .copyWith(color: Colors.grey[800]),
-                                  textAlign: TextAlign.right,
+                                  lawyer.name,
+                                  style: TextStyle(
+                                    fontSize: 24.sp,
+                                    fontWeight: FontWeight.bold,
+                                    color: AppColors.primaryColor,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                                SizedBox(height: 8.h),
+                                Container(
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: 16.w,
+                                    vertical: 6.h,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: AppColors.btnColor.withOpacity(0.1),
+                                    borderRadius: BorderRadius.circular(20),
+                                    border: Border.all(
+                                      color: AppColors.btnColor.withOpacity(
+                                        0.3,
+                                      ),
+                                      width: 1,
+                                    ),
+                                  ),
+                                  child: Text(
+                                    "محامي",
+                                    style: TextStyle(
+                                      color: AppColors.btnColor,
+                                      fontSize: 16.sp,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(height: 20.h),
+
+                                // Edit Profile Button
+                                Container(
+                                  width: double.infinity,
+                                  child: ElevatedButton(
+                                    onPressed: () {
+                                      Navigator.pushNamed(
+                                        context,
+                                        Routes.editProfileLawyer,
+                                      );
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: AppColors.btnColor,
+                                      foregroundColor: Colors.white,
+                                      padding: EdgeInsets.symmetric(
+                                        vertical: 16.h,
+                                      ),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(16),
+                                      ),
+                                      elevation: 0,
+                                    ),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Icon(Icons.edit, size: 20.sp),
+                                        SizedBox(width: 8.w),
+                                        Text(
+                                          'تعديل الملف الشخصي',
+                                          style: TextStyle(
+                                            fontSize: 16.sp,
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
                                 ),
                               ],
                             ),
                           ),
-                          _buildSection(
-                            icon: Icons.emoji_events_outlined,
-                            title: "الإنجازات",
-                            child: Text(
-                              lawyer.achievements ?? 'لا توجد معلومات متاحة',
-                              style: AppTextStyles.font16primaryColorNormal
-                                  .copyWith(color: Colors.grey[800]),
-                              textAlign: TextAlign.right,
-                            ),
-                          ),
-                          _buildSection(
-                            icon: Icons.comment_outlined,
-                            title: "التعليقات",
-                            child: (lawyer.feedback != null &&
-                                    lawyer.feedback!.isNotEmpty)
-                                ? ListView.builder(
-                                    physics:
-                                        const NeverScrollableScrollPhysics(),
-                                    shrinkWrap: true,
-                                    itemCount: lawyer.feedback!.length,
-                                    itemBuilder: (context, index) {
-                                      final feedbackMap =
-                                          lawyer.feedback![index];
-                                      String formattedDate = '';
-                                      final createdAtTimestamp =
-                                          feedbackMap['createdAt'];
-                                      if (createdAtTimestamp is Timestamp) {
-                                        formattedDate = DateFormat(
-                                                'yyyy-MM-dd – kk:mm')
-                                            .format(createdAtTimestamp.toDate());
-                                      } else if (createdAtTimestamp
-                                          is String) {
-                                        formattedDate = createdAtTimestamp;
-                                      }
-                                      final rating =
-                                          feedbackMap['rating'] ?? 0;
+                        ),
+                        verticalSpace(24.h),
 
-                                      return Card(
-                                        elevation: 2,
-                                        margin: EdgeInsets.symmetric(
-                                            vertical: 6.h),
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(12),
-                                        ),
-                                        child: Padding(
-                                          padding: EdgeInsets.all(12.w),
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.end,
-                                            children: [
-                                              Text(
-                                                feedbackMap['nameClient'] ??
-                                                    'مستخدم مجهول',
-                                                style: TextStyle(
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 16.sp,
-                                                ),
-                                                textAlign: TextAlign.right,
-                                              ),
-                                              SizedBox(height: 6.h),
-                                              Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.end,
-                                                children:
-                                                    List.generate(5, (star) {
-                                                  return Icon(
-                                                    star < rating
-                                                        ? Icons.star
-                                                        : Icons.star_border,
-                                                    color: Colors.orange,
-                                                    size: 18.sp,
-                                                  );
-                                                }),
-                                              ),
-                                              SizedBox(height: 6.h),
-                                              Text(
-                                                feedbackMap['description'] ??
-                                                    'تعليق غير متوفر',
-                                                style: TextStyle(
-                                                  fontSize: 14.sp,
-                                                  color: Colors.grey[800],
-                                                ),
-                                                textAlign: TextAlign.right,
-                                              ),
-                                              SizedBox(height: 6.h),
-                                              Text(
-                                                formattedDate,
-                                                style: TextStyle(
-                                                  fontSize: 12.sp,
-                                                  color: Colors.grey[600],
-                                                ),
-                                                textAlign: TextAlign.right,
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      );
-                                    },
-                                  )
-                                : Center(
-                                    child: Text(
-                                      'لا توجد تعليقات متاحة',
-                                      style: AppTextStyles
-                                          .font16primaryColorNormal
-                                          .copyWith(color: Colors.grey[600]),
-                                      textAlign: TextAlign.center,
-                                    ),
-                                  ),
-                          ),
-                        ],
-                      ),
+                        // --- About Section Card ---
+                        _buildModernCard(
+                          icon: Icons.info_outline,
+                          title: "نبذة عني",
+                          content: lawyer.aboutMe ?? 'لا توجد معلومات متاحة',
+                        ),
+                        verticalSpace(20.h),
+
+                        // --- Specializations Card ---
+                        _buildSpecializationsCard(lawyer.specializations),
+                        verticalSpace(16.h),
+
+                        // --- Achievements Card ---
+                        _buildModernCard(
+                          title: "الإنجازات",
+                          content:
+                              lawyer.achievements ?? 'لا توجد معلومات متاحة',
+                          icon: Icons.emoji_events_outlined,
+                        ),
+                        verticalSpace(16.h),
+
+                        // --- Price & Balance Card ---
+                        _buildPriceBalanceCard(lawyer, state),
+                        SizedBox(height: 20.h),
+
+                        // --- Comments Section Card ---
+                        _buildCommentsCard(lawyer),
+                      ],
                     ),
-                  ],
+                  ),
                 ),
-              ),
+              ],
             ),
           );
         },
@@ -297,49 +279,430 @@ class _LawyerProfilePageState extends State<LawyerProfilePage> {
     );
   }
 
-  Widget _buildSection({
-    required IconData icon,
+  Widget _buildModernCard({
     required String title,
-    required Widget child,
+    required String content,
+    IconData? icon,
   }) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 20),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Text(
-                title,
-                style: AppTextStyles.font20PrimarySemiBold,
-              ),
-              const SizedBox(width: 8),
-              Icon(icon, color: AppColors.primaryColor, size: 22),
-            ],
-          ),
-          const SizedBox(height: 8),
-          Card(
-            elevation: 2,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(12),
-              child: child,
-            ),
+    return Container(
+      width: double.infinity,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.06),
+            blurRadius: 15,
+            offset: Offset(0, 5),
           ),
         ],
+      ),
+      child: Padding(
+        padding: EdgeInsets.all(20.w),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Text(
+                  title,
+                  style: TextStyle(
+                    fontSize: 18.sp,
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.primaryColor,
+                  ),
+                ),
+                horizontalSpace(12.w),
+                Icon(icon, color: AppColors.primaryColor, size: 24.sp),
+              ],
+            ),
+            verticalSpace(16.h),
+            Container(
+              width: double.infinity,
+              padding: EdgeInsets.all(16.w),
+              decoration: BoxDecoration(
+                color: Colors.grey[50],
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(color: Colors.grey[200]!, width: 1),
+              ),
+              child: Text(
+                content,
+                style: TextStyle(
+                  fontSize: 16.sp,
+                  color: Colors.grey[700],
+                  height: 1.5,
+                ),
+                textAlign: TextAlign.right,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
 
-  Widget _buildTag(String text) {
-    return Chip(
-      backgroundColor: AppColors.primaryColor,
-      label: Text(
-        text,
-        style: AppTextStyles.font16WhiteNormal,
+  Widget _buildSpecializationsCard(List<dynamic> specializations) {
+    return Container(
+      width: double.infinity,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.06),
+            blurRadius: 15,
+            offset: Offset(0, 5),
+          ),
+        ],
+      ),
+      child: Padding(
+        padding: EdgeInsets.all(20.w),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Text(
+                  "مجال التخصص",
+                  style: TextStyle(
+                    fontSize: 18.sp,
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.primaryColor,
+                  ),
+                ),
+                horizontalSpace(12.w),
+                Icon(Icons.gavel, color: AppColors.primaryColor, size: 24.sp),
+              ],
+            ),
+            SizedBox(height: 16.h),
+            Wrap(
+              spacing: 12,
+              runSpacing: 12,
+              children: specializations
+                  .map(
+                    (spec) => Container(
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 16.w,
+                        vertical: 8.h,
+                      ),
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [
+                            AppColors.btnColor.withOpacity(0.1),
+                            AppColors.btnColor.withOpacity(0.05),
+                          ],
+                        ),
+                        borderRadius: BorderRadius.circular(25),
+                        border: Border.all(
+                          color: AppColors.btnColor.withOpacity(0.3),
+                          width: 1.5,
+                        ),
+                      ),
+                      child: Text(
+                        spec.toString(),
+                        style: TextStyle(
+                          color: AppColors.btnColor,
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                  )
+                  .toList(),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildPriceBalanceCard(Lawyer lawyer, LawyerProfileState state) {
+    return Container(
+      width: double.infinity,
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [
+            AppColors.primaryColor,
+            AppColors.primaryColor.withOpacity(0.8),
+          ],
+        ),
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.primaryColor.withOpacity(0.3),
+            blurRadius: 20,
+            offset: Offset(0, 8),
+          ),
+        ],
+      ),
+      child: Padding(
+        padding: EdgeInsets.all(20.w),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              "سعر الخدمة",
+              style: TextStyle(
+                color: Colors.white.withOpacity(0.9),
+                fontSize: 14.sp,
+              ),
+            ),
+            SizedBox(height: 4.h),
+            Text(
+              '${lawyer.price ?? 0} جنية',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 24.sp,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            if (state.netPrice != null) ...[
+              SizedBox(height: 8.h),
+              Text(
+                "السعر بعد الخصم: ${state.netPrice!.toStringAsFixed(2)} جنية",
+                style: TextStyle(
+                  fontSize: 14.sp,
+                  color: Colors.white.withOpacity(0.8),
+                  fontStyle: FontStyle.italic,
+                ),
+              ),
+            ],
+            SizedBox(height: 16.h),
+            Container(
+              width: double.infinity,
+              padding: EdgeInsets.all(16.w),
+              decoration: BoxDecoration(
+                color: Colors.white.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(
+                  color: Colors.white.withOpacity(0.2),
+                  width: 1,
+                ),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'الرصيد الحالي',
+                    style: TextStyle(
+                      color: Colors.white.withOpacity(0.9),
+                      fontSize: 14.sp,
+                    ),
+                  ),
+                  SizedBox(height: 4.h),
+                  Text(
+                    '${lawyer.balance?.toStringAsFixed(2) ?? "0.00"} جنية',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 20.sp,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildCommentsCard(Lawyer lawyer) {
+    return Container(
+      width: double.infinity,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.06),
+            blurRadius: 15,
+            offset: Offset(0, 5),
+          ),
+        ],
+      ),
+      child: Padding(
+        padding: EdgeInsets.all(20.w),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Icon(
+                  Icons.rate_review_outlined,
+                  color: AppColors.primaryColor,
+                  size: 24.sp,
+                ),
+                SizedBox(width: 12.w),
+                Expanded(
+                  child: Text(
+                    "التعليقات",
+                    style: TextStyle(
+                      fontSize: 18.sp,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.primaryColor,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 16.h),
+            if (lawyer.feedback != null && lawyer.feedback!.isNotEmpty) ...[
+              SizedBox(
+                height: 320.h,
+                child: ListView.builder(
+                  itemCount: lawyer.feedback!.length,
+                  itemBuilder: (context, index) {
+                    final feedbackMap = lawyer.feedback![index];
+                    String formattedDate = '';
+                    final createdAtTimestamp = feedbackMap['createdAt'];
+                    if (createdAtTimestamp is Timestamp) {
+                      formattedDate = DateFormat(
+                        'yyyy-MM-dd – kk:mm',
+                      ).format(createdAtTimestamp.toDate());
+                    } else if (createdAtTimestamp is String) {
+                      formattedDate = createdAtTimestamp;
+                    }
+                    final rating = feedbackMap['rating'] ?? 0;
+
+                    return Container(
+                      margin: EdgeInsets.only(bottom: 12.h),
+                      decoration: BoxDecoration(
+                        color: Colors.grey[50],
+                        borderRadius: BorderRadius.circular(16),
+                        border: Border.all(color: Colors.grey[200]!, width: 1),
+                      ),
+                      child: Padding(
+                        padding: EdgeInsets.all(16.w),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: [
+                                CircleAvatar(
+                                  radius: 20,
+                                  backgroundColor: AppColors.primaryColor
+                                      .withOpacity(0.1),
+                                  child: Icon(
+                                    Icons.person,
+                                    color: AppColors.primaryColor,
+                                    size: 20.sp,
+                                  ),
+                                ),
+                                SizedBox(width: 12.w),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        feedbackMap['nameClient'] ??
+                                            'مستخدم مجهول',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 16.sp,
+                                          color: AppColors.primaryColor,
+                                        ),
+                                      ),
+                                      Row(
+                                        children: [
+                                          ...List.generate(
+                                            5,
+                                            (index) => Icon(
+                                              index < rating
+                                                  ? Icons.star
+                                                  : Icons.star_border,
+                                              color: Colors.amber,
+                                              size: 16.sp,
+                                            ),
+                                          ),
+                                          SizedBox(width: 8.w),
+                                          Text(
+                                            '${rating.toString()}',
+                                            style: TextStyle(
+                                              color: Colors.orange[700],
+                                              fontSize: 14.sp,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Text(
+                                  formattedDate,
+                                  style: TextStyle(
+                                    fontSize: 12.sp,
+                                    color: Colors.grey[500],
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 12.h),
+                            Container(
+                              width: double.infinity,
+                              padding: EdgeInsets.all(12.w),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(12),
+                                border: Border.all(
+                                  color: Colors.grey[200]!,
+                                  width: 1,
+                                ),
+                              ),
+                              child: Text(
+                                feedbackMap['description'] ?? 'تعليق غير متوفر',
+                                style: TextStyle(
+                                  fontSize: 14.sp,
+                                  color: Colors.grey[700],
+                                  height: 1.4,
+                                ),
+                                textAlign: TextAlign.justify,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ] else ...[
+              Container(
+                width: double.infinity,
+                padding: EdgeInsets.symmetric(vertical: 40.h),
+                child: Column(
+                  children: [
+                    Icon(
+                      Icons.chat_bubble_outline,
+                      size: 48.sp,
+                      color: Colors.grey[400],
+                    ),
+                    SizedBox(height: 16.h),
+                    Text(
+                      'لا توجد تعليقات متاحة',
+                      style: TextStyle(
+                        fontSize: 16.sp,
+                        color: Colors.grey[600],
+                      ),
+                    ),
+                    SizedBox(height: 8.h),
+                    Text(
+                      'لم يتم إضافة أي تعليقات بعد',
+                      style: TextStyle(
+                        fontSize: 14.sp,
+                        color: Colors.grey[500],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ],
+        ),
       ),
     );
   }

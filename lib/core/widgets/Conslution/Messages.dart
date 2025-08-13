@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:law_counsel_app/core/theming/color_manger.dart';
+import 'package:law_counsel_app/core/theming/text_style_manger.dart';
 import 'package:law_counsel_app/features/lawyer/chats/chat.dart';
 
 class Messages extends StatelessWidget {
@@ -28,7 +30,12 @@ class Messages extends StatelessWidget {
     final currentUserId = FirebaseAuth.instance.currentUser!.uid;
 
     return Scaffold(
-      appBar: AppBar(title: const Text("الرسائل")),
+      backgroundColor: AppColors.mainBackgroundColor,
+      appBar: AppBar(
+        backgroundColor: AppColors.primaryColor,
+        title: Text(" المحادثات", style: AppTextStyles.font18WhiteNormal),
+        iconTheme: IconThemeData(color: AppColors.btnColor),
+      ),
       body: StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance
             .collection('chats')

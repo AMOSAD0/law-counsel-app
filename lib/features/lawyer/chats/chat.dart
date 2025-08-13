@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:law_counsel_app/core/assets/assets_manger.dart';
 import 'package:law_counsel_app/core/theming/color_manger.dart';
 import 'package:law_counsel_app/core/theming/text_style_manger.dart';
 
@@ -48,18 +49,21 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        backgroundColor: AppColors.primaryColor,
+        title: Text("المحادثة", style: AppTextStyles.font18WhiteNormal),
+        iconTheme: IconThemeData(color: AppColors.btnColor),
+      ),
       body: Column(
         children: [
           Expanded(
             child: StreamBuilder<QuerySnapshot>(
-              stream:
-                  FirebaseFirestore.instance
-                      .collection('chats')
-                      .doc(widget.chatId)
-                      .collection('messages')
-                      .orderBy('timestamp', descending: true)
-                      .snapshots(),
+              stream: FirebaseFirestore.instance
+                  .collection('chats')
+                  .doc(widget.chatId)
+                  .collection('messages')
+                  .orderBy('timestamp', descending: true)
+                  .snapshots(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(child: CircularProgressIndicator());
@@ -78,8 +82,9 @@ class _ChatScreenState extends State<ChatScreen> {
                     final msg = messages[index];
                     final isMe = msg['senderId'] == widget.currentUserId;
                     return Align(
-                      alignment:
-                          isMe ? Alignment.centerRight : Alignment.centerLeft,
+                      alignment: isMe
+                          ? Alignment.centerRight
+                          : Alignment.centerLeft,
                       child: Container(
                         margin: const EdgeInsets.symmetric(vertical: 4),
                         padding: const EdgeInsets.symmetric(
@@ -87,18 +92,16 @@ class _ChatScreenState extends State<ChatScreen> {
                           vertical: 8,
                         ),
                         decoration: BoxDecoration(
-                          color:
-                              isMe
-                                  ? AppColors.primaryColor
-                                  : AppColors.lightGreyColor,
+                          color: isMe
+                              ? AppColors.primaryColor
+                              : AppColors.lightGreyColor,
                           borderRadius: BorderRadius.circular(10),
                         ),
                         child: Text(
                           msg['message'],
-                          style:
-                              isMe
-                                  ? AppTextStyles.font14WhiteNormal
-                                  : AppTextStyles.font14PrimaryNormal,
+                          style: isMe
+                              ? AppTextStyles.font14WhiteNormal
+                              : AppTextStyles.font14PrimaryNormal,
                         ),
                       ),
                     );
@@ -107,27 +110,61 @@ class _ChatScreenState extends State<ChatScreen> {
               },
             ),
           ),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-            color: AppColors.whiteColor,
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 12.sp, vertical: 16.sp),
             child: Row(
               children: [
                 Expanded(
-                  child: TextFormField(
-                    controller: _messageController,
-                    decoration:  InputDecoration(
-                      hintText: 'اكتب رسالتك...',
-                      hintStyle: AppTextStyles.font14PrimarySemiBold,
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(16),),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      // color: const Color.fromARGB(255, 255, 255, 255),
+                      borderRadius: BorderRadius.circular(25),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.2),
+                          spreadRadius: 1,
+                          blurRadius: 6,
+                          offset: const Offset(0, 3),
+                        ),
+                      ],
+                    ),
+                    child: TextField(
+                      controller: _messageController,
+                      decoration: InputDecoration(
+                        filled: true,
+                        fillColor: Colors.white,
+                        hintText: "اكتب رسالتك...",
+                        hintStyle: TextStyle(
+                          color: const Color.fromARGB(255, 43, 43, 43),
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(25),
+                          // borderSide: BorderSide.none,
+                        ),
+                        contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 20,
+                          vertical: 14,
+                        ),
                       ),
+                      onSubmitted: (_) => _sendMessage(),
                     ),
                   ),
                 ),
-                const SizedBox(width: 8),
-                IconButton(
-                  icon: Icon(Icons.send, color:AppColors.primaryColor,size: 32.r,),
-                  onPressed: _sendMessage,
+                const SizedBox(width: 10),
+                Container(
+                  decoration: BoxDecoration(
+                    color: AppColors.primaryColor,
+                    shape: BoxShape.circle,
+                  ),
+                  child: IconButton(
+                    onPressed: _sendMessage,
+                    icon: Image.asset(
+                      AppAssets.sendIcon,
+                      width: 26,
+                      height: 26,
+                      color: Colors.white,
+                    ),
+                  ),
                 ),
               ],
             ),

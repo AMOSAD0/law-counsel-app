@@ -32,22 +32,25 @@ class AllArticlesScreen extends StatelessWidget {
 
           final articles = snapshot.data!.docs;
 
-          return ListView.builder(
-            itemCount: articles.length,
-            itemBuilder: (context, index) {
-              final data = articles[index].data() as Map<String, dynamic>;
+          return Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: ListView.builder(
+              itemCount: articles.length,
+              itemBuilder: (context, index) {
+                final data = articles[index].data() as Map<String, dynamic>;
 
-              return Cardarticale(
-                uderId: data['userId'] ?? '',
-                userImage: data['userImage'],
-                articleId: articles[index].id,
-                userName: data['userName'] ?? '',
-                date: data['createdAt'] ?? '',
-                articleImage: data['imageUrl'],
-                content: data['content'] ?? '',
-                likes: List<String>.from(data['likes'] ?? []),
-              );
-            },
+                return Cardarticale(
+                  uderId: data['userId'] ?? '',
+                  userImage: data['userImage'],
+                  articleId: articles[index].id,
+                  userName: data['userName'] ?? '',
+                  date: data['createdAt'] ?? '',
+                  articleImage: data['imageUrl'],
+                  content: data['content'] ?? '',
+                  likes: List<String>.from(data['likes'] ?? []),
+                );
+              },
+            ),
           );
         },
       ),

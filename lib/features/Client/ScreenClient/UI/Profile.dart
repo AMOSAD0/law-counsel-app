@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:law_counsel_app/core/helper/UploadImage.dart';
 import 'package:law_counsel_app/core/helper/imagePickerApp.dart';
 import 'package:law_counsel_app/core/helper/spacing.dart';
+import 'package:law_counsel_app/core/theming/text_style_manger.dart';
 import 'package:law_counsel_app/core/widgets/Conslution/Messages.dart';
 import 'package:law_counsel_app/core/widgets/DerwerApp.dart';
 import 'package:law_counsel_app/core/widgets/ProfileBackground.dart';
@@ -43,11 +44,12 @@ class _ProfileClientBodyState extends State<ProfileClientBody> {
     final imageUrl = await ImageUploadHelper.uploadImageToKit(image);
     if (imageUrl != null) {
       context.read<ProfileclientBloc>().add(
-            ProfileClientImageUpdateEvent(imageUrl: imageUrl),
-          );
+        ProfileClientImageUpdateEvent(imageUrl: imageUrl),
+      );
     } else {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(const SnackBar(content: Text("فشل رفع الصورة")));
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text("فشل رفع الصورة")));
     }
   }
 
@@ -65,11 +67,13 @@ class _ProfileClientBodyState extends State<ProfileClientBody> {
       body: BlocConsumer<ProfileclientBloc, ProfileClientState>(
         listener: (context, state) {
           if (state is ProfileClientError) {
-            ScaffoldMessenger.of(context)
-                .showSnackBar(SnackBar(content: Text(state.message)));
+            ScaffoldMessenger.of(
+              context,
+            ).showSnackBar(SnackBar(content: Text(state.message)));
           } else if (state is ProfileClientSuccess) {
-            ScaffoldMessenger.of(context)
-                .showSnackBar(SnackBar(content: Text(state.message)));
+            ScaffoldMessenger.of(
+              context,
+            ).showSnackBar(SnackBar(content: Text(state.message)));
           }
         },
         builder: (context, state) {
@@ -96,8 +100,10 @@ class _ProfileClientBodyState extends State<ProfileClientBody> {
                             backgroundColor: Colors.white,
                             backgroundImage: client.imageUrl != null
                                 ? NetworkImage(client.imageUrl!)
-                                : const AssetImage('assets/images/background.png')
-                                    as ImageProvider,
+                                : const AssetImage(
+                                        'assets/images/background.png',
+                                      )
+                                      as ImageProvider,
                           ),
                           IconButton(
                             icon: const Icon(Icons.camera_alt, size: 20),
@@ -126,10 +132,7 @@ class _ProfileClientBodyState extends State<ProfileClientBody> {
                           style: Theme.of(context).textTheme.titleLarge,
                         ),
                         const SizedBox(height: 4),
-                        const Text(
-                          "عميل",
-                          style: TextStyle(color: Colors.grey),
-                        ),
+                        Text("عميل", style: AppTextStyles.font14PrimaryNormal),
                         verticalSpace(40),
                         TextField(
                           readOnly: true,
@@ -171,19 +174,6 @@ class _ProfileClientBodyState extends State<ProfileClientBody> {
                           ),
                         ),
                         const SizedBox(height: 20),
-                        ElevatedButton.icon(
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => Messages()
-                              ),
-                            );
-                          },
-                          icon: const Icon(Icons.chat),
-                          label: const Text("المحادثات"),
-                        ),
-                        const SizedBox(height: 40),
                       ],
                     ),
                   ),
