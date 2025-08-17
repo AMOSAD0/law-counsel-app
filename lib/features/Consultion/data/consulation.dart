@@ -13,6 +13,7 @@ class Consultation {
   final String nameLawyer;
   final String nameClient;
   final bool paid;
+  final int ? amount;
   
 
   Consultation({
@@ -28,6 +29,7 @@ class Consultation {
     required this.nameLawyer,
     required this.nameClient,
     required this.paid,
+    this.amount = 500,
   
   });
 
@@ -45,6 +47,7 @@ class Consultation {
       'nameLawyer': nameLawyer,
       'nameClient': nameClient,
       'paid': paid,
+      'amount': amount,
     
     };
   }
@@ -73,6 +76,7 @@ class Consultation {
       nameLawyer: map['nameLawyer'] ?? '',
       nameClient: map['nameClient'] ?? '',
       paid: map['paid'] ?? false,
+      amount: map['amount'] ?? 500,
    
     );
   }

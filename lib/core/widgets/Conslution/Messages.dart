@@ -11,10 +11,11 @@ class Messages extends StatelessWidget {
   final defaultImage = 'https://cdn-icons-png.flaticon.com/512/149/149071.png';
 
   Future<Map<String, String>> getLawyerInfo(String lawyerId) async {
-    final doc = await FirebaseFirestore.instance
-        .collection('lawyers')
-        .doc(lawyerId)
-        .get();
+    final doc =
+        await FirebaseFirestore.instance
+            .collection('lawyers')
+            .doc(lawyerId)
+            .get();
     if (doc.exists) {
       final data = doc.data()!;
       return {
@@ -37,11 +38,12 @@ class Messages extends StatelessWidget {
         iconTheme: IconThemeData(color: AppColors.btnColor),
       ),
       body: StreamBuilder<QuerySnapshot>(
-        stream: FirebaseFirestore.instance
-            .collection('chats')
-            .where('clientId', isEqualTo: currentUserId)
-            .orderBy('lastMessageTime', descending: true)
-            .snapshots(),
+        stream:
+            FirebaseFirestore.instance
+                .collection('chats')
+                .where('clientId', isEqualTo: currentUserId)
+                .orderBy('lastMessageTime', descending: true)
+                .snapshots(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
@@ -98,11 +100,32 @@ class Messages extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => ChatScreen(
-                            chatId: chatId,
-                            currentUserId:
-                                FirebaseAuth.instance.currentUser!.uid,
-                          ),
+                          builder:
+                              (context) => ChatScreen(
+                                chatId: chatId,
+                                currentUserId: currentUserId,
+                                chats:
+                                    chatDocs.map((doc) {
+                                      final data =
+                                          doc.data() as Map<String, dynamic>;
+                                      return {
+                                        'id': doc.id,
+                                        'clientId': data['clientId'],
+                                        'lawyerId': data['lawyerId'],
+                                        'nameClient':
+                                            data['nameClient'] ?? 'عميل',
+                                        'lastMessage':
+                                            data['lastMessage'] ??
+                                            'لا توجد رسائل',
+                                        'lastMessageTime':
+                                            data['lastMessageTime'],
+                                      };
+                                    }).toList(),
+                                index: index,
+                                status: chat['status'] ?? 'ongoing',
+                                lawyerId: chat['lawyerId'],
+                                clientId: chat['clientId'],
+                              ),
                         ),
                       );
                     },

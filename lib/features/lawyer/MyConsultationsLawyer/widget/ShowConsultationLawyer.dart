@@ -171,6 +171,7 @@ void showConsultationDialog(
                                       'lawyerId': consultation.lawyerId,
                                       'nameClient': consultation.nameClient,
                                       'nameLawyer': consultation.nameLawyer,
+                                      "status": "ongoing", // pending, ongoing, completed, disputed
                                       'createdAt': FieldValue.serverTimestamp(),
                                       'lastMessage': 'مرحبا بك، يمكنك البدء في المحادثة الآن.',
                                       'lastMessageTime': FieldValue.serverTimestamp(),

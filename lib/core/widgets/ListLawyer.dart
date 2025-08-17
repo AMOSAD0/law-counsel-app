@@ -13,23 +13,48 @@ class LawyerCategoryList extends StatelessWidget {
     final List<Map<String, String>> lawyerCategories = [
       {
         "image": "assets/images/images33.jfif",
-        "type": "جنائي",
+        "type": "جنائى",
         "desc": "نقبل قضايا الجرائم مثل القتل، السرقة، المخدرات، التعدي الخ...",
       },
       {
         "image": "assets/images/images.44jpg.jfif",
-        "type": "مدني",
+        "type": "مدنى",
         "desc":
             "نقبل قضايا العقود، التعويضات، النزاعات على الملكية، الديون، القضايا المدنية الأخرى...",
       },
       {
         "image": "assets/images/images.4jpg.jfif",
-        "type": "أسري",
-        "desc": "نقبل قضايا الطلاق، الحضانة، النفقة، الخلع، إثبات النسب...",
+        "type": "إدارى",
+        "desc":
+            "نقبل قضايا الحكومة، المنازعات الإدارية، التراخيص، القرارات الإدارية...",
       },
       {
         "image": "assets/images/lawofWorkerjpg.jfif",
-        "type": "تجاري",
+        "type": "العمل",
+        "desc":
+            "نقبل قضايا العمل، الفصل التعسفي، الأجور، حقوق العمال، عقود العمل...",
+      },
+      {
+        "image": "assets/images/lawofWorkerjpg.jfif",
+        "type": "الضرائب",
+        "desc":
+            "نقبل قضايا الضرائب، التهرب الضريبي، المنازعات الضريبية، الاستشارات الضريبية...",
+      },
+      {
+        "image": "assets/images/images.4jpg.jfif",
+        "type": "التأمينات والمعاشات",
+        "desc":
+            "نقبل قضايا التأمينات الاجتماعية، المعاشات، التعويضات عن الحوادث...",
+      },
+      {
+        "image":  "assets/images/images33.jfif",
+        "type": "الأحوال الشخصية",
+        "desc":
+            "نقبل قضايا الطلاق، النفقة، الحضانة، تقسيم الممتلكات، القضايا الأسرية الأخرى...",
+      },
+      {
+        "image": "assets/images/lawofWorkerjpg.jfif",
+        "type": "تجارى",
         "desc":
             "نقبل قضايا الشركات، العقود التجارية، العلامات التجارية، الإفلاس...",
       },

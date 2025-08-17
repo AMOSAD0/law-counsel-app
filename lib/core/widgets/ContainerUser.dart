@@ -47,12 +47,12 @@ class _SelectableUserState extends State<SelectableUser> {
             onPressed: () {
               if (selectedIndex != -1) {
                 if (selectedIndex == 0) {
-                  Navigator.pushReplacementNamed(
+                  Navigator.pushNamed(
                     context,
                     Routes.registerClient,
                   );
                 } else if (selectedIndex == 1) {
-                  Navigator.pushReplacementNamed(
+                  Navigator.pushNamed(
                     context,
                     Routes.registerLawyer,
                   );

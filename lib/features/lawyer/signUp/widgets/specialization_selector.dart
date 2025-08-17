@@ -5,24 +5,38 @@ import 'package:law_counsel_app/core/theming/color_manger.dart';
 import 'package:law_counsel_app/core/theming/text_style_manger.dart';
 
 class SpecializationSelector extends StatefulWidget {
-   final ValueNotifier<List<String>> selectedSpecializationsNotifier;
-   const SpecializationSelector({super.key,required this.selectedSpecializationsNotifier});
-   
+  final ValueNotifier<List<String>> selectedSpecializationsNotifier;
+  const SpecializationSelector({
+    super.key,
+    required this.selectedSpecializationsNotifier,
+  });
 
   @override
   State<SpecializationSelector> createState() => _SpecializationSelectorState();
 }
 
 class _SpecializationSelectorState extends State<SpecializationSelector> {
-  final List<String> _availableSpecializations = ['جنائي', 'مدني', 'تجاري'];
-  String? _selectedSpecialization = 'جنائي';
- 
+  final List<String> _availableSpecializations = [
+    'جنائى',
+    'مدنى',
+    'إدارى',
+    'تجارى',
+    'العمل',
+    'الضرائب',
+    "التأمينات والمعاشات",
+    "الأحوال الشخصية",
+  ];
+  String? _selectedSpecialization = 'جنائى';
 
   void _addSpecialization() {
     if (_selectedSpecialization != null &&
-        !widget.selectedSpecializationsNotifier.value.contains(_selectedSpecialization)) {
+        !widget.selectedSpecializationsNotifier.value.contains(
+          _selectedSpecialization,
+        )) {
       setState(() {
-        widget.selectedSpecializationsNotifier.value.add(_selectedSpecialization!);
+        widget.selectedSpecializationsNotifier.value.add(
+          _selectedSpecialization!,
+        );
       });
     }
   }
@@ -63,19 +77,16 @@ class _SpecializationSelectorState extends State<SpecializationSelector> {
                     padding: const EdgeInsets.symmetric(horizontal: 8),
                     child: DropdownButton<String>(
                       value: _selectedSpecialization,
-                      icon: Row(
-                        children: [
-                          horizontalSpace(45),
-                          Icon(Icons.arrow_drop_down),
-                        ],
-                      ),
+                      isExpanded: true,
+                      underline: const SizedBox(),
+                      icon: const Icon(Icons.arrow_drop_down),
                       items:
                           _availableSpecializations.map((spec) {
                             return DropdownMenuItem(
                               value: spec,
                               child: Text(
                                 spec,
-                                style: AppTextStyles.font18PrimaryNormal,
+                                style: AppTextStyles.font14PrimaryNormal
                               ),
                             );
                           }).toList(),
@@ -100,7 +111,7 @@ class _SpecializationSelectorState extends State<SpecializationSelector> {
                       borderRadius: BorderRadius.circular(12),
                     ),
                   ),
-                  child:  Text("إضافة",style: AppTextStyles.font18WhiteNormal,),
+                  child: Text("إضافة", style: AppTextStyles.font18WhiteNormal),
                 ),
               ],
             ),

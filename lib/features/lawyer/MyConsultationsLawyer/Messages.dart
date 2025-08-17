@@ -80,8 +80,14 @@ class _MessagesLawyerState extends State<MessagesLawyer> {
                   context,
                   MaterialPageRoute(
                     builder: (context) => ChatScreen(
+                      
                       chatId: chats[index]['id'],
                       currentUserId: lawyerId!,
+                      chats: chats,
+                      index:index,
+                      status: chats[index]['status'] ?? 'ongoing',
+                      lawyerId: chats[index]['lawyerId'],
+                      clientId: chats[index]['clientId'],
                     ),
                   ),
                 );

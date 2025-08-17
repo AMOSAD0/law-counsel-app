@@ -24,6 +24,17 @@ class ConsultationBloc extends Bloc<ConsultationEvent, ConsultationState> {
           .doc(event.consultation.id)
           .set(event.consultation.toMap());
 
+      await firestore
+      .collection("payments")
+      .add({
+      "clientId":event.consultation.userId,
+      "consultationId": event.consultation.id,
+      "lawyerId": event.consultation.lawyerId,
+      "createdAt": FieldValue.serverTimestamp(),
+      "amount": event.consultation.amount ?? 500,
+      "status": "escrow", // escrow, released, refunded
+      });
+
       emit(ConsultationSuccess("تم إرسال الاستشارة بنجاح"));
     } catch (e) {
       emit(ConsultationError("حدث خطأ أثناء الإرسال: $e"));
