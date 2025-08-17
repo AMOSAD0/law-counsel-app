@@ -116,14 +116,15 @@ class _RequestsLawyerState extends State<RequestsLawyer> {
             // Requests List
             Expanded(
               child: StreamBuilder<QuerySnapshot>(
-                stream: (lawyerId == null)
-                    ? null
-                    : FirebaseFirestore.instance
-                        .collection('consultations')
-                        .where('lawyerId', isEqualTo: lawyerId)
-                        .where('status', isEqualTo: 'pending')
-                        .orderBy('createdAt', descending: true)
-                        .snapshots(),
+                stream:
+                    (lawyerId == null)
+                        ? null
+                        : FirebaseFirestore.instance
+                            .collection('consultations')
+                            .where('lawyerId', isEqualTo: lawyerId)
+                            .where('status', isEqualTo: 'pending')
+                            .orderBy('createdAt', descending: true)
+                            .snapshots(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return Center(
@@ -136,9 +137,12 @@ class _RequestsLawyerState extends State<RequestsLawyer> {
                           const SizedBox(height: 16),
                           Text(
                             'جاري تحميل الطلبات...',
-                            style: AppTextStyles.font16primaryColorNormal.copyWith(
-                              color: const Color(0xFF1C2331).withOpacity(0.7),
-                            ),
+                            style: AppTextStyles.font16primaryColorNormal
+                                .copyWith(
+                                  color: const Color(
+                                    0xFF1C2331,
+                                  ).withOpacity(0.7),
+                                ),
                           ),
                         ],
                       ),
@@ -172,9 +176,8 @@ class _RequestsLawyerState extends State<RequestsLawyer> {
                             const SizedBox(height: 16),
                             Text(
                               'حدث خطأ أثناء التحميل',
-                              style: AppTextStyles.font16primaryColorNormal.copyWith(
-                                color: const Color(0xFF1C2331),
-                              ),
+                              style: AppTextStyles.font16primaryColorNormal
+                                  .copyWith(color: const Color(0xFF1C2331)),
                               textAlign: TextAlign.center,
                             ),
                             const SizedBox(height: 8),
@@ -232,9 +235,12 @@ class _RequestsLawyerState extends State<RequestsLawyer> {
                             const SizedBox(height: 12),
                             Text(
                               'ستظهر هنا الطلبات الجديدة من العملاء',
-                              style: AppTextStyles.font16primaryColorNormal.copyWith(
-                                color: const Color(0xFF1C2331).withOpacity(0.6),
-                              ),
+                              style: AppTextStyles.font16primaryColorNormal
+                                  .copyWith(
+                                    color: const Color(
+                                      0xFF1C2331,
+                                    ).withOpacity(0.6),
+                                  ),
                               textAlign: TextAlign.center,
                             ),
                           ],
@@ -243,17 +249,24 @@ class _RequestsLawyerState extends State<RequestsLawyer> {
                     );
                   }
 
-                  final consultations = data.docs.map((doc) {
-                    return Consultation.fromMap(doc.data() as Map<String, dynamic>);
-                  }).toList();
+                  // final consultations = data.docs.map((doc) {
+                  //   return Consultation.fromMap(doc.data() as Map<String, dynamic>);
+                  // }).toList();
+                  final consultations =
+                      data.docs.map((doc) {
+                        final map = doc.data() as Map<String, dynamic>;
+                        map['id'] = doc.id;
+                        return Consultation.fromMap(map);
+                      }).toList();
 
                   return ListView.builder(
                     padding: const EdgeInsets.symmetric(horizontal: 16.0),
                     itemCount: consultations.length,
-                    itemBuilder: (context, index) => _buildConsultationItem(
-                      context,
-                      consultations[index],
-                    ),
+                    itemBuilder:
+                        (context, index) => _buildConsultationItem(
+                          context,
+                          consultations[index],
+                        ),
                   );
                 },
               ),
@@ -277,11 +290,7 @@ class _RequestsLawyerState extends State<RequestsLawyer> {
             color: color.withOpacity(0.1),
             borderRadius: BorderRadius.circular(12),
           ),
-          child: Icon(
-            icon,
-            color: color,
-            size: 24,
-          ),
+          child: Icon(icon, color: color, size: 24),
         ),
         const SizedBox(height: 8),
         Text(
@@ -343,7 +352,9 @@ Widget _buildConsultationItem(BuildContext context, Consultation consultation) {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  consultation.nameClient.isNotEmpty ? consultation.nameClient : "مستخدم",
+                  consultation.nameClient.isNotEmpty
+                      ? consultation.nameClient
+                      : "مستخدم",
                   style: AppTextStyles.font16primaryColorBold.copyWith(
                     color: const Color(0xFF1C2331),
                   ),

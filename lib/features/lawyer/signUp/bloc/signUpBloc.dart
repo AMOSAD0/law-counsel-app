@@ -34,7 +34,9 @@ class SignUpLawerBloc extends Bloc<SignUpLawyerEvent, SignUpLawyerState> {
         event.idImg,
       );
 
-      final String ? barImageUrl = await ImageUploadHelper.uploadImageToKit(event.barImg);
+      final String? barImageUrl = await ImageUploadHelper.uploadImageToKit(
+        event.barImg,
+      );
 
       // Step 2: Save lawyer data to Firestore
       final lawyer = event.lawyer;
@@ -51,7 +53,13 @@ class SignUpLawerBloc extends Bloc<SignUpLawyerEvent, SignUpLawyerState> {
         barAssociationImageUrl: barImageUrl,
         specializations: lawyer.specializations,
         isApproved: false,
-        rating: 0.0
+        rating: 0.0,
+        aboutMe: null,
+        achievements: null,
+        balance: 0,
+        feedback: [],
+        price: 500,
+        netPrice: 450,
       );
       await _firestore
           .collection('lawyers')

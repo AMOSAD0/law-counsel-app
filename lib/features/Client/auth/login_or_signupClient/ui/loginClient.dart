@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:law_counsel_app/core/helper/spacing.dart';
 import 'package:law_counsel_app/core/helper/validators.dart';
+import 'package:law_counsel_app/core/routing/routes.dart';
 import 'package:law_counsel_app/core/theming/text_style_manger.dart';
 import 'package:law_counsel_app/core/widgets/bottomNav.dart';
 import 'package:law_counsel_app/core/widgets/customAlertPopup.dart';
@@ -132,7 +133,7 @@ class _LoginClientBodyState extends State<LoginClientBody> {
                                 horizontalSpace(10),
                                 TextButton(
                                   onPressed: () {
-                                    Navigator.pop(context); // أو روح لشاشة التسجيل
+                                    Navigator.pushNamed(context,Routes.selectUserType); // أو روح لشاشة التسجيل
                                   },
                                   child: Text(
                                     "إنشاء حساب",

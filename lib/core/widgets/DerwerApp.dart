@@ -18,6 +18,12 @@ class DrwerApp extends StatelessWidget {
     return prefs.getString('uid');
   }
 
+  Future _deleteUid( ) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove('uid');
+    await prefs.remove('userType');
+  }
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<String?>(
@@ -36,7 +42,9 @@ class DrwerApp extends StatelessWidget {
             }
 
             final role = roleSnapshot.data;
+            
             if (role == 'client') {
+             
               return _drawerContent(
                 context,
                 messagesPage: const Messages(),
@@ -82,6 +90,7 @@ class DrwerApp extends StatelessWidget {
           trailing: IconButton(
             onPressed: () async {
               await FirebaseAuth.instance.signOut();
+              await _deleteUid();
               Navigator.pushAndRemoveUntil(
                 context,
                 MaterialPageRoute(builder: (_) => loginPage),

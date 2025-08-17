@@ -176,7 +176,6 @@ void showConsultationDialog(
                                       'lastMessageTime': FieldValue.serverTimestamp(),
                                     });
 
-                                // إضافة رسالة ترحيبية في مجموعة الرسائل داخل المحادثة
                                 await FirebaseFirestore.instance
                                     .collection('chats')
                                     .doc(chatDoc.id)

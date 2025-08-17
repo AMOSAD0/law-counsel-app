@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
+import 'package:law_counsel_app/core/assets/assets_manger.dart';
 import 'package:law_counsel_app/core/helper/spacing.dart';
 import 'package:law_counsel_app/core/routing/routes.dart';
 import 'package:law_counsel_app/core/theming/color_manger.dart';
@@ -82,6 +83,7 @@ class _LawyerProfilePageState extends State<LawyerProfilePage> {
           }
 
           final lawyer = Lawyer.fromJson(state.lawyerData!);
+         
 
           return Scaffold(
             backgroundColor: Colors.grey[50],
@@ -148,12 +150,15 @@ class _LawyerProfilePageState extends State<LawyerProfilePage> {
                                     backgroundColor: Colors.white,
                                     child: CircleAvatar(
                                       radius: 56,
-                                      backgroundImage: NetworkImage(
-                                        (lawyer.profileImageUrl?.isEmpty ??
-                                                true)
-                                            ? 'https://i.pravatar.cc/300'
-                                            : lawyer.profileImageUrl!,
-                                      ),
+                                      backgroundImage:
+                                          lawyer.profileImageUrl != "" || lawyer.profileImageUrl!.isNotEmpty
+                                              ? NetworkImage(
+                                                lawyer.profileImageUrl!,
+                                              ):AssetImage(
+                                                AppAssets.Client,
+                                              ) as ImageProvider<Object>,   
+                                              
+                                            
                                     ),
                                   ),
                                 ),
@@ -380,37 +385,38 @@ class _LawyerProfilePageState extends State<LawyerProfilePage> {
             Wrap(
               spacing: 12,
               runSpacing: 12,
-              children: specializations
-                  .map(
-                    (spec) => Container(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 16.w,
-                        vertical: 8.h,
-                      ),
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: [
-                            AppColors.btnColor.withOpacity(0.1),
-                            AppColors.btnColor.withOpacity(0.05),
-                          ],
+              children:
+                  specializations
+                      .map(
+                        (spec) => Container(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 16.w,
+                            vertical: 8.h,
+                          ),
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: [
+                                AppColors.btnColor.withOpacity(0.1),
+                                AppColors.btnColor.withOpacity(0.05),
+                              ],
+                            ),
+                            borderRadius: BorderRadius.circular(25),
+                            border: Border.all(
+                              color: AppColors.btnColor.withOpacity(0.3),
+                              width: 1.5,
+                            ),
+                          ),
+                          child: Text(
+                            spec.toString(),
+                            style: TextStyle(
+                              color: AppColors.btnColor,
+                              fontSize: 14.sp,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
                         ),
-                        borderRadius: BorderRadius.circular(25),
-                        border: Border.all(
-                          color: AppColors.btnColor.withOpacity(0.3),
-                          width: 1.5,
-                        ),
-                      ),
-                      child: Text(
-                        spec.toString(),
-                        style: TextStyle(
-                          color: AppColors.btnColor,
-                          fontSize: 14.sp,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ),
-                  )
-                  .toList(),
+                      )
+                      .toList(),
             ),
           ],
         ),

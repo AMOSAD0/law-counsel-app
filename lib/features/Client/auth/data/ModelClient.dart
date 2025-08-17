@@ -3,7 +3,7 @@ class ClientModel {
   final String name;
   final String email;
   final String phone;
-  final String password;
+  // final String password;
   final String? imageUrl;
   final bool isDelete;
 
@@ -14,7 +14,7 @@ class ClientModel {
     required this.name,
     required this.email,
     required this.phone,
-    required this.password,
+    // required this.password,
   });
 
   factory ClientModel.fromJson(Map<String, dynamic> json, [String? id]) {
@@ -23,7 +23,7 @@ class ClientModel {
       name: json['name'] ?? '',
       email: json['email'] ?? '',
       phone: json['phone'] ?? '',
-      password: json['password'] ?? '',
+      // password: json['password'] ?? '',
       imageUrl: json['imageUrl'],
       isDelete: json['isDelete'] ?? false,
     );
@@ -34,7 +34,7 @@ class ClientModel {
       'name': name,
       'email': email,
       'phone': phone,
-      'password': password,
+      // 'password': password,
       'imageUrl': imageUrl,
       'isDelete': isDelete,
     };

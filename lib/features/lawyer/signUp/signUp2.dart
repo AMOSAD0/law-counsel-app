@@ -220,7 +220,7 @@ class _SignupForLawyer2State extends State<SignupForLawyer2> {
                                     birthDate: birthDateController.text,
                                     city: cityController.text,
                                     specializations: selectedSpecs.value,
-                                    profileImageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQF02Jj8T2t7PdkytAw42HDuuSz7yXguKn8Lg&s',
+                                    profileImageUrl: '',
                                   );
                                   context.read<SignUpLawerBloc>().add(
                                     SignUpLawyerSubmitted(

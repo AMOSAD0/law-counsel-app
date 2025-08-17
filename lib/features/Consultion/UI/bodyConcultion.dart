@@ -188,6 +188,7 @@ class _MyConsultationBodyState extends State<MyConsultationBody> {
         centerTitle: true,
         elevation: 0,
         iconTheme: const IconThemeData(color: Color(0xFFC9B38C)),
+        automaticallyImplyLeading: false,
       ),
       body: BlocListener<ConsultationBloc, ConsultationState>(
         listener: (context, state) {

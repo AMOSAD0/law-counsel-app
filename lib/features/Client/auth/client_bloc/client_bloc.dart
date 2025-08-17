@@ -26,7 +26,7 @@ class ClientBloc extends Bloc<ClientEvent, ClientState> {
           name: event.name,
           email: event.email,
           phone: event.phone,
-          password: event.password,
+          // password: event.password,
           isDelete: false,
         );
 
