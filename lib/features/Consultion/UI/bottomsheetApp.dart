@@ -65,7 +65,7 @@ void showConsultationBottomSheet({
                       borderRadius: BorderRadius.circular(15),
                     ),
                   ),
-                  style: AppTextStyles.font14WhiteNormal,
+                  style: AppTextStyles.font16primaryColorNormal
                 ),
                 verticalSpace(25),
 
